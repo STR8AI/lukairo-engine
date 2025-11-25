@@ -92,8 +92,8 @@ npm run cf-typegen
 
 ### Code Style
 
-- Use tabs for indentation (as configured in existing files)
-- Use double quotes for strings in JSON, single quotes in TypeScript
+- Use tabs for indentation in the `app/` directory and config files
+- Use double quotes for strings in JSON and TypeScript
 - Keep functions small and focused
 - Add meaningful comments only when logic is complex
 
