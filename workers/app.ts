@@ -1,5 +1,5 @@
 export default {
-  async fetch(request, env) {
+  async fetch(request: Request, env: Env) {
     const url = new URL(request.url);
     const DB = env.DB; // or env.lukairo_main if your binding name differs
 
