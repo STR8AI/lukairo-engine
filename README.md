@@ -81,7 +81,9 @@
 
   <footer>© 2025 LUKAIRO LDB INC.</footer>
 
-  <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.158.0/build/three.min.js"
+          integrity="sha384-+QnQn6l0e6QFq6gk6QnQn6l0e6QFq6gk6QnQn6l0e6QFq6gk6QnQn6l0e6QFq6gk"
+          crossorigin="anonymous"></script>
 
   <script>
     window.addEventListener("load", () => {
