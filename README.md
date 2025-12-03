@@ -180,7 +180,16 @@
 
       // Particle Field
       const geo = new THREE.BufferGeometry();
-      const pos = new Float32Array(2500);
+      // Dynamically scale particle count based on devicePixelRatio and screen size
+      const BASE_PARTICLE_COUNT = 2500;
+      const scale = Math.max(1, window.devicePixelRatio || 1);
+      // Optionally, further scale by screen area (uncomment if desired)
+      // const areaScale = (window.innerWidth * window.innerHeight) / (1920 * 1080);
+      let particleCount = Math.floor(BASE_PARTICLE_COUNT / scale);
+      // particleCount = Math.floor(particleCount * areaScale); // Uncomment if using areaScale
+      // Ensure particleCount is a multiple of 3
+      particleCount = Math.max(300, Math.floor(particleCount / 3) * 3); // minimum 100 particles
+      const pos = new Float32Array(particleCount);
       for (let i = 0; i < pos.length; i++) pos[i] = (Math.random() - 0.5) * 100;
       geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
       const particles = new THREE.Points(
