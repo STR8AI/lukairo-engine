@@ -104,7 +104,24 @@
 
       // Core Gear Sphere
       const loader = new THREE.TextureLoader();
-      const texture = loader.load("LUKAIRO.png"); // must be in same folder
+      let texture = null;
+      // Try to load the texture, handle error gracefully
+      texture = loader.load(
+        "LUKAIRO.png", // must be in same folder
+        undefined, // onLoad (not needed here)
+        undefined, // onProgress (not needed)
+        function onError(err) {
+          console.error("Failed to load texture 'LUKAIRO.png':", err);
+          // Fallback: use a simple white texture
+          const fallbackCanvas = document.createElement('canvas');
+          fallbackCanvas.width = fallbackCanvas.height = 64;
+          const ctx = fallbackCanvas.getContext('2d');
+          ctx.fillStyle = "#fff";
+          ctx.fillRect(0, 0, 64, 64);
+          texture.image = fallbackCanvas;
+          texture.needsUpdate = true;
+        }
+      );
       const core = new THREE.Mesh(
         new THREE.SphereGeometry(3, 64, 64),
         new THREE.MeshStandardMaterial({
