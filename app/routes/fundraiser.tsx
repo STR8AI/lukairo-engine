@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 export function meta() {
 	return [
@@ -24,8 +24,6 @@ export default function Fundraiser() {
 		Object.fromEntries(products.map((_, i) => [i, 0]))
 	);
 	const [copySuccess, setCopySuccess] = useState(false);
-	const orderTableRef = useRef<HTMLTableElement>(null);
-	const printSectionRef = useRef<HTMLDivElement>(null);
 
 	// Calculate total for a product
 	const getProductTotal = (index: number) => {
@@ -67,9 +65,8 @@ export default function Fundraiser() {
 		window.print();
 	};
 
-	// Download as image (using canvas)
+	// Download/Save as PDF - triggers print dialog which allows saving as PDF
 	const handleDownloadImage = () => {
-		// Simple approach: trigger print dialog which can be saved as PDF
 		window.print();
 	};
 
@@ -96,7 +93,7 @@ export default function Fundraiser() {
 				}
 			`}</style>
 
-			<div ref={printSectionRef} className="print-section" style={styles.card}>
+			<div className="print-section" style={styles.card}>
 				{/* Header with team info */}
 				<div style={styles.header}>
 					<div style={styles.headerContent}>
@@ -119,7 +116,7 @@ export default function Fundraiser() {
 				{/* Order Form */}
 				<div style={styles.orderSection}>
 					<h3 style={styles.sectionTitle}>Place Your Order</h3>
-					<table ref={orderTableRef} style={styles.table}>
+					<table style={styles.table}>
 						<thead>
 							<tr>
 								<th style={styles.th}>Product</th>
