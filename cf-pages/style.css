@@ -1,0 +1,29 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #05070b;
+  color: #9ffcff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+h1 {
+  font-size: 4rem;
+  letter-spacing: 0.3em;
+  margin: 0;
+}
+
+p {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}

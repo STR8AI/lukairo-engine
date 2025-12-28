@@ -1,0 +1,5 @@
+name = "lukairo-engine"
+account_id = "YOUR_ACCOUNT_ID"
+workers_dev = true
+main = "src/index.ts"
+compatibility_date = "2025-12-27"

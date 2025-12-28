@@ -1,14 +1,23 @@
-import { reactRouter } from "@react-router/dev/vite";
-import { cloudflare } from "@cloudflare/vite-plugin";
-import tailwindcss from "@tailwindcss/vite";
+
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+import react from "@vitejs/plugin-react";
+import { reactRouter } from "@react-router/dev/vite";
 
 export default defineConfig({
 	plugins: [
-		cloudflare({ viteEnvironment: { name: "ssr" } }),
-		tailwindcss(),
 		reactRouter(),
-		tsconfigPaths(),
+		react(),
 	],
+	server: {
+		watch: {
+			ignored: [
+				'**/app/public/Downloads/**',
+				'**/build/**',
+				'**/*.app/**',
+				'**/*iCloud Drive*',
+				'**/Desktop/**',
+				'**/Install Spotify.app/**'
+			]
+		}
+	}
 });

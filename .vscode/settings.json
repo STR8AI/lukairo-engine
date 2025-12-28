@@ -1,5 +1,9 @@
 {
-	"files.associations": {
-		"wrangler.json": "jsonc"
-	}
+  "files.watcherExclude": {
+    "**/Install Spotify.app/**": true,
+    "**/node_modules/**": true,
+    "**/build/**": true,
+    "**/src/mv src/**": true,
+    "**/Desktop/**": false
+  }
 }
