@@ -42,7 +42,7 @@
 		"wrangler": "4.21.x"
 	},
 	"scripts": {
-		"build": "react-router build",
+		"build": "vite build",
 		"cf-typegen": "wrangler types",
 		"deploy": "npm run build && wrangler deploy",
 		"dev": "react-router dev",

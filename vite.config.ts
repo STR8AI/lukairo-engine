@@ -1,23 +1,29 @@
-
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { reactRouter } from "@react-router/dev/vite";
+import path from "path";
+
+// If you use the react-router Vite plugin, uncomment the next line and add reactRouter() to plugins:
+// import { reactRouter } from "@react-router/dev/vite";
 
 export default defineConfig({
-	plugins: [
-		reactRouter(),
-		react(),
-	],
-	server: {
-		watch: {
-			ignored: [
-				'**/app/public/Downloads/**',
-				'**/build/**',
-				'**/*.app/**',
-				'**/*iCloud Drive*',
-				'**/Desktop/**',
-				'**/Install Spotify.app/**'
-			]
-		}
-	}
+  plugins: [
+    // If you use reactRouter(), add it here:
+    // reactRouter(),
+    react()
+  ],
+  base: "/", // use "./" only if you must host on a subpath or file://
+  build: {
+    outDir: "build/client",
+    emptyOutDir: true,
+    rollupOptions: {
+      // Ensure the root index.html is considered an input and copied to the output
+      input: {
+        main: path.resolve(__dirname, "index.html")
+      }
+    }
+  },
+  ssr: {
+    // keep these only if you need them for SSR builds
+    noExternal: ["react-router", "react-router-dom"]
+  }
 });
