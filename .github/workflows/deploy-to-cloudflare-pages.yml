@@ -16,5 +16,6 @@ jobs:
       - run: npm run build
       - name: Publish to Pages
         env:
-          CF_API_TOKEN: ${{ 070a453219dbd434a095b036760e0c674e66d}}
+          CF_API_TOKEN: ${{ "v1.0-fca569c8bbf04b2050dd46f6-bdc1a5a0d6451d2f6b3f9eec7befaf2171bca71c0dfcb4052f461ac2445447725c0e28066eeff1dfb3647d5147eda5aa37d9c4881981d92beac3d39e71c0c4fe24d38ff7efc36ec069
+          }}
         run: npx wrangler pages publish build/client --project-name=lukairo-fullstack-pages
