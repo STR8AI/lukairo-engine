@@ -1,4 +1,5 @@
 import React from "react";
+import "./app.css";
 import { Outlet, Link } from "react-router-dom";
 
 export default function Root(): JSX.Element {
