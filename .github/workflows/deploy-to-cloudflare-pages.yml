@@ -1,49 +1,19 @@
+# Deploy to Cloudflare Pages Pipeline
+defaults:
+  run:
+    shell: bash
+
 name: Deploy to Cloudflare Pages
-on: 
+on:
   push:
     branches:  [ main ]
   pull_request:
     branches: [ main ]
 
-permissions: 
-  contents: read
-  deployments: write
+
 
 jobs:
-  publish:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with: 
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run:  npm run build
-        env: 
-          NODE_ENV: production
-
-      - name: Verify build output
-        run: |
-          echo "Build complete. Verifying output..."
-          ls -la build/client/ || ls -la build/ || ls -la dist/
-      
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: 'lukairo-engine'
-          directory: './build/client'
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Output deployment URL
-        run: echo "🚀 Deployed to ${{ steps.deploy.outputs.url }}"
-        env:
-          DEPLOYMENT_URL: 4b597837.lukairo-fullstack-pages.pages.dev

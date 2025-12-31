@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>LUKAIRO Engine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Load shared site styles -->
+    <link rel="stylesheet" href="lukairo-main.css" />
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #0b0b0c;
+        font-family: 'Inter', sans-serif;
+        color: #fff;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .sidebar {
+        width: 240px;
+        background: #111114;
+        border-right: 1px solid #222;
+        padding: 24px 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .logo {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 32px;
+        letter-spacing: 1px;
+      }
+
+      .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .nav a {
+        padding: 10px 12px;
+        border-radius: 6px;
+        font-size: 15px;
+        opacity: 0.8;
+      }
+
+      .nav a:hover {
+        background: #1b1c1f;
+        opacity: 1;
+      }
+
+      .main {
+        flex: 1;
+        background: #0f0f11;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        height: 64px;
+        border-bottom: 1px solid #222;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 22px;
+        background: #111114;
+      }
+
+      .topbar-title {
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .content {
+        padding: 30px;
+        overflow-y: auto;
+      }
+
+      .card {
+        background: #18181b;
+        padding: 24px;
+        border-radius: 10px;
+        margin-bottom: 26px;
+        border: 1px solid #222;
+      }
+
+      .card h2 {
+        margin: 0 0 12px 0;
+        font-size: 22px;
+      }
+
+      .card p {
+        margin: 0;
+        opacity: 0.75;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .btn {
+        margin-top: 18px;
+        display: inline-block;
+        padding: 10px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        background: #fff;
+        color: #000;
+        border-radius: 6px;
+      }
+
+      .btn:hover {
+        background: #ddd;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- SIDEBAR NAVIGATION -->
+    <div class="sidebar">
+      <div class="logo">LUKAIRO ENGINE</div>
+
+      <div class="nav">
+        <a href="engine.html">Dashboard</a>
+        <a href="#">Qualification Engine</a>
+        <a href="#">Workflows</a>
+        <a href="#">Integrations</a>
+        <a href="#">Analytics</a>
+        <a href="index.html">← Back to Website</a>
+      </div>
+    </div>
+
+    <!-- MAIN PANEL -->
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-title">Dashboard</div>
+      </div>
+
+      <div class="content">
+        <div class="card">
+          <h2>Welcome to the LUKAIRO Engine</h2>
+          <p>
+            This is the command center for your automated service infrastructure. From here, you can
+            control qualification flows, onboarding, workflows, automations, and AI-powered
+            operations.
+          </p>
+          <a href="#" class="btn">Get Started</a>
+        </div>
+
+        <div class="card">
+          <h2>Next Steps</h2>
+          <p>
+            • Add qualification criteria<br />
+            • Connect workflows<br />
+            • Enable routing logic<br />
+            • Integrate live service environments
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load shared JS -->
+    <script src="main.js"></script>
+  </body>
+</html>
