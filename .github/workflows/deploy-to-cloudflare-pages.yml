@@ -1,24 +1,23 @@
 name: Deploy to Cloudflare Pages
-
-on:
-  push: 
-    branches: [ main ]
-  pull_request:
+on: 
+  push:
     branches:  [ main ]
+  pull_request:
+    branches: [ main ]
 
-permissions:
+permissions: 
   contents: read
   deployments: write
 
 jobs:
   publish:
-    runs-on:  ubuntu-latest
-    steps: 
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
-        with:
+        with: 
           node-version: '18'
           cache: 'npm'
 
@@ -26,29 +25,23 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
-        env:
+        run:  npm run build
+        env: 
           NODE_ENV: production
 
-      - name:  Verify build output
+      - name: Verify build output
         run: |
-          if [ ! -d "./dist" ]; then
-            echo "Error: Build directory './dist' not found"
-            exit 1
-          fi
-          echo "Build output:"
-          ls -la ./dist
-
-      - name:  Publish to Cloudflare Pages
-        id: deploy
+          echo "Build complete. Verifying output..."
+          ls -la build/client/ || ls -la build/ || ls -la dist/
+      
+      - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: 'lukairo-fullstack-pages'   # <-- update this to your actual project name
-          directory: './dist'                      # <-- update if your build output is different
+          projectName: 'lukairo-engine'
+          directory: './build/client'
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          wranglerVersion: '3'
 
       - name: Output deployment URL
         run: echo "🚀 Deployed to ${{ steps.deploy.outputs.url }}"

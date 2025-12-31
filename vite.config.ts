@@ -1,29 +1,14 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import path from "path";
-
-// If you use the react-router Vite plugin, uncomment the next line and add reactRouter() to plugins:
-// import { reactRouter } from "@react-router/dev/vite";
+import { reactRouter } from '@react-router/dev/vite';
+import { cloudflare } from '@cloudflare/vite-plugin';
+import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  plugins: [
-    // If you use reactRouter(), add it here:
-    // reactRouter(),
-    react()
-  ],
-  base: "/", // use "./" only if you must host on a subpath or file://
-  build: {
-    outDir: "build/client",
-    emptyOutDir: true,
-    rollupOptions: {
-      // Ensure the root index.html is considered an input and copied to the output
-      input: {
-        main: path.resolve(__dirname, "index.html")
-      }
-    }
-  },
+  plugins: [cloudflare(), tailwindcss(), reactRouter(), tsconfigPaths()],
   ssr: {
-    // keep these only if you need them for SSR builds
-    noExternal: ["react-router", "react-router-dom"]
-  }
+    resolve: {
+      conditions: ['workerd', 'worker', 'browser'],
+    },
+  },
 });
