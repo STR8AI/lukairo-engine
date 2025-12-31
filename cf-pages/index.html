@@ -1,405 +1,1915 @@
-<base href="/lukairo-host1/"> bc4e8aa350ad0661d2ee99c88d553f298b9c5a66
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LUKAIRO – Neural Command Engine</title>
-
+  <title>LUKAIRO — Neural Command Engine</title>
+  <meta name="description" content="LUKAIRO connects everything — AI-powered integration platform" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
-      background: #05070B;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      height: 100%;
+      background: #000;
       overflow-x: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #fff;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left:  0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 1.2rem 2rem;
+      z-index:  100;
+      border-bottom: 1px solid rgba(0, 255, 204, 0.1);
+    }
+    
+    nav . container {
+      max-width:  1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    nav .logo {
+      font-size: 1.5rem;
+      font-weight:  900;
+      letter-spacing: 0.1em;
+      background: linear-gradient(135deg, #00ffee, #7de5ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color:  transparent;
+    }
+    
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+    
+    nav ul li a {
+      color: #9fd1ff;
+      text-decoration:  none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    nav ul li a: hover {
+      color: #00ffee;
+    }
+
+    /* Hero Section */
+    #lukairo-hero {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    . hero-overlay {
+      position:  fixed;
+      left: 50%;
+      top: 18vh;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 5;
+      pointer-events: none;
+      animation: fadeIn 2s ease forwards;
+      max-width: 90%;
+    }
+    
+    . hero-overlay h1 {
+      margin:  0 0 0.8rem;
+      font-size: clamp(32px, 8vw, 88px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: linear-gradient(135deg, #fff 0%, #7fffea 40%, #00e5d1 100%);
+      -webkit-background-clip:  text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 40px rgba(0, 255, 204, 0.4));
+      animation: glow 3s ease-in-out infinite;
+    }
+    
+    @keyframes glow {
+      0%, 100% { filter: drop-shadow(0 0 40px rgba(0, 255, 204, 0.4)); }
+      50% { filter: drop-shadow(0 0 60px rgba(0, 255, 204, 0.7)); }
+    }
+    
+    . hero-overlay . tagline {
+      margin:  0 0 1.5rem;
+      color: #b8fff3;
+      font-size: clamp(14px, 2.2vw, 24px);
+      font-weight:  600;
+      letter-spacing: 0.08em;
+      opacity: 0.95;
+    }
+    
+    .hero-overlay .subtitle {
+      color: #7de5ff;
+      font-size: clamp(11px, 1.4vw, 16px);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      opacity: 0.8;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* CTA Buttons */
+    .cta-buttons {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      pointer-events: all;
+    }
+    
+    .cta-btn {
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta-btn-primary {
+      background: linear-gradient(135deg, #00ffee, #00b8d4);
+      color: #000;
+      box-shadow: 0 10px 40px rgba(0, 255, 204, 0.4);
+    }
+    
+    . cta-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 50px rgba(0, 255, 204, 0.6);
+    }
+    
+    . cta-btn-secondary {
+      background: transparent;
+      color: #00ffee;
+      border: 2px solid #00ffee;
+    }
+    
+    . cta-btn-secondary:hover {
+      background: rgba(0, 255, 238, 0.1);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 255, 204, 0.3);
+    }
+
+    /* Stats Section */
+    . stats {
+      position: fixed;
+      bottom: 8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 4rem;
+      z-index:  5;
+      pointer-events: none;
+    }
+    
+    .stat-item {
+      text-align: center;
+      animation: fadeIn 2. 5s ease forwards;
+    }
+    
+    .stat-number {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight:  900;
+      color: #00ffee;
+      display: block;
+      text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    }
+    
+    .stat-label {
+      font-size: clamp(10px, 1.2vw, 14px);
+      color: #9fd1ff;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0.4rem;
+    }
+
+    /* Footer */
+    footer {
+      position: fixed;
+      left: 50%;
+      bottom: 2rem;
+      transform: translateX(-50%);
+      color: #6cf5e6;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      opacity: 0.7;
+      z-index: 5;
+      text-align: center;
+    }
+    
+    footer . tagline {
+      font-size: 11px;
+      color: #7de5ff;
+      margin-top: 0.3rem;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -20px); }
+      to   { opacity: 1; transform:  translate(-50%, 0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav ul {
+        gap: 1.5rem;
+        font-size: 0.85rem;
+      }
+      
+      .stats {
+        gap: 2rem;
+        bottom: 6rem;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        gap:  1rem;
+      }
+    }
+
+    /* Loading Screen */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.8s ease;
+    }
+    
+    #loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    . loader {
+      width: 60px;
+      height: 60px;
+      border: 3px solid rgba(0, 255, 204, 0.1);
+      border-top-color: #00ffee;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
+  <!-- Loading Screen -->
+  <div id="loading">
+    <div class="loader"></div>
+  </div>
 
-  <!-- === LUKAIRO NEURAL COMMAND ENGINE — GHL-HARDENED VERSION === -->
-  <section id="lukairo-engine">
-    <div class="lukairo-hud">
-      <h2 class="lukairo-title">LUK<span>AIRO</span></h2>
-      <p class="lukairo-sub">THE NEURAL CORE • CONNECTING EVERYTHING</p>
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <div class="logo">LUKAIRO</div>
+      <ul>
+        <li><a href="#platform">Platform</a></li>
+        <li><a href="#integrations">Integrations</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#docs">Docs</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
     </div>
-  </section>
+  </nav>
 
-  <style>
-  @import url("//fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap");
+  <!-- Hero Canvas -->
+  <div id="lukairo-hero" aria-hidden="true"></div>
 
-  /* Break out of GHL columns and go full-bleed */
-  #lukairo-engine {
-    position: relative !important;
-    width: 100vw !important;
-    max-width: 100vw !important;
-    min-width: 100vw !important;
-    margin-left: calc(50% - 50vw) !important;
-    margin-right: calc(50% - 50vw) !important;
-    height: 140vh !important;
-    background: #05070B;
-    overflow: hidden;
-  }
+  <!-- Hero Overlay -->
+  <div class="hero-overlay" role="banner">
+    <h1>LUKAIRO</h1>
+    <p class="tagline">We Connect Everything</p>
+    <p class="subtitle">
+      AI-powered integration platform connecting 500+ services.  <br/>
+      Build, deploy, and scale workflows in seconds.
+    </p>
+    <div class="cta-buttons">
+      <a href="#demo" class="cta-btn cta-btn-primary">Get Started Free</a>
+      <a href="#demo" class="cta-btn cta-btn-secondary">Watch Demo</a>
+    </div>
+  </div>
 
-  /* Canvas will be injected by JS */
-  #lukairo-engine canvas {
-    position: absolute;
-    inset: 0;
-    width: 100vw !important;
-    height: 140vh !important;
-    display: block;
-  }
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-item">
+      <span class="stat-number">500+</span>
+      <span class="stat-label">Integrations</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">1M+</span>
+      <span class="stat-label">Workflows</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">99.9%</span>
+      <span class="stat-label">Uptime</span>
+    </div>
+  </div>
 
-  /* HUD */
-  .lukairo-hud{
-    position:absolute;
-    top:7%;
-    width:100%;
-    text-align:center;
-    color:#e4f7ff;
-    font-family:"Orbitron",system-ui,sans-serif;
-    text-transform:uppercase;
-    z-index:5;
-    pointer-events:none;
-  }
-  .lukairo-title{
-    font-size:clamp(2.5rem,5vw,4.6rem);
-    letter-spacing:0.35em;
-    text-shadow:
-      0 0 22px rgba(0,255,204,0.6),
-      0 0 60px rgba(90,140,255,0.9);
-  }
-  .lukairo-title span{
-    color:#7de5ff;
-  }
-  .lukairo-sub{
-    margin-top:0.35rem;
-    font-size:clamp(.7rem,1vw,.9rem);
-    letter-spacing:.42em;
-    color:#9fd1ff;
-    opacity:.9;
-  }
-  </style>
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div>© 2025 LUKAIRO. All rights reserved.</div>
+    <div class="tagline">Delivering Control.  Returning Time.</div>
+  </footer>
 
-  <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
-
+  <!-- Three.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+  
   <script>
-  (function(){
-    function init() {
-      const container = document.getElementById("lukairo-engine");
-      if (!container || !window.THREE) return;
+    // Wait for Three.js to load
+    function initScene() {
+      if (typeof THREE === 'undefined') {
+        console.error('Three.js failed to load');
+        document.getElementById('loading').classList.add('hidden');
+        return;
+      }
 
+      const root = document.getElementById('lukairo-hero');
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x05070B);
+      scene.background = new THREE.Color(0x000000);
+      
+      const camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        3000
+      );
+      camera.position.set(0, 1, 24);
 
-      const SIZE_FACTOR = 1.4;
-      function getSize() {
-        return { w: window.innerWidth, h: window.innerHeight * SIZE_FACTOR };
-      }
-      let { w, h } = getSize();
-
-      const camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 1000);
-      camera.position.set(0, 0.6, 18);
-
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+      renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setSize(w, h);
-      if (renderer.outputEncoding !== undefined) {
-        renderer.outputEncoding = THREE.sRGBEncoding;
+      root.appendChild(renderer.domElement);
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0x66fff0, 0.6);
+      scene.add(ambientLight);
+      
+      const keyLight = new THREE. PointLight(0x00e5d1, 2. 2, 250);
+      keyLight.position. set(12, 8, 16);
+      scene.add(keyLight);
+
+      const rimLight = new THREE. PointLight(0x0088ff, 1.4, 250);
+      rimLight.position. set(-15, -6, -12);
+      scene.add(rimLight);
+
+      const accentLight = new THREE.PointLight(0xff0080, 0.8, 150);
+      accentLight.position.set(0, 10, -20);
+      scene.add(accentLight);
+
+      // Stars
+      const STAR_COUNT = 2500;
+      const starGeo = new THREE.BufferGeometry();
+      const starPos = new Float32Array(STAR_COUNT * 3);
+      const starColors = new Float32Array(STAR_COUNT * 3);
+      
+      for (let i = 0; i < STAR_COUNT; i++) {
+        const i3 = i * 3;
+        starPos[i3] = (Math.random() - 0.5) * 1500;
+        starPos[i3 + 1] = (Math.random() - 0.5) * 1500;
+        starPos[i3 + 2] = (Math.random() - 0.5) * 1500;
+        
+        const colorChoice = Math.random();
+        if (colorChoice < 0.7) {
+          starColors[i3] = 0.6 + Math.random() * 0.4;      // R
+          starColors[i3 + 1] = 1;                          // G
+          starColors[i3 + 2] = 0.9 + Math.random() * 0.1;  // B
+        } else {
+          starColors[i3] = 0.4 + Math.random() * 0.3;
+          starColors[i3 + 1] = 0.6 + Math.random() * 0.4;
+          starColors[i3 + 2] = 1;
+        }
       }
-      container.appendChild(renderer.domElement);
-
-      // Lights
-      const ambient = new THREE.AmbientLight(0xb4c4ff, 0.9);
-      scene.add(ambient);
-
-      const key = new THREE.DirectionalLight(0xffffff, 1.3);
-      key.position.set(16, 18, 18);
-      scene.add(key);
-
-      const rim = new THREE.PointLight(0x7de5ff, 1.0, 80);
-      rim.position.set(-18, 4, -12);
-      scene.add(rim);
-
-      // Engine group
-      const engineGroup = new THREE.Group();
-      scene.add(engineGroup);
-
-      const globeRadius = 3.4;
-
-      // Base globe
-      const globeGeo = new THREE.SphereGeometry(globeRadius, 96, 96);
-      const globeMat = new THREE.MeshStandardMaterial({
-        color: 0x101826,
-        roughness: 0.7,
-        metalness: 0.15
-      });
-      const globe = new THREE.Mesh(globeGeo, globeMat);
-      engineGroup.add(globe);
-
-      const loader = new THREE.TextureLoader();
-
-      // Earth texture
-      loader.load("//threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg", tex => {
-        if (tex.encoding !== undefined) tex.encoding = THREE.sRGBEncoding;
-        globe.material.map = tex;
-        globe.material.needsUpdate = true;
-      });
-
-      // AI core
-      const coreGeo = new THREE.SphereGeometry(globeRadius * 0.7, 72, 72);
-      const coreMat = new THREE.MeshStandardMaterial({
-        color: 0x8fe7ff,
-        emissive: 0x66ddff,
-        emissiveIntensity: 1.0,
+      
+      starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+      starGeo.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+      
+      const starMat = new THREE. PointsMaterial({
+        size: 1. 2,
+        sizeAttenuation: true,
         transparent: true,
-        opacity: 0.45
+        opacity: 0.75,
+        vertexColors: true,
+        blending: THREE.AdditiveBlending
       });
-      const core = new THREE.Mesh(coreGeo, coreMat);
-      engineGroup.add(core);
+      
+      const stars = new THREE.Points(starGeo, starMat);
+      scene.add(stars);
 
-      // LUKAIRO engine shell
-      loader.load("//storage.googleapis.com/msgsndr/B47X3dkLb4AkvxzX2Tck/media/68fdb1e49c7b3a610f587b93.png", tex => {
-        if (tex.encoding !== undefined) tex.encoding = THREE.sRGBEncoding;
-        const engineMat = new THREE.MeshBasicMaterial({
-          map: tex,
-          transparent: true,
-          opacity: 0.85,
-          depthWrite: false
-        });
-        const engineShell = new THREE.Mesh(
-          new THREE.SphereGeometry(globeRadius * 0.72, 96, 96),
-          engineMat
-        );
-        engineGroup.add(engineShell);
-        spinningLayers.push({ mesh: engineShell, speed: 0.0009 });
-      });
-
-      // Grid shell
-      const gridGeo = new THREE.SphereGeometry(globeRadius * 1.02, 64, 64);
-      const gridMat = new THREE.MeshBasicMaterial({
-        color: 0x7ce7ff,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.42
-      });
-      const gridShell = new THREE.Mesh(gridGeo, gridMat);
-      engineGroup.add(gridShell);
-
-      const spinningLayers = [
-        { mesh: globe, speed: 0.0008 },
-        { mesh: core,  speed: -0.0012 },
-        { mesh: gridShell, speed: 0.0015 }
-      ];
-
-      // Halo
-      const haloCanvas = document.createElement("canvas");
-      haloCanvas.width = haloCanvas.height = 1024;
-      const hctx = haloCanvas.getContext("2d");
-      const haloGrad = hctx.createRadialGradient(512,512,90, 512,512,480);
-      haloGrad.addColorStop(0, "rgba(255,255,255,0.4)");
-      haloGrad.addColorStop(0.35, "rgba(160,210,255,0.30)");
-      haloGrad.addColorStop(0.7, "rgba(80,160,255,0.16)");
-      haloGrad.addColorStop(1, "rgba(0,0,0,0)");
-      hctx.fillStyle = haloGrad;
-      hctx.fillRect(0,0,1024,1024);
-      const haloTex = new THREE.CanvasTexture(haloCanvas);
-      const haloPlane = new THREE.Mesh(
-        new THREE.PlaneGeometry(14,14),
+      // Nebula Background
+      const nebCanvas = document.createElement('canvas');
+      nebCanvas.width = nebCanvas.height = 2048;
+      const ngx = nebCanvas.getContext('2d');
+      
+      const grad1 = ngx.createRadialGradient(1024, 1024, 50, 1024, 1024, 1024);
+      grad1.addColorStop(0, 'rgba(0,255,204,0.3)');
+      grad1.addColorStop(0.25, 'rgba(0,180,255,0.18)');
+      grad1.addColorStop(0.5, 'rgba(255,0,180,0.08)');
+      grad1.addColorStop(0.75, 'rgba(180,0,255,0.04)');
+      grad1.addColorStop(1, 'rgba(0,0,0,0)');
+      ngx.fillStyle = grad1;
+      ngx. fillRect(0, 0, 2048, 2048);
+      
+      const nebTex = new THREE.CanvasTexture(nebCanvas);
+      const nebula = new THREE.Mesh(
+        new THREE.PlaneGeometry(1600, 1600),
         new THREE.MeshBasicMaterial({
-          map: haloTex,
-          transparent:true,
-          depthWrite:false,
-          opacity:1
+          map: nebTex,
+          transparent: true,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending
         })
       );
-      haloPlane.position.set(0,0,-5);
-      engineGroup.add(haloPlane);
+      nebula.position.z = -500;
+      scene.add(nebula);
 
-      // RINGS
-      const rings = [];
-      const ringConfigs = [
-        { radius: globeRadius * 1.45, tiltX: 0.25, tiltY: 0.12, speed: 0.0016 },
-        { radius: globeRadius * 1.8,  tiltX: -0.22, tiltY: 0.45, speed: -0.0012 }
-      ];
-      ringConfigs.forEach(cfg => {
-        const g = new THREE.TorusGeometry(cfg.radius, 0.05, 24, 280);
-        const m = new THREE.MeshBasicMaterial({
-          color: 0x9fe5ff,
-          transparent: true,
-          opacity: 0.5
-        });
-        const ring = new THREE.Mesh(g, m);
-        ring.rotation.x = cfg.tiltX;
-        ring.rotation.y = cfg.tiltY;
-        ring.userData.speed = cfg.speed;
-        engineGroup.add(ring);
-        rings.push(ring);
+      // Main Globe (with fallback material)
+      const globeGeometry = new THREE.SphereGeometry(5, 128, 128);
+      const globeMaterial = new THREE.MeshStandardMaterial({
+        color:  0x0a3a34,
+        metalness: 0.7,
+        roughness: 0.25,
+        emissive: 0x003a34,
+        emissiveIntensity: 1. 2
       });
+      
+      const globe = new THREE.Mesh(globeGeometry, globeMaterial);
+      scene.add(globe);
 
-      // DATA PARTICLES
-      const dataParticles = [];
-      const particleGeo = new THREE.SphereGeometry(0.08, 8, 8);
-      const frontColor = new THREE.Color(0xffffff);
-      const backColor  = new THREE.Color(0x7bd7ff);
+      // Try to load texture (optional enhancement)
+      const textureLoader = new THREE.TextureLoader();
+      textureLoader.load(
+        "https://storage.googleapis.com/msgsndr/B47X3dkLb4AkvxzX2Tck/media/68fdb1e49c7b3a610f587b93. png",
+        (texture) => {
+          globeMaterial.map = texture;
+          globeMaterial.needsUpdate = true;
+          console.log('Globe texture loaded successfully');
+        },
+        undefined,
+        (error) => {
+          console.log('Globe texture failed to load, using fallback color');
+        }
+      );
 
-      for(let i=0;i<90;i++){
-        const mat = new THREE.MeshBasicMaterial({
-          color: 0x9fe5ff,
-          transparent:true,
-          opacity:0
-        });
-        const p = new THREE.Mesh(particleGeo, mat);
-        const radius = globeRadius * 1.45 + Math.random()*0.8;
-        const angle  = Math.random()*Math.PI*2;
-        const band   = (Math.random()-0.5)*0.6;
-        p.userData = {
-          angle,
-          radius,
-          band,
-          speed: 0.003 + Math.random()*0.002
-        };
-        engineGroup.add(p);
-        dataParticles.push(p);
-      }
+      // Glowing Halo
+      const halo = new THREE.Mesh(
+        new THREE.SphereGeometry(5. 6, 64, 64),
+        new THREE.MeshBasicMaterial({
+          color: 0x00ffee,
+          wireframe: true,
+          transparent:  true,
+          opacity: 0.12
+        })
+      );
+      scene.add(halo);
 
-      // ICONS
-      const icons = [
-        "//cdn-icons-png.flaticon.com/512/5968/5968534.png", // Gmail
-        "//cdn-icons-png.flaticon.com/512/732/732223.png",   // Outlook
-        "//cdn-icons-png.flaticon.com/512/5968/5968899.png", // Slack
-        "//cdn-icons-png.flaticon.com/512/733/733585.png",   // WhatsApp
-        "//cdn-icons-png.flaticon.com/512/888/888853.png",   // Zoom
-        "//cdn-icons-png.flaticon.com/512/733/733553.png",   // GitHub
-        "//cdn-icons-png.flaticon.com/512/145/145807.png",   // LinkedIn
-        "//cdn-icons-png.flaticon.com/512/5968/5968759.png"  // Shopify
+      // Platform Icons
+      const platformIcons = [
+        "https://cdn-icons-png.flaticon.com/512/5968/5968534.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968899.png",
+        "https://cdn-icons-png.flaticon.com/512/733/733585.png",
+        "https://cdn-icons-png.flaticon.com/512/888/888853.png",
+        "https://cdn-icons-png.flaticon.com/512/733/733553.png",
+        "https://cdn-icons-png.flaticon.com/512/145/145807.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968759.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968841.png",
+        "https://cdn-icons-png.flaticon.com/512/2111/2111615.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968756.png",
+        "https://cdn-icons-png.flaticon.com/512/732/732221.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968342.png"
       ];
 
-      const iconSprites = [];
-      const iconGeo = new THREE.PlaneGeometry(0.9,0.9);
-      const orbitRadius = globeRadius * 2.5;
+      const iconGeo = new THREE.PlaneGeometry(1.5, 1.5);
+      const orbiters = [];
+      const beams = [];
+      const R = 13;
 
-      icons.forEach((url,idx)=>{
-        const tex = loader.load(url);
-        if (tex.encoding !== undefined) tex.encoding = THREE.sRGBEncoding;
+      platformIcons.forEach((url, i) => {
+        const tex = textureLoader.load(url);
         const mat = new THREE.MeshBasicMaterial({
           map: tex,
-          transparent:true,
-          opacity:0
+          transparent: true,
+          side: THREE.DoubleSide,
+          depthWrite: false
         });
-        const mesh = new THREE.Mesh(iconGeo,mat);
-        const angle = idx * (Math.PI*2/icons.length);
-        mesh.userData = {
-          angle,
-          speed: 0.0009 + Math.random()*0.0005,
-          inclination: (Math.random()-0.5)*0.6,
-          baseScale: 0.9
+        
+        const sprite = new THREE.Mesh(iconGeo, mat);
+        sprite.userData = {
+          angle: (i / platformIcons.length) * Math.PI * 2,
+          speed: 0.0015 + Math.random() * 0.001,
+          elev: (Math.random() - 0.5) * 1.2,
+          beatPhase: Math.random() * Math.PI * 2,
+          baseScale: 0.8 + Math.random() * 0.4
         };
-        engineGroup.add(mesh);
-        iconSprites.push(mesh);
+        scene.add(sprite);
+        orbiters.push(sprite);
+
+        const beamGeo = new THREE.BufferGeometry().setFromPoints([
+          new THREE. Vector3(),
+          new THREE.Vector3()
+        ]);
+        const beam = new THREE.Line(
+          beamGeo,
+          new THREE.LineBasicMaterial({
+            color: 0x00ffee,
+            transparent: true,
+            opacity: 0.4,
+            blending: THREE.AdditiveBlending
+          })
+        );
+        scene.add(beam);
+        beams.push(beam);
       });
 
-      // BEAMS
-      const beams = [];
-      iconSprites.forEach(sprite=>{
-        const pts = [new THREE.Vector3(0,0,0), sprite.position.clone()];
-        const g = new THREE.BufferGeometry().setFromPoints(pts);
-        const m = new THREE.LineBasicMaterial({
-          color: 0x66ffd8,
-          transparent:true,
-          opacity:0.25
-        });
-        const line = new THREE.Line(g,m);
-        engineGroup.add(line);
-        beams.push(line);
-      });
-
-      // ANIMATE
-      const clock = new THREE.Clock();
-
-      function animate(){
+      // Animation Loop
+      const t0 = performance.now();
+      
+      function animate() {
         requestAnimationFrame(animate);
-        const t = clock.getElapsedTime();
+        const t = (performance.now() - t0) * 0.001;
+        const beat = 0.5 + 0.5 * Math.sin(t * 1.8);
 
-        camera.position.x = Math.sin(t*0.08)*1.0;
-        camera.position.y = 0.6 + Math.sin(t*0.05)*0.4;
-        camera.lookAt(0,0,0);
+        stars.rotation.y += 0.0003;
+        stars.rotation.x += 0.0001;
+        
+        nebula.rotation.z += 0.0001;
+        nebula.material.opacity = 0.3 + 0.1 * Math.sin(t * 0.5);
+        
+        globe.rotation.y += 0.002;
+        globe.rotation.x = Math.sin(t * 0.3) * 0.1;
+        
+        halo.rotation.y -= 0.0008;
+        halo.rotation. x = Math.sin(t * 0.4) * 0.08;
+        halo.material.opacity = 0.12 + 0.08 * beat;
 
-        engineGroup.rotation.y = Math.sin(t*0.02)*0.06;
+        camera.position.x = Math.sin(t * 0.1) * 1.2;
+        camera.position.y = 1 + Math.sin(t * 0.15) * 0.8;
+        camera.lookAt(0, 0, 0);
 
-        spinningLayers.forEach(layer=>{
-          layer.mesh.rotation.y += layer.speed;
-        });
+        orbiters.forEach((o, i) => {
+          o.userData.angle += o.userData.speed;
+          const rr = R + Math.sin(t * 0.7 + i) * 0.5;
+          const elevation = Math.sin(o.userData.angle * 2. 5) * 1.2 + o.userData.elev * 2. 5;
+          
+          o.position.set(
+            Math.cos(o.userData.angle) * rr,
+            elevation,
+            Math.sin(o.userData.angle) * rr
+          );
+          
+          const scale = o.userData.baseScale * (1 + 0.15 * Math.sin(t * 2 + o.userData.beatPhase));
+          o.scale.setScalar(scale);
+          o.lookAt(camera.position);
+          
+          const dist = o.position.distanceTo(camera.position);
+          o.material.opacity = Math.min(1, 20 / dist);<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUKAIRO — Neural Command Engine</title>
+  <meta name="description" content="LUKAIRO connects everything — AI-powered integration platform" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      height: 100%;
+      background: #000;
+      overflow-x: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #fff;
+    }
 
-        haloPlane.rotation.z = Math.sin(t*0.1)*0.08;
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left:  0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 1.2rem 2rem;
+      z-index:  100;
+      border-bottom: 1px solid rgba(0, 255, 204, 0.1);
+    }
+    
+    nav . container {
+      max-width:  1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    nav .logo {
+      font-size: 1.5rem;
+      font-weight:  900;
+      letter-spacing: 0.1em;
+      background: linear-gradient(135deg, #00ffee, #7de5ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color:  transparent;
+    }
+    
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+    
+    nav ul li a {
+      color: #9fd1ff;
+      text-decoration:  none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    nav ul li a: hover {
+      color: #00ffee;
+    }
 
-        rings.forEach((ring,i)=>{
-          ring.rotation.z += ring.userData.speed;
-          ring.material.opacity = 0.42 + 0.16*Math.sin(t*1.2 + i);
-        });
+    /* Hero Section */
+    #lukairo-hero {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
 
-        dataParticles.forEach(p=>{
-          const d = p.userData;
-          d.angle += d.speed;
-          const x = Math.cos(d.angle)*d.radius;
-          const z = Math.sin(d.angle)*d.radius;
-          const y = d.band + Math.sin(d.angle*2.0)*0.18;
-          p.position.set(x,y,z);
+    . hero-overlay {
+      position:  fixed;
+      left: 50%;
+      top: 18vh;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 5;
+      pointer-events: none;
+      animation: fadeIn 2s ease forwards;
+      max-width: 90%;
+    }
+    
+    . hero-overlay h1 {
+      margin:  0 0 0.8rem;
+      font-size: clamp(32px, 8vw, 88px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: linear-gradient(135deg, #fff 0%, #7fffea 40%, #00e5d1 100%);
+      -webkit-background-clip:  text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 40px rgba(0, 255, 204, 0.4));
+      animation: glow 3s ease-in-out infinite;
+    }
+    
+    @keyframes glow {
+      0%, 100% { filter: drop-shadow(0 0 40px rgba(0, 255, 204, 0.4)); }
+      50% { filter: drop-shadow(0 0 60px rgba(0, 255, 204, 0.7)); }
+    }
+    
+    . hero-overlay . tagline {
+      margin:  0 0 1.5rem;
+      color: #b8fff3;
+      font-size: clamp(14px, 2.2vw, 24px);
+      font-weight:  600;
+      letter-spacing: 0.08em;
+      opacity: 0.95;
+    }
+    
+    .hero-overlay .subtitle {
+      color: #7de5ff;
+      font-size: clamp(11px, 1.4vw, 16px);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      opacity: 0.8;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
 
-          const dist = p.position.distanceTo(camera.position);
-          const depthFactor = THREE.MathUtils.clamp(22/dist,0.4,1.25);
-          const front = z > 0;
-          p.material.color.copy(front ? frontColor : backColor);
-          const baseOpacity = 0.15 + 0.25*depthFactor + (front ? 0.2 : -0.05);
-          p.material.opacity += (baseOpacity - p.material.opacity)*0.18;
-        });
+    /* CTA Buttons */
+    .cta-buttons {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      pointer-events: all;
+    }
+    
+    .cta-btn {
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta-btn-primary {
+      background: linear-gradient(135deg, #00ffee, #00b8d4);
+      color: #000;
+      box-shadow: 0 10px 40px rgba(0, 255, 204, 0.4);
+    }
+    
+    . cta-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 50px rgba(0, 255, 204, 0.6);
+    }
+    
+    . cta-btn-secondary {
+      background: transparent;
+      color: #00ffee;
+      border: 2px solid #00ffee;
+    }
+    
+    . cta-btn-secondary:hover {
+      background: rgba(0, 255, 238, 0.1);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 255, 204, 0.3);
+    }
 
-        iconSprites.forEach((sprite,i)=>{
-          const d = sprite.userData;
-          d.angle += d.speed;
-          const x = Math.cos(d.angle)*orbitRadius*Math.cos(d.inclination);
-          const z = Math.sin(d.angle)*orbitRadius;
-          const y = Math.sin(d.angle*1.3)*globeRadius*0.45*Math.sin(d.inclination);
-          sprite.position.set(x,y,z);
-          sprite.lookAt(camera.position);
+    /* Stats Section */
+    . stats {
+      position: fixed;
+      bottom: 8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 4rem;
+      z-index:  5;
+      pointer-events: none;
+    }
+    
+    .stat-item {
+      text-align: center;
+      animation: fadeIn 2. 5s ease forwards;
+    }
+    
+    .stat-number {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight:  900;
+      color: #00ffee;
+      display: block;
+      text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    }
+    
+    .stat-label {
+      font-size: clamp(10px, 1.2vw, 14px);
+      color: #9fd1ff;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0.4rem;
+    }
 
-          const dist = sprite.position.distanceTo(camera.position);
-          const depthFactor = THREE.MathUtils.clamp(26/dist,0.6,1.3);
-          const front = z > 0;
-          const targetScale = d.baseScale * depthFactor;
-          sprite.scale.set(targetScale,targetScale,1);
-          const baseOpacity = 0.65 + (front ? 0.12 : -0.12);
-          sprite.material.opacity += (baseOpacity - sprite.material.opacity)*0.12;
+    /* Footer */
+    footer {
+      position: fixed;
+      left: 50%;
+      bottom: 2rem;
+      transform: translateX(-50%);
+      color: #6cf5e6;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      opacity: 0.7;
+      z-index: 5;
+      text-align: center;
+    }
+    
+    footer . tagline {
+      font-size: 11px;
+      color: #7de5ff;
+      margin-top: 0.3rem;
+    }
 
-          const pts = [new THREE.Vector3(0,0,0), sprite.position.clone().multiplyScalar(0.92)];
-          beams[i].geometry.setFromPoints(pts);
-          beams[i].material.opacity = 0.18 + 0.14*Math.sin(t*1.5 + i);
-        });
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -20px); }
+      to   { opacity: 1; transform:  translate(-50%, 0); }
+    }
 
-        renderer.render(scene,camera);
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav ul {
+        gap: 1.5rem;
+        font-size: 0.85rem;
       }
+      
+      .stats {
+        gap: 2rem;
+        bottom: 6rem;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        gap:  1rem;
+      }
+    }
+
+    /* Loading Screen */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.8s ease;
+    }
+    
+    #loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    . loader {
+      width: 60px;
+      height: 60px;
+      border: 3px solid rgba(0, 255, 204, 0.1);
+      border-top-color: #00ffee;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loading">
+    <div class="loader"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <div class="logo">LUKAIRO</div>
+      <ul>
+        <li><a href="#platform">Platform</a></li>
+        <li><a href="#integrations">Integrations</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#docs">Docs</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Canvas -->
+  <div id="lukairo-hero" aria-hidden="true"></div>
+
+  <!-- Hero Overlay -->
+  <div class="hero-overlay" role="banner">
+    <h1>LUKAIRO</h1>
+    <p class="tagline">We Connect Everything</p>
+    <p class="subtitle">
+      AI-powered integration platform connecting 500+ services.  <br/>
+      Build, deploy, and scale workflows in seconds.
+    </p>
+    <div class="cta-buttons">
+      <a href="#demo" class="cta-btn cta-btn-primary">Get Started Free</a>
+      <a href="#demo" class="cta-btn cta-btn-secondary">Watch Demo</a>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-item">
+      <span class="stat-number">500+</span>
+      <span class="stat-label">Integrations</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">1M+</span>
+      <span class="stat-label">Workflows</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">99.9%</span>
+      <span class="stat-label">Uptime</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div>© 2025 LUKAIRO. All rights reserved.</div>
+    <div class="tagline">Delivering Control.  Returning Time.</div>
+  </footer>
+
+  <!-- Three.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+  
+  <script>
+    // Wait for Three.js to load
+    function initScene() {
+      if (typeof THREE === 'undefined') {
+        console.error('Three.js failed to load');
+        document.getElementById('loading').classList.add('hidden');
+        return;
+      }
+
+      const root = document.getElementById('lukairo-hero');
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x000000);
+      
+      const camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        3000
+      );
+      camera.position.set(0, 1, 24);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      root.appendChild(renderer.domElement);
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0x66fff0, 0.6);
+      scene.add(ambientLight);
+      
+      const keyLight = new THREE. PointLight(0x00e5d1, 2. 2, 250);
+      keyLight.position. set(12, 8, 16);
+      scene.add(keyLight);
+
+      const rimLight = new THREE. PointLight(0x0088ff, 1.4, 250);
+      rimLight.position. set(-15, -6, -12);
+      scene.add(rimLight);
+
+      const accentLight = new THREE.PointLight(0xff0080, 0.8, 150);
+      accentLight.position.set(0, 10, -20);
+      scene.add(accentLight);
+
+      // Stars
+      const STAR_COUNT = 2500;
+      const starGeo = new THREE.BufferGeometry();
+      const starPos = new Float32Array(STAR_COUNT * 3);
+      const starColors = new Float32Array(STAR_COUNT * 3);
+      
+      for (let i = 0; i < STAR_COUNT; i++) {
+        const i3 = i * 3;
+        starPos[i3] = (Math.random() - 0.5) * 1500;
+        starPos[i3 + 1] = (Math.random() - 0.5) * 1500;
+        starPos[i3 + 2] = (Math.random() - 0.5) * 1500;
+        
+        const colorChoice = Math.random();
+        if (colorChoice < 0.7) {
+          starColors[i3] = 0.6 + Math.random() * 0.4;      // R
+          starColors[i3 + 1] = 1;                          // G
+          starColors[i3 + 2] = 0.9 + Math.random() * 0.1;  // B
+        } else {
+          starColors[i3] = 0.4 + Math.random() * 0.3;
+          starColors[i3 + 1] = 0.6 + Math.random() * 0.4;
+          starColors[i3 + 2] = 1;
+        }
+      }
+      
+      starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+      starGeo.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+      
+      const starMat = new THREE. PointsMaterial({
+        size: 1. 2,
+        sizeAttenuation: true,
+        transparent: true,
+        opacity: 0.75,
+        vertexColors: true,
+        blending: THREE.AdditiveBlending
+      });
+      
+      const stars = new THREE.Points(starGeo, starMat);
+      scene.add(stars);
+
+      // Nebula Background
+      const nebCanvas = document.createElement('canvas');
+      nebCanvas.width = nebCanvas.height = 2048;
+      const ngx = nebCanvas.getContext('2d');
+      
+      const grad1 = ngx.createRadialGradient(1024, 1024, 50, 1024, 1024, 1024);
+      grad1.addColorStop(0, 'rgba(0,255,204,0.3)');
+      grad1.addColorStop(0.25, 'rgba(0,180,255,0.18)');
+      grad1.addColorStop(0.5, 'rgba(255,0,180,0.08)');
+      grad1.addColorStop(0.75, 'rgba(180,0,255,0.04)');
+      grad1.addColorStop(1, 'rgba(0,0,0,0)');
+      ngx.fillStyle = grad1;
+      ngx. fillRect(0, 0, 2048, 2048);
+      
+      const nebTex = new THREE.CanvasTexture(nebCanvas);
+      const nebula = new THREE.Mesh(
+        new THREE.PlaneGeometry(1600, 1600),
+        new THREE.MeshBasicMaterial({
+          map: nebTex,
+          transparent: true,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending
+        })
+      );
+      nebula.position.z = -500;
+      scene.add(nebula);
+
+      // Main Globe (with fallback material)
+      const globeGeometry = new THREE.SphereGeometry(5, 128, 128);
+      const globeMaterial = new THREE.MeshStandardMaterial({
+        color:  0x0a3a34,
+        metalness: 0.7,
+        roughness: 0.25,
+        emissive: 0x003a34,
+        emissiveIntensity: 1. 2
+      });
+      
+      const globe = new THREE.Mesh(globeGeometry, globeMaterial);
+      scene.add(globe);
+
+      // Try to load texture (optional enhancement)
+      const textureLoader = new THREE.TextureLoader();
+      textureLoader.load(
+        "https://storage.googleapis.com/msgsndr/B47X3dkLb4AkvxzX2Tck/media/68fdb1e49c7b3a610f587b93. png",
+        (texture) => {
+          globeMaterial.map = texture;
+          globeMaterial.needsUpdate = true;
+          console.log('Globe texture loaded successfully');
+        },
+        undefined,
+        (error) => {
+          console.log('Globe texture failed to load, using fallback color');
+        }
+      );
+
+      // Glowing Halo
+      const halo = new THREE.Mesh(
+        new THREE.SphereGeometry(5. 6, 64, 64),
+        new THREE.MeshBasicMaterial({
+          color: 0x00ffee,
+          wireframe: true,
+          transparent:  true,
+          opacity: 0.12
+        })
+      );
+      scene.add(halo);
+
+      // Platform Icons
+      const platformIcons = [
+        "https://cdn-icons-png.flaticon.com/512/5968/5968534.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968899.png",
+        "https://cdn-icons-png.flaticon.com/512/733/733585.png",
+        "https://cdn-icons-png.flaticon.com/512/888/888853.png",
+        "https://cdn-icons-png.flaticon.com/512/733/733553.png",
+        "https://cdn-icons-png.flaticon.com/512/145/145807.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968759.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968841.png",
+        "https://cdn-icons-png.flaticon.com/512/2111/2111615.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968756.png",
+        "https://cdn-icons-png.flaticon.com/512/732/732221.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968342.png"
+      ];
+
+      const iconGeo = new THREE.PlaneGeometry(1.5, 1.5);
+      const orbiters = [];
+      const beams = [];
+      const R = 13;
+
+      platformIcons.forEach((url, i) => {
+        const tex = textureLoader.load(url);
+        const mat = new THREE.MeshBasicMaterial({
+          map: tex,
+          transparent: true,
+          side: THREE.DoubleSide,
+          depthWrite: false
+        });
+        
+        const sprite = new THREE.Mesh(iconGeo, mat);
+        sprite.userData = {
+          angle: (i / platformIcons.length) * Math.PI * 2,
+          speed: 0.0015 + Math.random() * 0.001,
+          elev: (Math.random() - 0.5) * 1.2,
+          beatPhase: Math.random() * Math.PI * 2,
+          baseScale: 0.8 + Math.random() * 0.4
+        };
+        scene.add(sprite);
+        orbiters.push(sprite);
+
+        const beamGeo = new THREE.BufferGeometry().setFromPoints([
+          new THREE. Vector3(),
+          new THREE.Vector3()
+        ]);
+        const beam = new THREE.Line(
+          beamGeo,
+          new THREE.LineBasicMaterial({
+            color: 0x00ffee,
+            transparent: true,
+            opacity: 0.4,
+            blending: THREE.AdditiveBlending
+          })
+        );
+        scene.add(beam);
+        beams.push(beam);
+      });
+
+      // Animation Loop
+      const t0 = performance.now();
+      
+      function animate() {
+        requestAnimationFrame(animate);
+        const t = (performance.now() - t0) * 0.001;
+        const beat = 0.5 + 0.5 * Math.sin(t * 1.8);
+
+        stars.rotation.y += 0.0003;
+        stars.rotation.x += 0.0001;
+        
+        nebula.rotation.z += 0.0001;
+        nebula.material.opacity = 0.3 + 0.1 * Math.sin(t * 0.5);
+        
+        globe.rotation.y += 0.002;
+        globe.rotation.x = Math.sin(t * 0.3) * 0.1;
+        
+        halo.rotation.y -= 0.0008;
+        halo.rotation. x = Math.sin(t * 0.4) * 0.08;
+        halo.material.opacity = 0.12 + 0.08 * beat;
+
+        camera.position.x = Math.sin(t * 0.1) * 1.2;
+        camera.position.y = 1 + Math.sin(t * 0.15) * 0.8;
+        camera.lookAt(0, 0, 0);
+
+        orbiters.forEach((o, i) => {
+          o.userData.angle += o.userData.speed;
+          const rr = R + Math.sin(t * 0.7 + i) * 0.5;
+          const elevation = Math.sin(o.userData.angle * 2. 5) * 1.2 + o.userData.elev * 2. 5;
+          
+          o.position.set(
+            Math.cos(o.userData.angle) * rr,
+            elevation,
+            Math.sin(o.userData.angle) * rr
+          );
+          
+          const scale = o.userData.baseScale * (1 + 0.15 * Math.sin(t * 2 + o.userData.beatPhase));
+          o.scale.setScalar(scale);
+          o.lookAt(camera.position);
+          
+          const dist = o.position.distanceTo(camera.position);
+          o.material.opacity = Math.min(1, 20 / dist);
+
+          const beam = beams[i];
+          const arr = beam.geometry.attributes.position. array;
+          arr[0] = o.position.x;
+          arr[1] = o. position.y;
+          arr[2] = o.position.z;
+          
+          const dir = o.position.clone().normalize().multiplyScalar(5);
+          arr[3] = dir.x;
+          arr[4] = dir.y;
+          arr[5] = dir. z;
+          
+          beam. geometry.attributes.position.needsUpdate = true;
+          beam. material.opacity = 0.2 + 0.25 * beat * (o.material.opacity);
+        });
+
+        renderer.render(scene, camera);
+      }
+      
       animate();
 
-      window.addEventListener("resize", () => {
-        ({ w, h } = getSize());
-        renderer.setSize(w, h);
-        camera.aspect = w / h;
+      // Hide loading screen
+      setTimeout(() => {
+        document.getElementById('loading').classList.add('hidden');
+      }, 800);
+
+      // Responsive handling
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window. innerHeight;
         camera.updateProjectionMatrix();
-      }, { passive:true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }, { passive: true });
     }
 
-    // Wait for THREE to exist (GHL sometimes defers the CDN script)
-    function waitForThree() {
-      if (window.THREE) {
-        init();
-      } else {
-        setTimeout(waitForThree, 50);
+    // Initialize when page loads
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initScene);
+    } else {
+      initScene();
+    }
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUKAIRO — Neural Command Engine</title>
+  <meta name="description" content="LUKAIRO connects everything — AI-powered integration platform" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      height: 100%;
+      background: #000;
+      overflow-x: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #fff;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left:  0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 1.2rem 2rem;
+      z-index:  100;
+      border-bottom: 1px solid rgba(0, 255, 204, 0.1);
+    }
+    
+    nav . container {
+      max-width:  1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    nav .logo {
+      font-size: 1.5rem;
+      font-weight:  900;
+      letter-spacing: 0.1em;
+      background: linear-gradient(135deg, #00ffee, #7de5ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color:  transparent;
+    }
+    
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+    
+    nav ul li a {
+      color: #9fd1ff;
+      text-decoration:  none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    nav ul li a: hover {
+      color: #00ffee;
+    }
+
+    /* Hero Section */
+    #lukairo-hero {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    . hero-overlay {
+      position:  fixed;
+      left: 50%;
+      top: 18vh;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 5;
+      pointer-events: none;
+      animation: fadeIn 2s ease forwards;
+      max-width: 90%;
+    }
+    
+    . hero-overlay h1 {
+      margin:  0 0 0.8rem;
+      font-size: clamp(32px, 8vw, 88px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: linear-gradient(135deg, #fff 0%, #7fffea 40%, #00e5d1 100%);
+      -webkit-background-clip:  text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 40px rgba(0, 255, 204, 0.4));
+      animation: glow 3s ease-in-out infinite;
+    }
+    
+    @keyframes glow {
+      0%, 100% { filter: drop-shadow(0 0 40px rgba(0, 255, 204, 0.4)); }
+      50% { filter: drop-shadow(0 0 60px rgba(0, 255, 204, 0.7)); }
+    }
+    
+    . hero-overlay . tagline {
+      margin:  0 0 1.5rem;
+      color: #b8fff3;
+      font-size: clamp(14px, 2.2vw, 24px);
+      font-weight:  600;
+      letter-spacing: 0.08em;
+      opacity: 0.95;
+    }
+    
+    .hero-overlay .subtitle {
+      color: #7de5ff;
+      font-size: clamp(11px, 1.4vw, 16px);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      opacity: 0.8;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* CTA Buttons */
+    .cta-buttons {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      pointer-events: all;
+    }
+    
+    .cta-btn {
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta-btn-primary {
+      background: linear-gradient(135deg, #00ffee, #00b8d4);
+      color: #000;
+      box-shadow: 0 10px 40px rgba(0, 255, 204, 0.4);
+    }
+    
+    . cta-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 50px rgba(0, 255, 204, 0.6);
+    }
+    
+    . cta-btn-secondary {
+      background: transparent;
+      color: #00ffee;
+      border: 2px solid #00ffee;
+    }
+    
+    . cta-btn-secondary:hover {
+      background: rgba(0, 255, 238, 0.1);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 255, 204, 0.3);
+    }
+
+    /* Stats Section */
+    . stats {
+      position: fixed;
+      bottom: 8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 4rem;
+      z-index:  5;
+      pointer-events: none;
+    }
+    
+    .stat-item {
+      text-align: center;
+      animation: fadeIn 2. 5s ease forwards;
+    }
+    
+    .stat-number {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight:  900;
+      color: #00ffee;
+      display: block;
+      text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    }
+    
+    .stat-label {
+      font-size: clamp(10px, 1.2vw, 14px);
+      color: #9fd1ff;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0.4rem;
+    }
+
+    /* Footer */
+    footer {
+      position: fixed;
+      left: 50%;
+      bottom: 2rem;
+      transform: translateX(-50%);
+      color: #6cf5e6;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      opacity: 0.7;
+      z-index: 5;
+      text-align: center;
+    }
+    
+    footer . tagline {
+      font-size: 11px;
+      color: #7de5ff;
+      margin-top: 0.3rem;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -20px); }
+      to   { opacity: 1; transform:  translate(-50%, 0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav ul {
+        gap: 1.5rem;
+        font-size: 0.85rem;
+      }
+      
+      .stats {
+        gap: 2rem;
+        bottom: 6rem;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        gap:  1rem;
       }
     }
-    waitForThree();
-  })();
+
+    /* Loading Screen */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.8s ease;
+    }
+    
+    #loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    . loader {
+      width: 60px;
+      height: 60px;
+      border: 3px solid rgba(0, 255, 204, 0.1);
+      border-top-color: #00ffee;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loading">
+    <div class="loader"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <div class="logo">LUKAIRO</div>
+      <ul>
+        <li><a href="#platform">Platform</a></li>
+        <li><a href="#integrations">Integrations</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#docs">Docs</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Canvas -->
+  <div id="lukairo-hero" aria-hidden="true"></div>
+
+  <!-- Hero Overlay -->
+  <div class="hero-overlay" role="banner">
+    <h1>LUKAIRO</h1>
+    <p class="tagline">We Connect Everything</p>
+    <p class="subtitle">
+      AI-powered integration platform connecting 500+ services.  <br/>
+      Build, deploy, and scale workflows in seconds.
+    </p>
+    <div class="cta-buttons">
+      <a href="#demo" class="cta-btn cta-btn-primary">Get Started Free</a>
+      <a href="#demo" class="cta-btn cta-btn-secondary">Watch Demo</a>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-item">
+      <span class="stat-number">500+</span>
+      <span class="stat-label">Integrations</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">1M+</span>
+      <span class="stat-label">Workflows</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">99.9%</span>
+      <span class="stat-label">Uptime</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div>© 2025 LUKAIRO. All rights reserved.</div>
+    <div class="tagline">Delivering Control.  Returning Time.</div>
+  </footer>
+
+  <!-- Three.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+  
+  <script>
+    // Wait for Three.js to load
+    function initScene() {
+      if (typeof THREE === 'undefined') {
+        console.error('Three.js failed to load');
+        document.getElementById('loading').classList.add('hidden');
+        return;
+      }
+
+      const root = document.getElementById('lukairo-hero');
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x000000);
+      
+      const camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        3000
+      );
+      camera.position.set(0, 1, 24);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      root.appendChild(renderer.domElement);
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0x66fff0, 0.6);
+      scene.add(ambientLight);
+      
+      const keyLight = new THREE. PointLight(0x00e5d1, 2. 2, 250);
+      keyLight.position. set(12, 8, 16);
+      scene.add(keyLight);
+
+      const rimLight = new THREE. PointLight(0x0088ff, 1.4, 250);
+      rimLight.position. set(-15, -6, -12);
+      scene.add(rimLight);
+
+      const accentLight = new THREE.PointLight(0xff0080, 0.8, 150);
+      accentLight.position.set(0, 10, -20);
+      scene.add(accentLight);
+
+      // Stars
+      const STAR_COUNT = 2500;
+      const starGeo = new THREE.BufferGeometry();
+      const starPos = new Float32Array(STAR_COUNT * 3);
+      const starColors = new Float32Array(STAR_COUNT * 3);
+      
+      for (let i = 0; i < STAR_COUNT; i++) {
+        const i3 = i * 3;
+        starPos[i3] = (Math.random() - 0.5) * 1500;
+        starPos[i3 + 1] = (Math.random() - 0.5) * 1500;
+        starPos[i3 + 2] = (Math.random() - 0.5) * 1500;
+        
+        const colorChoice = Math.random();
+        if (colorChoice < 0.7) {
+          starColors[i3] = 0.6 + Math.random() * 0.4;      // R
+          starColors[i3 + 1] = 1;                          // G
+          starColors[i3 + 2] = 0.9 + Math.random() * 0.1;  // B
+        } else {
+          starColors[i3] = 0.4 + Math.random() * 0.3;
+          starColors[i3 + 1] = 0.6 + Math.random() * 0.4;
+          starColors[i3 + 2] = 1;
+        }
+      }
+      
+      starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+      starGeo.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+      
+      const starMat = new THREE. PointsMaterial({
+        size: 1. 2,
+        sizeAttenuation: true,
+        transparent: true,
+        opacity: 0.75,
+        vertexColors: true,
+        blending: THREE.AdditiveBlending
+      });
+      
+      const stars = new THREE.Points(starGeo, starMat);
+      scene.add(stars);
+
+      // Nebula Background
+      const nebCanvas = document.createElement('canvas');
+      nebCanvas.width = nebCanvas.height = 2048;
+      const ngx = nebCanvas.getContext('2d');
+      
+      const grad1 = ngx.createRadialGradient(1024, 1024, 50, 1024, 1024, 1024);
+      grad1.addColorStop(0, 'rgba(0,255,204,0.3)');
+      grad1.addColorStop(0.25, 'rgba(0,180,255,0.18)');
+      grad1.addColorStop(0.5, 'rgba(255,0,180,0.08)');
+      grad1.addColorStop(0.75, 'rgba(180,0,255,0.04)');
+      grad1.addColorStop(1, 'rgba(0,0,0,0)');
+      ngx.fillStyle = grad1;
+      ngx. fillRect(0, 0, 2048, 2048);
+      
+      const nebTex = new THREE.CanvasTexture(nebCanvas);
+      const nebula = new THREE.Mesh(
+        new THREE.PlaneGeometry(1600, 1600),
+        new THREE.MeshBasicMaterial({
+          map: nebTex,
+          transparent: true,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending
+        })
+      );
+      nebula.position.z = -500;
+      scene.add(nebula);
+
+      // Main Globe (with fallback material)
+      const globeGeometry = new THREE.SphereGeometry(5, 128, 128);
+      const globeMaterial = new THREE.MeshStandardMaterial({
+        color:  0x0a3a34,
+        metalness: 0.7,
+        roughness: 0.25,
+        emissive: 0x003a34,
+        emissiveIntensity: 1. 2
+      });
+      
+      const globe = new THREE.Mesh(globeGeometry, globeMaterial);
+      scene.add(globe);
+
+      // Try to load texture (optional enhancement)
+      const textureLoader = new THREE.TextureLoader();
+      textureLoader.load(
+        "https://storage.googleapis.com/msgsndr/B47X3dkLb4AkvxzX2Tck/media/68fdb1e49c7b3a610f587b93. png",
+        (texture) => {
+          globeMaterial.map = texture;
+          globeMaterial.needsUpdate = true;
+          console.log('Globe texture loaded successfully');
+        },
+        undefined,
+        (error) => {
+          console.log('Globe texture failed to load, using fallback color');
+        }
+      );
+
+      // Glowing Halo
+      const halo = new THREE.Mesh(
+        new THREE.SphereGeometry(5. 6, 64, 64),
+        new THREE.MeshBasicMaterial({
+          color: 0x00ffee,
+          wireframe: true,
+          transparent:  true,
+          opacity: 0.12
+        })
+      );
+      scene.add(halo);
+
+      // Platform Icons
+      const platformIcons = [
+        "https://cdn-icons-png.flaticon.com/512/5968/5968534.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968899.png",
+        "https://cdn-icons-png.flaticon.com/512/733/733585.png",
+        "https://cdn-icons-png.flaticon.com/512/888/888853.png",
+        "https://cdn-icons-png.flaticon.com/512/733/733553.png",
+        "https://cdn-icons-png.flaticon.com/512/145/145807.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968759.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968841.png",
+        "https://cdn-icons-png.flaticon.com/512/2111/2111615.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968756.png",
+        "https://cdn-icons-png.flaticon.com/512/732/732221.png",
+        "https://cdn-icons-png.flaticon.com/512/5968/5968342.png"
+      ];
+
+      const iconGeo = new THREE.PlaneGeometry(1.5, 1.5);
+      const orbiters = [];
+      const beams = [];
+      const R = 13;
+
+      platformIcons.forEach((url, i) => {
+        const tex = textureLoader.load(url);
+        const mat = new THREE.MeshBasicMaterial({
+          map: tex,
+          transparent: true,
+          side: THREE.DoubleSide,
+          depthWrite: false
+        });
+        
+        const sprite = new THREE.Mesh(iconGeo, mat);
+        sprite.userData = {
+          angle: (i / platformIcons.length) * Math.PI * 2,
+          speed: 0.0015 + Math.random() * 0.001,
+          elev: (Math.random() - 0.5) * 1.2,
+          beatPhase: Math.random() * Math.PI * 2,
+          baseScale: 0.8 + Math.random() * 0.4
+        };
+        scene.add(sprite);
+        orbiters.push(sprite);
+
+        const beamGeo = new THREE.BufferGeometry().setFromPoints([
+          new THREE. Vector3(),
+          new THREE.Vector3()
+        ]);
+        const beam = new THREE.Line(
+          beamGeo,
+          new THREE.LineBasicMaterial({
+            color: 0x00ffee,
+            transparent: true,
+            opacity: 0.4,
+            blending: THREE.AdditiveBlending
+          })
+        );
+        scene.add(beam);
+        beams.push(beam);
+      });
+
+      // Animation Loop
+      const t0 = performance.now();
+      
+      function animate() {
+        requestAnimationFrame(animate);
+        const t = (performance.now() - t0) * 0.001;
+        const beat = 0.5 + 0.5 * Math.sin(t * 1.8);
+
+        stars.rotation.y += 0.0003;
+        stars.rotation.x += 0.0001;
+        
+        nebula.rotation.z += 0.0001;
+        nebula.material.opacity = 0.3 + 0.1 * Math.sin(t * 0.5);
+        
+        globe.rotation.y += 0.002;
+        globe.rotation.x = Math.sin(t * 0.3) * 0.1;
+        
+        halo.rotation.y -= 0.0008;
+        halo.rotation. x = Math.sin(t * 0.4) * 0.08;
+        halo.material.opacity = 0.12 + 0.08 * beat;
+
+        camera.position.x = Math.sin(t * 0.1) * 1.2;
+        camera.position.y = 1 + Math.sin(t * 0.15) * 0.8;
+        camera.lookAt(0, 0, 0);
+
+        orbiters.forEach((o, i) => {
+          o.userData.angle += o.userData.speed;
+          const rr = R + Math.sin(t * 0.7 + i) * 0.5;
+          const elevation = Math.sin(o.userData.angle * 2. 5) * 1.2 + o.userData.elev * 2. 5;
+          
+          o.position.set(
+            Math.cos(o.userData.angle) * rr,
+            elevation,
+            Math.sin(o.userData.angle) * rr
+          );
+          
+          const scale = o.userData.baseScale * (1 + 0.15 * Math.sin(t * 2 + o.userData.beatPhase));
+          o.scale.setScalar(scale);
+          o.lookAt(camera.position);
+          
+          const dist = o.position.distanceTo(camera.position);
+          o.material.opacity = Math.min(1, 20 / dist);
+
+          const beam = beams[i];
+          const arr = beam.geometry.attributes.position. array;
+          arr[0] = o.position.x;
+          arr[1] = o. position.y;
+          arr[2] = o.position.z;
+          
+          const dir = o.position.clone().normalize().multiplyScalar(5);
+          arr[3] = dir.x;
+          arr[4] = dir.y;
+          arr[5] = dir. z;
+          
+          beam. geometry.attributes.position.needsUpdate = true;
+          beam. material.opacity = 0.2 + 0.25 * beat * (o.material.opacity);
+        });
+
+        renderer.render(scene, camera);
+      }
+      
+      animate();
+
+      // Hide loading screen
+      setTimeout(() => {
+        document.getElementById('loading').classList.add('hidden');
+      }, 800);
+
+      // Responsive handling
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window. innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }, { passive: true });
+    }
+
+    // Initialize when page loads
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initScene);
+    } else {
+      initScene();
+    }
   </script>
 </body>
 </html>
 
+          const beam = beams[i];
+          const arr = beam.geometry.attributes.position. array;
+          arr[0] = o.position.x;
+          arr[1] = o. position.y;
+          arr[2] = o.position.z;
+          
+          const dir = o.position.clone().normalize().multiplyScalar(5);
+          arr[3] = dir.x;
+          arr[4] = dir.y;
+          arr[5] = dir. z;
+          
+          beam. geometry.attributes.position.needsUpdate = true;
+          beam. material.opacity = 0.2 + 0.25 * beat * (o.material.opacity);
+        });
+
+        renderer.render(scene, camera);
+      }
+      
+      animate();
+
+      // Hide loading screen
+      setTimeout(() => {
+        document.getElementById('loading').classList.add('hidden');
+      }, 800);
+
+      // Responsive handling
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window. innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }, { passive: true });
+    }
+
+    // Initialize when page loads
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initScene);
+    } else {
+      initScene();
+    }
+  </script>
+</body>
+</html>
