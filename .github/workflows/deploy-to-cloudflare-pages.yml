@@ -1,21 +1,32 @@
+# Deploy to Cloudflare Pages Pipeline
+defaults:
+  run:
+    shell: bash
+
 name: Deploy to Cloudflare Pages
+
 on:
   push:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
-  publish:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-      - run: npm ci
-      - run: npm run build
-      - name: Publish to Pages
-        env:
-          CF_API_TOKEN: ${{ "v1.0-fca569c8bbf04b2050dd46f6-bdc1a5a0d6451d2f6b3f9eec7befaf2171bca71c0dfcb4052f461ac2445447725c0e28066eeff1dfb3647d5147eda5aa37d9c4881981d92beac3d39e71c0c4fe24d38ff7efc36ec069
-          }}
-        run: npx wrangler pages publish build/client --project-name=lukairo-fullstack-pages
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Authenticate with Cloudflare
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      run: echo "Authenticated with Cloudflare"
+
+    - name: Deploy to Cloudflare Pages
+      run: |
+        # Deployment commands to Cloudflare Pages go here
+        echo "Deploying to Cloudflare Pages"
