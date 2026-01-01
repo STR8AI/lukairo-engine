@@ -1,63 +1,49 @@
 {
-  "name": "lukairo-engine",
-  "description": "A modern full-stack template powered by Cloudflare Workers, using Hono for backend APIs, React Router for frontend routing, and shadcn/ui for beautiful, accessible components styled with Tailwind CSS",
-  "private": true,
-  "type": "module",
-  "cloudflare": {
-    "label": "React Router + Hono Fullstack App",
-    "products": [
-      "Workers"
-    ],
-    "categories": [
-      "starter"
-    ],
-    "docs_url": "https://developers.cloudflare.com/workers",
-    "preview_icon_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/d3db20ee-c3bf-4b5c-f1ed-d86021359e00/public",
-    "preview_image_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/56caa8a9-d3ab-4ac6-32a9-6a5fc686e000/preview",
-    "publish": true
-  },
-  "dependencies": {
-    "@react-router/node": "^7.11.0",
-    "hono": "^4.11.3",
-    "isbot": "5.1.32",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "react-router": "^7.11.0",
-    "react-router-dom": "^7.11.0",
-    "three": "0.182.0"
-  },
-  "devDependencies": {
-    "@cloudflare/vite-plugin": "1.17.1",
-    "@cloudflare/workers-types": "^4.20251230.0",
-    "@react-router/dev": "^7.11.0",
-    "@tailwindcss/vite": "4.1.18",
-    "@types/node": "25.0.3",
-    "@types/react": "19.2.7",
-    "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "^5.1.2",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
-    "prettier": "^3.7.4",
-    "tailwindcss": "4.1.18",
-    "typescript": "5.9.3",
-    "vite": "^7.3.0",
-    "vite-tsconfig-paths": "6.0.3",
-    "wrangler": "4.54.x"
-  },
-  "scripts": {
-    "build": "vite build",
-    "cf-typegen": "wrangler types",
-    "deploy": "npm run build && wrangler deploy",
-    "dev": "react-router dev",
-    "preview": "npm run build && vite preview",
-    "typecheck": "npm run cf-typegen && react-router typegen && tsc -b",
-    "prepare": "husky install",
-    "format": "prettier --write \"**/*.{js,ts,jsx,tsx,json,md,css,scss,html,css}\"",
-    "format:check": "prettier --check \"**/*.{js,ts,jsx,tsx,json,md,css,scss,html,css}\""
-  },
-  "lint-staged": {
-    "*.{js,ts,jsx,tsx,json,md,css,scss,html}": [
-      "prettier --write"
-    ]
-  }
+	"name": "lukairo-engine",
+	"description": "A modern full-stack template powered by Cloudflare Workers, using Hono for backend APIs, React Router for frontend routing, and shadcn/ui for beautiful, accessible components styled with Tailwind CSS",
+	"private": true,
+	"type": "module",
+	"cloudflare": {
+		"label": "React Router + Hono Fullstack App",
+		"products": [
+			"Workers"
+		],
+		"categories": [
+			"starter"
+		],
+		"docs_url": "https://developers.cloudflare.com/workers",
+		"preview_icon_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/d3db20ee-c3bf-4b5c-f1ed-d86021359e00/public",
+		"preview_image_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/56caa8a9-d3ab-4ac6-32a9-6a5fc686e000/preview",
+		"publish": true
+	},
+	"dependencies": {
+		"hono": "4.8.2",
+		"isbot": "5.1.26",
+		"react": "19.0.0",
+		"react-dom": "19.0.0",
+		"react-router": "7.6.3",
+		"three": "0.169.0"
+	},
+	"devDependencies": {
+		"@cloudflare/vite-plugin": "1.7.5",
+		"@cloudflare/workers-types": "^4.20250425.0",
+		"@react-router/dev": "7.6.3",
+		"@tailwindcss/vite": "4.1.4",
+		"@types/node": "24.0.4",
+		"@types/react": "19.0.10",
+		"@types/react-dom": "19.0.4",
+		"tailwindcss": "4.1.1",
+		"typescript": "5.8.3",
+		"vite": "^6.0.0",
+		"vite-tsconfig-paths": "5.1.4",
+		"wrangler": "4.21.x"
+	},
+	"scripts": {
+		"build": "react-router build",
+		"cf-typegen": "wrangler types",
+		"deploy": "npm run build && wrangler deploy",
+		"dev": "react-router dev",
+		"preview": "npm run build && vite preview",
+		"typecheck": "npm run cf-typegen && react-router typegen && tsc -b"
+	}
 }

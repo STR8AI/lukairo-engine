@@ -201,11 +201,3 @@ dist
 ### React Router ###
 .react-router/
 /build/
-
-# Ignore accidental user folders and build output
-app/public/Downloads/
-build/
-**/*iCloud*
-**/*iCloud\ Drive*
-**/*Desktop*
-**/*Downloads*
