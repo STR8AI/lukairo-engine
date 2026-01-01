@@ -1,49 +1,721 @@
-{
-	"name": "lukairo-engine",
-	"description": "A modern full-stack template powered by Cloudflare Workers, using Hono for backend APIs, React Router for frontend routing, and shadcn/ui for beautiful, accessible components styled with Tailwind CSS",
-	"private": true,
-	"type": "module",
-	"cloudflare": {
-		"label": "React Router + Hono Fullstack App",
-		"products": [
-			"Workers"
-		],
-		"categories": [
-			"starter"
-		],
-		"docs_url": "https://developers.cloudflare.com/workers",
-		"preview_icon_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/d3db20ee-c3bf-4b5c-f1ed-d86021359e00/public",
-		"preview_image_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/56caa8a9-d3ab-4ac6-32a9-6a5fc686e000/preview",
-		"publish": true
-	},
-	"dependencies": {
-		"hono": "4.8.2",
-		"isbot": "5.1.26",
-		"react": "19.0.0",
-		"react-dom": "19.0.0",
-		"react-router": "7.6.3",
-		"three": "0.169.0"
-	},
-	"devDependencies": {
-		"@cloudflare/vite-plugin": "1.7.5",
-		"@cloudflare/workers-types": "^4.20250425.0",
-		"@react-router/dev": "7.6.3",
-		"@tailwindcss/vite": "4.1.4",
-		"@types/node": "24.0.4",
-		"@types/react": "19.0.10",
-		"@types/react-dom": "19.0.4",
-		"tailwindcss": "4.1.1",
-		"typescript": "5.8.3",
-		"vite": "^6.0.0",
-		"vite-tsconfig-paths": "5.1.4",
-		"wrangler": "4.21.x"
-	},
-	"scripts": {
-		"build": "react-router build",
-		"cf-typegen": "wrangler types",
-		"deploy": "npm run build && wrangler deploy",
-		"dev": "react-router dev",
-		"preview": "npm run build && vite preview",
-		"typecheck": "npm run cf-typegen && react-router typegen && tsc -b"
-	}
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUKAIRO — Neural Command Engine</title>
+  <meta name="description" content="LUKAIRO — We Connect Everything.  The Neural Core for Modern Data Infrastructure." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      background: #000;
+      overflow-x: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #fff;
+    }
+
+    /* Enhanced Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left:  0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 1.2rem 2rem;
+      z-index:  100;
+      border-bottom: 1px solid rgba(0, 255, 204, 0.1);
+    }
+
+    nav .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav . logo {
+      font-family: 'Orbitron', monospace;
+      font-size: 24px;
+      font-weight:  900;
+      background: linear-gradient(135deg, #00ffee, #7de5ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+      letter-spacing: 0.15em;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav ul li a {
+      color: #6cf5e6;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    nav ul li a:: after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #00ffee, #7de5ff);
+      transition: width 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #00ffee;
+      text-shadow: 0 0 15px rgba(0, 255, 238, 0.5);
+    }
+
+    nav ul li a: hover::after {
+      width:  100%;
+    }
+
+    /* Hero Canvas */
+    #lukairo-hero {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* Enhanced Hero Overlay */
+    .hero-overlay {
+      position: fixed;
+      left: 50%;
+      top: 35%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 50;
+      pointer-events: none;
+      animation: fadeInUp 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      max-width: 90%;
+    }
+
+    . hero-overlay h1 {
+      margin: 0 0 1rem;
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(36px, 8vw, 88px);
+      font-weight:  900;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: linear-gradient(135deg, #fff 0%, #7fffea 50%, #00e5d1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 40px rgba(0, 255, 204, 0.4));
+      animation: glow 3s ease-in-out infinite;
+    }
+
+    .hero-overlay . tagline {
+      margin: 0 0 2rem;
+      color: #b8fff3;
+      font-size: clamp(14px, 2.2vw, 22px);
+      font-weight:  600;
+      letter-spacing: 0.18em;
+      opacity: 0.95;
+      text-transform: uppercase;
+    }
+
+    .hero-overlay . subtitle {
+      margin: 0 auto;
+      max-width: 650px;
+      color: rgba(184, 255, 243, 0.8);
+      font-size: clamp(13px, 1.5vw, 16px);
+      font-weight:  400;
+      line-height: 1.7;
+      letter-spacing: 0.03em;
+    }
+
+    /* CTA Buttons */
+    .cta-buttons {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      pointer-events: all;
+    }
+
+    .cta-btn {
+      padding: 0.95rem 2.2rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight:  700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .cta-btn. primary {
+      background: linear-gradient(135deg, #00ffee, #00e5d1);
+      color: #000;
+      box-shadow: 0 10px 40px rgba(0, 255, 204, 0.4);
+    }
+
+    .cta-btn.primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 50px rgba(0, 255, 204, 0.6);
+    }
+
+    .cta-btn.secondary {
+      background: transparent;
+      color: #00ffee;
+      border: 2px solid #00ffee;
+      box-shadow: 0 0 20px rgba(0, 255, 238, 0.2);
+    }
+
+    .cta-btn.secondary:hover {
+      background: rgba(0, 255, 238, 0.1);
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(0, 255, 238, 0.4);
+    }
+
+    /* Stats Section */
+    .stats-overlay {
+      position: fixed;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 4rem;
+      z-index:  50;
+      animation: fadeIn 2s ease 0.5s forwards;
+      opacity: 0;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 900;
+      background: linear-gradient(135deg, #00ffee, #7de5ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      color: rgba(184, 255, 243, 0.7);
+      font-size: clamp(10px, 1.2vw, 13px);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      position: fixed;
+      left: 50%;
+      bottom: 2rem;
+      transform: translateX(-50%);
+      color: rgba(108, 245, 230, 0.6);
+      font-size: 11px;
+      font-weight:  500;
+      letter-spacing: 0.1em;
+      z-index:  50;
+      text-align: center;
+    }
+
+    footer . footer-links {
+      margin-top: 0.5rem;
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    footer a {
+      color: rgba(108, 245, 230, 0.6);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    footer a: hover {
+      color: #00ffee;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translate(-50%, calc(-50% + 20px));
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @keyframes glow {
+      0%, 100% { filter: drop-shadow(0 0 40px rgba(0, 255, 204, 0.4)); }
+      50% { filter: drop-shadow(0 0 60px rgba(0, 255, 204, 0.7)); }
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      nav . nav-container {
+        flex-direction: column;
+        gap:  1rem;
+      }
+
+      nav ul {
+        gap: 1.5rem;
+      }
+
+      . stats-overlay {
+        gap: 2rem;
+        flex-wrap: wrap;
+        padding: 0 1rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .cta-btn {
+        width: 100%;
+        max-width: 280px;
+      }
+    }
+
+    /* Loading Indicator */
+    .loading {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform:  translate(-50%, -50%);
+      z-index: 200;
+      font-family: 'Orbitron', monospace;
+      color: #00ffee;
+      font-size: 18px;
+      letter-spacing: 0.15em;
+      animation: pulse 1. 5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading">INITIALIZING... </div>
+
+  <nav>
+    <div class="nav-container">
+      <div class="logo">LUKAIRO</div>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#platform">Platform</a></li>
+        <li><a href="#solutions">Solutions</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div id="lukairo-hero" aria-hidden="true"></div>
+
+  <div class="hero-overlay" role="banner">
+    <h1>LUKAIRO</h1>
+    <p class="tagline">Neural Command Engine</p>
+    <p class="subtitle">
+      The intelligent core that connects your entire digital ecosystem. 
+      Real-time orchestration, AI-powered insights, and seamless integration across every platform.
+    </p>
+    <div class="cta-buttons">
+      <button class="cta-btn primary">Get Started</button>
+      <button class="cta-btn secondary">Watch Demo</button>
+    </div>
+  </div>
+
+  <div class="stats-overlay">
+    <div class="stat-item">
+      <div class="stat-number">500+</div>
+      <div class="stat-label">Platforms Connected</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">99.9%</div>
+      <div class="stat-label">Uptime Guarantee</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number"><1ms</div>
+      <div class="stat-label">Latency</div>
+    </div>
+  </div>
+
+  <footer role="contentinfo">
+    <div>© 2025 LUKAIRO.  Delivering Control.  Returning Time.</div>
+    <div class="footer-links">
+      <a href="#privacy">Privacy</a>
+      <a href="#terms">Terms</a>
+      <a href="#security">Security</a>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('load', () => {
+      // Hide loading indicator
+      document.querySelector('. loading').style.display = 'none';
+
+      const root = document.getElementById('lukairo-hero');
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window. innerHeight, 0.1, 3000);
+      camera.position.set(0, 1, 24);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      root.appendChild(renderer.domElement);
+
+      // Enhanced Lighting
+      scene.add(new THREE.AmbientLight(0x66fff0, 0.6));
+      
+      const key = new THREE. PointLight(0x00e5d1, 2. 2, 250);
+      key.position.set(12, 8, 16);
+      scene.add(key);
+
+      const rim = new THREE.PointLight(0x0088ff, 1.4, 250);
+      rim.position.set(-14, -6, -12);
+      scene.add(rim);
+
+      const fill = new THREE.PointLight(0xff00cc, 0.8, 200);
+      fill.position.set(0, -10, 8);
+      scene.add(fill);
+
+      // Enhanced Starfield
+      const STAR_COUNT = 2500;
+      const starGeo = new THREE.BufferGeometry();
+      const starPos = new Float32Array(STAR_COUNT * 3);
+      const starColors = new Float32Array(STAR_COUNT * 3);
+      
+      for (let i = 0; i < STAR_COUNT; i++) {
+        starPos[i * 3] = (Math.random() - 0.5) * 1400;
+        starPos[i * 3 + 1] = (Math.random() - 0.5) * 1400;
+        starPos[i * 3 + 2] = (Math.random() - 0.5) * 1400;
+        
+        const colorChoice = Math.random();
+        if (colorChoice > 0.7) {
+          starColors[i * 3] = 0.6 + Math.random() * 0.4;
+          starColors[i * 3 + 1] = 1;
+          starColors[i * 3 + 2] = 0.9 + Math.random() * 0.1;
+        } else {
+          starColors[i * 3] = 0.9 + Math.random() * 0.1;
+          starColors[i * 3 + 1] = 0.9 + Math.random() * 0.1;
+          starColors[i * 3 + 2] = 1;
+        }
+      }
+      
+      starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+      starGeo.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+      
+      const starMat = new THREE.PointsMaterial({
+        size: 1. 2,
+        sizeAttenuation: true,
+        transparent: true,
+        opacity: 0.75,
+        vertexColors: true,
+        blending: THREE.AdditiveBlending
+      });
+      
+      const stars = new THREE.Points(starGeo, starMat);
+      scene.add(stars);
+
+      // Enhanced Nebula
+      const nebCanvas = document.createElement('canvas');
+      nebCanvas.width = nebCanvas.height = 2048;
+      const ngx = nebCanvas.getContext('2d');
+      
+      const grad1 = ngx.createRadialGradient(1024, 1024, 100, 1024, 1024, 1024);
+      grad1.addColorStop(0, 'rgba(0,255,204,0.28)');
+      grad1.addColorStop(0.3, 'rgba(0,180,255,0.18)');
+      grad1.addColorStop(0.6, 'rgba(255,0,200,0.08)');
+      grad1.addColorStop(1, 'rgba(0,0,0,0)');
+      ngx.fillStyle = grad1;
+      ngx.fillRect(0, 0, 2048, 2048);
+      
+      const nebTex = new THREE.CanvasTexture(nebCanvas);
+      const nebula = new THREE.Mesh(
+        new THREE.PlaneGeometry(1600, 1600),
+        new THREE.MeshBasicMaterial({
+          map:  nebTex,
+          transparent:  true,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending
+        })
+      );
+      nebula.position.z = -500;
+      scene.add(nebula);
+
+      // Enhanced Globe with Earth Texture
+      const loader = new THREE.TextureLoader();
+      const coreTex = loader.load("https://storage.googleapis.com/msgsndr/B47X3dkLb4AkvxzX2Tck/media/68fdb1e49c7b3a610f587b93. png");
+      
+      const globe = new THREE. Mesh(
+        new THREE.SphereGeometry(4. 8, 128, 128),
+        new THREE.MeshStandardMaterial({
+          map:  coreTex,
+          metalness: 0.65,
+          roughness: 0.3,
+          emissive: 0x004a44,
+          emissiveIntensity: 1. 2
+        })
+      );
+      scene.add(globe);
+
+      // Multi-layer Halo
+      const halo1 = new THREE.Mesh(
+        new THREE.SphereGeometry(5. 3, 64, 64),
+        new THREE.MeshBasicMaterial({
+          color:  0x00ffee,
+          wireframe: true,
+          transparent:  true,
+          opacity: 0.12
+        })
+      );
+      scene.add(halo1);
+
+      const halo2 = new THREE.Mesh(
+        new THREE.SphereGeometry(5.8, 64, 64),
+        new THREE.MeshBasicMaterial({
+          color: 0x7de5ff,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.08
+        })
+      );
+      scene.add(halo2);
+
+      // Platform Icons (Updated list)
+      const platformIcons = [
+        "https://cdn-icons-png.flaticon.com/512/732/732221.png",     // Outlook
+        "https://cdn-icons-png.flaticon.com/512/5968/5968534.png",   // Gmail
+        "https://cdn-icons-png.flaticon.com/512/5968/5968899.png",   // Slack
+        "https://cdn-icons-png.flaticon.com/512/888/888879.png",     // Salesforce
+        "https://cdn-icons-png.flaticon.com/512/5968/5968342.png",   // Stripe
+        "https://cdn-icons-png.flaticon.com/512/5968/5968759.png",   // Shopify
+        "https://cdn-icons-png.flaticon.com/512/733/733553.png",     // GitHub
+        "https://cdn-icons-png.flaticon.com/512/2111/2111615.png",   // Notion
+        "https://cdn-icons-png.flaticon.com/512/5968/5968906.png",   // Airtable
+        "https://cdn-icons-png.flaticon. com/512/733/733585.png",     // WhatsApp
+        "https://cdn-icons-png.flaticon. com/512/145/145807.png",     // LinkedIn
+        "https://cdn-icons-png.flaticon.com/512/888/888853.png"      // Zoom
+      ];
+
+      const iconGeo = new THREE.PlaneGeometry(1.5, 1.5);
+      const orbiters = [], beams = [], R = 13;
+
+      platformIcons.forEach((url, i) => {
+        const tex = loader.load(url);
+        const mat = new THREE.MeshBasicMaterial({
+          map: tex,
+          transparent: true,
+          side: THREE.DoubleSide,
+          depthWrite: false
+        });
+        const sprite = new THREE.Mesh(iconGeo, mat);
+        sprite.userData = {
+          angle: (i / platformIcons.length) * Math.PI * 2,
+          speed: 0.0015 + Math.random() * 0.001,
+          elev: Math.random() * 1 - 0.5,
+          beatPhase: Math.random() * Math.PI * 2,
+          pulseSpeed: 0.8 + Math.random() * 0.4
+        };
+        scene.add(sprite);
+        orbiters.push(sprite);
+
+        const beamGeo = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(),
+          new THREE.Vector3()
+        ]);
+        const beam = new THREE.Line(
+          beamGeo,
+          new THREE.LineBasicMaterial({
+            color: 0x00ffee,
+            transparent: true,
+            opacity: 0.4,
+            linewidth: 2
+          })
+        );
+        scene.add(beam);
+        beams.push(beam);
+      });
+
+      // Data Particles
+      const particleCount = 120;
+      const particleGeo = new THREE.BufferGeometry();
+      const particlePositions = new Float32Array(particleCount * 3);
+      const particleVelocities = [];
+
+      for (let i = 0; i < particleCount; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const radius = 6 + Math.random() * 4;
+        particlePositions[i * 3] = Math.cos(angle) * radius;
+        particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 3;
+        particlePositions[i * 3 + 2] = Math.sin(angle) * radius;
+        particleVelocities.push({
+          angle,
+          speed: 0.004 + Math.random() * 0.003,
+          radius
+        });
+      }
+
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+      const particleMat = new THREE. PointsMaterial({
+        color: 0x00ffee,
+        size: 0.15,
+        transparent: true,
+        opacity: 0.7,
+        blending: THREE. AdditiveBlending
+      });
+      const particles = new THREE.Points(particleGeo, particleMat);
+      scene.add(particles);
+
+      // Animation Loop
+      let t0 = performance.now();
+      
+      function animate() {
+        requestAnimationFrame(animate);
+        const t = (performance.now() - t0) * 0.001;
+        const beat = 0.5 + 0.5 * Math.sin(t * 1.8);
+
+        // Starfield rotation
+        stars.rotation.y += 0.0003;
+        stars.rotation.x += 0.0001;
+
+        // Nebula rotation
+        nebula.rotation.z += 0.0001;
+
+        // Globe rotation
+        globe. rotation.y += 0.002;
+        globe.rotation.x += 0.0004;
+
+        // Multi-layer halo
+        halo1.rotation.y -= 0.0008;
+        halo1.rotation.x += 0.0003;
+        halo2.rotation.y += 0.0006;
+        halo2.rotation.x -= 0.0002;
+
+        // Camera movement
+        camera.position.x = Math.sin(t * 0.1) * 1.2;
+        camera.position.y = 1 + Math.sin(t * 0.15) * 0.8;
+        camera.lookAt(0, 0, 0);
+
+        // Orbiting icons with beams
+        orbiters.forEach((o, i) => {
+          o.userData.angle += o.userData.speed;
+          const rr = R + Math.sin(t * 0.5 + i) * 0.5;
+          o.position.set(
+            Math.cos(o.userData.angle) * rr,
+            Math.sin(o.userData.angle * 2. 2) * 1.2 + o.userData.elev * 2. 5,
+            Math.sin(o.userData.angle) * rr
+          );
+          
+          const scale = 1 + 0.15 * Math.sin(t * o.userData.pulseSpeed + o.userData.beatPhase);
+          o.scale.setScalar(scale);
+          o.lookAt(camera.position);
+
+          // Update beam
+          const beam = beams[i];
+          const arr = beam.geometry.attributes.position. array;
+          arr[0] = o.position.x;
+          arr[1] = o. position.y;
+          arr[2] = o.position.z;
+          const dir = o.position.clone().normalize().multiplyScalar(4. 8);
+          arr[3] = dir.x;
+          arr[4] = dir.y;
+          arr[5] = dir. z;
+          beam.geometry. attributes.position.needsUpdate = true;
+          beam.material.opacity = 0.2 + 0.25 * beat;
+        });
+
+        // Animate data particles
+        const particlePos = particles.geometry.attributes.position.array;
+        particleVelocities.forEach((v, i) => {
+          v.angle += v.speed;
+          particlePos[i * 3] = Math.cos(v.angle) * v.radius;
+          particlePos[i * 3 + 1] = Math.sin(v.angle * 3) * 0.8;
+          particlePos[i * 3 + 2] = Math.sin(v.angle) * v.radius;
+        });
+        particles.geometry.attributes. position.needsUpdate = true;
+
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // Responsive resize
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window. innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }, { passive: true });
+
+      // Interactive mouse movement
+      document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 0.5;
+        const y = (e.clientY / window. innerHeight - 0.5) * 0.5;
+        camera.position.x += (x - camera.position.x) * 0.05;
+        camera.position.y += (y - camera.position.y) * 0.05;
+      }, { passive: true });
+    });
+  </script>
+</body>
+</html>
+
+name: Deploy static site to Cloudflare Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: 'lukairo-fullstack-pages'
+          directory: 'lukairo-static'
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
