@@ -5,6 +5,7 @@ This document provides guidance for GitHub Copilot when working on this reposito
 ## Project Overview
 
 lukairo-engine is a modern full-stack application built with:
+
 - **Frontend**: React 19 with React Router 7 for routing
 - **Backend**: Cloudflare Workers with Hono framework for APIs
 - **Styling**: Tailwind CSS 4
@@ -47,28 +48,33 @@ lukairo-engine/
 ## Coding Conventions
 
 ### TypeScript
+
 - Use TypeScript for all new code
 - Prefer explicit type annotations for function parameters and return types
 - Use `type` for object types unless `interface` is specifically needed for extension
 - Import types using `import type` when only type information is needed
 
 ### React Components
+
 - Use functional components with hooks
 - Name component files using PascalCase (e.g., `Welcome.tsx`)
 - Export components as named exports when they're reusable
 - Use default exports for route components
 
 ### React Router
+
 - Route components should be placed in `app/routes/`
 - Use the React Router type system (e.g., `Route.MetaArgs`, `Route.LoaderArgs`)
 - Loaders and actions should be co-located with their route components
 
 ### Styling
+
 - Use Tailwind CSS utility classes for styling
 - Follow the existing class naming patterns in the codebase
 - Dark mode support: use `dark:` prefix for dark mode variants
 
 ### Cloudflare Workers
+
 - Worker code goes in the `workers/` directory
 - Use the standard Cloudflare Workers fetch handler pattern
 - In Workers: access environment variables via the `env` parameter (e.g., `env.DB`)
@@ -93,16 +99,19 @@ lukairo-engine/
 ## Common Tasks
 
 ### Adding a new route
+
 1. Create a new file in `app/routes/` (e.g., `about.tsx`)
 2. Export a default component and optionally `meta`, `loader`, or `action` functions
 3. The route will be automatically registered based on file-based routing
 
 ### Adding a new API endpoint
+
 1. Open `workers/app.ts`
 2. Add a new route handler using the fetch handler pattern with URL pathname matching
 3. Access environment bindings via the `env` parameter
 
 ### Modifying styles
+
 1. Use Tailwind CSS utility classes directly in components
 2. For global styles, modify `app/app.css`
 3. Follow the existing dark mode patterns using `dark:` prefix
@@ -120,8 +129,7 @@ import { Hono } from 'hono';
 const app = new Hono();
 
 app.get('/', (c) =>
-  c.html(`
-    <h1 style="font-family: sans-serif; color: #0af;">
+c.html(`     <h1 style="font-family: sans-serif; color: #0af;">
       Welcome to LUKAIRO ENGINE
     </h1>
     <p>Your worker is live.</p>

@@ -1,10 +1,15 @@
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
   background: #05070b;
   color: #9ffcff;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
 }
 
 .hero {

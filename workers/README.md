@@ -1,4 +1,5 @@
 h<!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -47,8 +48,8 @@ const rotatingLight=new THREE.PointLight(0x00ffff,1,50);scene.add(rotatingLight)
 const loader=new THREE.TextureLoader();
 const texture=loader.load("LUKAIRO.png");
 const core=new THREE.Mesh(
- new THREE.SphereGeometry(3,64,64),
- new THREE.MeshStandardMaterial({map:texture,metalness:1,roughness:0.25,emissive:0x001111,emissiveIntensity:0.6})
+new THREE.SphereGeometry(3,64,64),
+new THREE.MeshStandardMaterial({map:texture,metalness:1,roughness:0.25,emissive:0x001111,emissiveIntensity:0.6})
 );
 scene.add(core);
 
@@ -62,19 +63,19 @@ const systems=[
 ];
 const nodes=[],beams=[],labels=[];
 systems.forEach((sys,i)=>{
- const mat=new THREE.MeshStandardMaterial({emissive:sys.color,emissiveIntensity:2,color:0x001010,metalness:0.9,roughness:0.2});
- const orb=new THREE.Mesh(new THREE.SphereGeometry(0.4,32,32),mat);
- orb.userData={orbit:sys.orbit,phase:i,scale:1,dir:1,color:sys.color,connected:false};
- scene.add(orb);nodes.push(orb);
- const beamGeom=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3()]);
- const beamMat=new THREE.LineBasicMaterial({color:sys.color,transparent:true,opacity:0});
- const beam=new THREE.Line(beamGeom,beamMat);scene.add(beam);beams.push(beam);
- const lbl=document.createElement("div");lbl.className="label";lbl.textContent=sys.name;document.body.appendChild(lbl);labels.push(lbl);
+const mat=new THREE.MeshStandardMaterial({emissive:sys.color,emissiveIntensity:2,color:0x001010,metalness:0.9,roughness:0.2});
+const orb=new THREE.Mesh(new THREE.SphereGeometry(0.4,32,32),mat);
+orb.userData={orbit:sys.orbit,phase:i,scale:1,dir:1,color:sys.color,connected:false};
+scene.add(orb);nodes.push(orb);
+const beamGeom=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3()]);
+const beamMat=new THREE.LineBasicMaterial({color:sys.color,transparent:true,opacity:0});
+const beam=new THREE.Line(beamGeom,beamMat);scene.add(beam);beams.push(beam);
+const lbl=document.createElement("div");lbl.className="label";lbl.textContent=sys.name;document.body.appendChild(lbl);labels.push(lbl);
 });
 
 // particles
 const geo=new THREE.BufferGeometry();
-const pos=new Float32Array(2500);for(let i=0;i<pos.length;i++)pos[i]=(Math.random()-0.5)*100;
+const pos=new Float32Array(2500);for(let i=0;i<pos.length;i++)pos[i]=(Math.random()-0.5)\*100;
 geo.setAttribute("position",new THREE.BufferAttribute(pos,3));
 const particles=new THREE.Points(geo,new THREE.PointsMaterial({color:0x00e5d1,size:0.05,transparent:true,opacity:0.4}));
 scene.add(particles);
@@ -88,24 +89,24 @@ core.rotation.y+=0.0025;core.rotation.x+=0.0012;
 rotatingLight.position.set(Math.sin(t*0.8)*10,Math.cos(t*0.6)*5,Math.cos(t*0.9)*10);
 particles.rotation.y+=0.0004;
 nodes.forEach((n,i)=>{
- const angle=t*0.6+i;
- const pull=Math.sin(t*0.4+i)*0.3;
- const r=n.userData.orbit-pull;
- n.position.x=Math.sin(angle)*r;
- n.position.y=Math.cos(angle)*r;
- n.position.z=Math.sin(t*0.2+i)*1.5;
- n.userData.scale+=0.002*n.userData.dir;
- if(n.userData.scale>1.1||n.userData.scale<0.9)n.userData.dir*=-1;
- n.scale.setScalar(n.userData.scale);
- const dist=n.position.length(),beam=beams[i];
- if(dist<9){beam.material.opacity=0.6;beam.geometry.setFromPoints([new THREE.Vector3(),n.position.clone()]);n.userData.connected=true;}
- else if(n.userData.connected){beam.material.opacity*=0.9;if(beam.material.opacity<0.05){n.userData.connected=false;beam.material.opacity=0;}}
- const v=n.position.clone().project(camera);
- const x=(v.x*0.5+0.5)*window.innerWidth;
- const y=(-v.y*0.5+0.5)*window.innerHeight;
- labels[i].style.left=`${x}px`;
- labels[i].style.top=`${y}px`;
- labels[i].style.opacity=n.userData.connected?1:0.6;
+const angle=t*0.6+i;
+const pull=Math.sin(t*0.4+i)*0.3;
+const r=n.userData.orbit-pull;
+n.position.x=Math.sin(angle)*r;
+n.position.y=Math.cos(angle)*r;
+n.position.z=Math.sin(t*0.2+i)*1.5;
+n.userData.scale+=0.002*n.userData.dir;
+if(n.userData.scale>1.1||n.userData.scale<0.9)n.userData.dir*=-1;
+n.scale.setScalar(n.userData.scale);
+const dist=n.position.length(),beam=beams[i];
+if(dist<9){beam.material.opacity=0.6;beam.geometry.setFromPoints([new THREE.Vector3(),n.position.clone()]);n.userData.connected=true;}
+else if(n.userData.connected){beam.material.opacity*=0.9;if(beam.material.opacity<0.05){n.userData.connected=false;beam.material.opacity=0;}}
+const v=n.position.clone().project(camera);
+const x=(v.x*0.5+0.5)*window.innerWidth;
+const y=(-v.y*0.5+0.5)\*window.innerHeight;
+labels[i].style.left=`${x}px`;
+labels[i].style.top=`${y}px`;
+labels[i].style.opacity=n.userData.connected?1:0.6;
 });
 renderer.render(scene,camera);
 }
@@ -115,5 +116,6 @@ animate();
 window.addEventListener("resize",()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
 });
 </script>
+
 </body>
 </html>

@@ -1,18 +1,17 @@
+import { startGlobe } from './visuals/globe.js';
+import { startPlatforms } from './visuals/platforms.js';
 
-import { startGlobe } from "./visuals/globe.js";
-import { startPlatforms } from "./visuals/platforms.js";
-
-const canvas = document.getElementById("scene");
+const canvas = document.getElementById('scene');
 
 startGlobe(canvas);
 startPlatforms(canvas);
 
 // Central engine orchestrator
-import { Renderer } from "./core/renderer.js";
-import { createState } from "./core/state.js";
-import { Physics } from "./core/physics.js";
-import { UISystem } from "./core/ui-system.js";
-import { DataLayer } from "./core/data-layer.js";
+import { Renderer } from './core/renderer.js';
+import { createState } from './core/state.js';
+import { Physics } from './core/physics.js';
+import { UISystem } from './core/ui-system.js';
+import { DataLayer } from './core/data-layer.js';
 
 export class Engine {
   constructor() {
@@ -61,4 +60,3 @@ export class Engine {
 export function createEngine() {
   return new Engine();
 }
-
