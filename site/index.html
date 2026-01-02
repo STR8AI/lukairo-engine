@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Lukairo — Demo Site</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --accent: #0ea5a4;
+        --muted: #6b7280;
+      }
+      body {
+        font-family: Inter, system-ui, Arial;
+        line-height: 1.6;
+        padding: 40px;
+        max-width: 960px;
+        margin: auto;
+        color: #111;
+      }
+      header {
+        margin-bottom: 28px;
+      }
+      .hero {
+        background: var(--bg);
+        color: #fff;
+        padding: 32px;
+        border-radius: 8px;
+      }
+      form {
+        margin-top: 18px;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+      }
+      button {
+        padding: 10px 18px;
+        border: none;
+        background: var(--accent);
+        color: #fff;
+        border-radius: 6px;
+      }
+      footer {
+        margin-top: 30px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Lukairo — Demo site</h1>
+      <p>
+        Small landing page to receive leads and prove the site is live. Replace the form `action`
+        with your CRM webhook when ready.
+      </p>
+    </header>
+
+    <section class="hero">
+      <h2>Welcome</h2>
+      <p>This is a simple static site served by Cloudflare Pages.</p>
+    </section>
+
+    <section>
+      <h3>Contact / Test form</h3>
+
+      <!-- Replace ACTION with your CRM webhook URL (or leave as # for now) -->
+      <form id="crmForm" action="#" method="post" onsubmit="onSubmit(event)">
+        <input name="name" placeholder="Name" required />
+        <input name="email" placeholder="Email" type="email" required />
+        <textarea name="message" placeholder="Message" rows="5"></textarea>
+        <button type="submit">Send</button>
+      </form>
+      <div id="msg" style="margin-top: 12px; color: var(--muted)"></div>
+    </section>
+
+    <footer>
+      <p>Demo site • Remove when production is ready.</p>
+    </footer>
+
+    <script>
+      // optional: client-side POST (if you want JSON to your CRM)
+      function onSubmit(e) {
+        e.preventDefault();
+        const f = e.target;
+        const data = { name: f.name.value, email: f.email.value, message: f.message.value };
+        // set your CRM webhook URL here if needed
+        const WEBHOOK = '#';
+        if (WEBHOOK === '#') {
+          document.getElementById('msg').textContent = 'Form not configured — set CRM webhook.';
+          return;
+        }
+        fetch(WEBHOOK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        })
+          .then((r) => {
+            if (r.ok) {
+              document.getElementById('msg').textContent = 'Sent — check your CRM.';
+              f.reset();
+            } else {
+              document.getElementById('msg').textContent = 'Send failed: ' + r.status;
+            }
+          })
+          .catch(
+            (err) => (document.getElementById('msg').textContent = 'Send error: ' + err.message)
+          );
+      }
+    </script>
+  </body>
+</html>
