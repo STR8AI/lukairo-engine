@@ -110,8 +110,7 @@
 }
 
 .globe.rotate-right {
-  animation: rotate-globe 40s linear infinite;
-  animation-direction: reverse;
+  animation: rotate-globe 40s linear infinite reverse;
 }
 
 /* Meridian lines overlay */

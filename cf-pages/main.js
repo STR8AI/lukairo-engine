@@ -48,8 +48,7 @@ if (!canvas) {
   // Mark canvas as loaded on first successful render
   try {
     drawGlobe();
-    canvas.classList.add('canvas-loaded');
-    // Also mark the parent wrapper to help with CSS targeting
+    // Mark the parent wrapper to help with CSS targeting
     canvas.closest('.globe-wrapper')?.classList.add('canvas-active');
   } catch (e) {
     console.error('Failed to initialize canvas globe:', e);
