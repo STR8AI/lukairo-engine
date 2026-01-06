@@ -1,173 +1,60 @@
-/* ===============================================================
-   LUKAIRO — globe + hero styles
-   Polished for accessibility, responsive sizing, and reduced-motion
-   =============================================================== */
+/* ------- Hero spacing polish --------
+   Paste at end of cf-pages/style.css
+   Adjust the numbers if you want it looser/tighter
+--------------------------------------*/
 
-/* Theme / global variables */
-:root{
-  --globe-frames: 36;        /* set this to the exact number of frames in your sprite */
-  --globe-speed: 6s;         /* full rotation duration */
-  --globe-size: 420px;      /* default globe diameter */
-  --site-max-width: 1080px;
-  --text-color: #0f1720;
-  --muted: #6b7280;
-  --bg: #ffffff;
-}
-
-/* Small reset / sensible defaults */
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  color:var(--text-color);
-  background:var(--bg);
-  margin:0;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  line-height:1.45;
+.hero {
+  /* more predictable vertical centering with room for header/footer */
+  min-height: 72vh;                 /* slightly taller than before for balance */
+  padding: clamp(20px, 5vh, 56px) 20px; /* responsive padding */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vh, 22px);      /* tighter gap between title, lede, globe */
+  text-align: center;
 }
 
-/* Skip link for keyboard users (visually hidden until focused) */
-.skip-link{
-  position:absolute;
-  left:-9999px;
-  top:auto;
-  width:1px;
-  height:1px;
-  overflow:hidden;
-  z-index:1000;
-}
-.skip-link:focus{
-  left:1rem;
-  top:1rem;
-  width:auto;
-  height:auto;
-  padding:.5rem .75rem;
-  background:#111;
-  color:#fff;
-  border-radius:4px;
-  text-decoration:none;
+/* Title adjustments: reduce vertical space and fine-tune size */
+.site-title {
+  margin: 0;
+  margin-bottom: 6px;               /* less space under title */
+  letter-spacing: .28em;            /* slightly tighter than before */
+  font-size: clamp(2.2rem, 4.5vw, 3rem);
+  line-height: 1;
+  transform: translateY(-2%);       /* lift the title a touch so it visually overlaps globe center */
 }
 
-/* Page layout */
-.site-inner{max-width:var(--site-max-width);margin:0 auto;padding:0 20px}
-.hero{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  min-height:70vh;
-  gap:28px;
-  padding:48px 0;
-  text-align:center;
+/* Tagline (lede) — smaller, closer to title */
+.lede {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.25vw, 1.05rem);
+  color: var(--muted);
+  margin-bottom: 0;                 /* keep compact */
+  opacity: 0.95;
 }
 
-/* Title & tagline */
-.site-title{
-  letter-spacing: .35em;
-  font-weight:700;
-  font-size: clamp(2rem, 4vw, 3.25rem);
-  color:#8ff0ef; /* accent — tweak to brand color */
-  margin:0 0 6px 0;
-}
-.lede{
-  margin:0;
-  color:var(--muted);
-  font-size:1.05rem;
+/* Globe wrapper - push globe just a little lower so title sits on it */
+.globe-wrapper {
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -8px;                 /* nudge globe up a touch (so title feels embedded) */
 }
 
-/* Container provides perspective if you want subtle 3D shading */
-.globe-wrapper{
-  perspective:1200px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+/* Globe sizing tune: slightly smaller on narrow screens for better balance */
+:root { --globe-size: 420px; } /* keep default */
 
-/* ------------------------------
-   SPRITE-DRIVEN GLOBE (preferred)
-   ------------------------------ */
-.globe{
-  width:var(--globe-size);
-  height:var(--globe-size);
-  border-radius:50%;
-  overflow:hidden;
-  display:block;
-  background-image: url("assets/images/globe-sprite.png");
-  background-repeat: no-repeat;
-  /* background width = (#frames * element width) so each frame lines up */
-  background-size: calc(var(--globe-frames) * 100%) auto;
-
-  /* Use steps() to play frames exactly */
-  animation: spin-globe var(--globe-speed) steps(var(--globe-frames)) infinite linear;
-
-  /* Cosmetic */
-  box-shadow: 0 14px 40px rgba(0,0,0,0.22), inset 0 8px 20px rgba(255,255,255,0.04);
-  transform-style:preserve-3d;
-  will-change: background-position;
-}
-
-/* Keyframes move the background from left to right */
-@keyframes spin-globe{
-  from { background-position: 0 0; }
-  to   { background-position: 100% 0; }
-}
-
-/* Play animation in reverse for clockwise visual rotation */
-.globe.rotate-right {
-  animation-direction: reverse;
-}
-
-/* ------------------------------
-   SINGLE-IMAGE SMOOTH FALLBACK
-   (used inside <noscript> or optional)
-   ------------------------------ */
-.globe-flat{
-  width:var(--globe-size);
-  height:var(--globe-size);
-  border-radius:50%;
-  object-fit:cover;
-  display:block;
-  margin:0 auto;
-  box-shadow: 0 14px 40px rgba(0,0,0,0.22), inset 0 8px 20px rgba(255,255,255,0.04);
-  background-position:center center;
-  background-size:cover;
-}
-
-/* Smooth 3D rotation for single-image globe */
-.globe-flat-wrap {
-  perspective:1200px;
-}
-@keyframes flat-rotate {
-  from { transform: rotateY(0deg); }
-  to   { transform: rotateY(-360deg); } /* negative = rotate RIGHT (clockwise) */
-}
-.globe-flat{
-  transform-style:preserve-3d;
-  animation: flat-rotate var(--globe-speed) linear infinite;
-  backface-visibility:hidden;
-}
-
-/* ------------------------------
-   Accessibility: respect reduced motion
-   ------------------------------ */
-@media (prefers-reduced-motion: reduce){
-  .globe, .globe-flat { animation: none !important; }
-}
-
-/* ------------------------------
-   Responsiveness
-   ------------------------------ */
 @media (max-width: 900px){
-  :root{ --globe-size: 360px; }
-  .hero{ padding:36px 18px; gap:20px; }
-}
-@media (max-width: 520px){
-  :root{ --globe-size: 260px; }
-  .site-title{ font-size:1.8rem; letter-spacing: .28em; }
-  .lede{ font-size:0.95rem; }
+  :root { --globe-size: 360px; }
+  .site-title { font-size: clamp(2rem, 6.5vw, 2.6rem); letter-spacing: .22em; transform: translateY(-1%); }
+  .hero { min-height: 66vh; gap: 18px; }
 }
 
-/* Small utility */
-.text-muted{ color:var(--muted); font-size:0.95rem; }
-.center{ text-align:center; }
+@media (max-width: 520px){
+  :root { --globe-size: 260px; }
+  .site-title { font-size: 1.6rem; letter-spacing: .20em; }
+  .hero { min-height: 62vh; padding: 22px 14px; gap: 12px; }
+  .site-title { transform: translateY(0); } /* remove lift on very small screens */
+}
