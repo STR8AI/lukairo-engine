@@ -1,16 +1,45 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Home — Globe</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="LUKAIRO — Real-time insight, globally. We build tools that connect your systems and make your data useful." />
+
+  <title>LUKAIRO — Home</title>
+
+  <!-- Keep CSS small and render-blocking for a hero-first page; preload helps a bit -->
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="hero">
-    <div class="globe-wrapper">
-      <div class="globe" aria-hidden="true"></div>
+  <!-- Accessibility: quick skip link for keyboard users -->
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <main id="content" class="hero" role="main" aria-label="LUKAIRO home">
+    <header class="hero-header" role="banner">
+      <h1 class="site-title">LUKAIRO ENGINE</h1>
+      <p class="lede">Delivering control. Returning time. Proudly Canadian.</p>
+    </header>
+
+    <div class="globe-wrapper" aria-hidden="true">
+      <!--
+        Presentational globe. The element is aria-hidden because the globe is decorative.
+        Keep the "rotate-right" class if you want clockwise rotation (animation-direction: reverse).
+        The page's CSS should handle sprite- or image-driven rendering.
+      -->
+      <div class="globe rotate-right" aria-hidden="true"></div>
+
+      <!--
+        Non-JS / fallback: an accessible single-image globe.
+        This will appear only if JS/CSS animation is not available.
+      -->
+      <noscript>
+        <img class="globe-flat" src="assets/images/globe-flat.jpg" alt="Stylized representation of the globe" />
+      </noscript>
     </div>
   </main>
+
+  <!-- Defer any JS that controls the canvas or sprite animation -->
+  <script defer src="main.js"></script>
 </body>
 </html>
