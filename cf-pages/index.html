@@ -23,9 +23,14 @@
 
     <div class="globe-wrapper" aria-hidden="true">
       <!--
-        Presentational globe. The element is aria-hidden because the globe is decorative.
+        Canvas for JS-driven globe animation.
+        The main.js script will render an animated globe on this canvas.
+      -->
+      <canvas id="globe" class="globe-canvas" aria-hidden="true"></canvas>
+
+      <!--
+        CSS-only fallback globe for when JS is disabled or loading.
         Keep the "rotate-right" class if you want clockwise rotation (animation-direction: reverse).
-        The page's CSS should handle sprite- or image-driven rendering.
       -->
       <div class="globe rotate-right" aria-hidden="true"></div>
 

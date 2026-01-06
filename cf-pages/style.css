@@ -58,3 +58,108 @@
   .hero { min-height: 62vh; padding: 22px 14px; gap: 12px; }
   .site-title { transform: translateY(0); } /* remove lift on very small screens */
 }
+
+/* ------- Globe canvas styles --------
+   Canvas element for JS-driven animation
+-----------------------------------------*/
+.globe-canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--globe-size, 420px);
+  height: var(--globe-size, 420px);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ------- Globe fallback styles --------
+   Polished CSS-only globe for when canvas
+   animation fails or loads slowly
+-----------------------------------------*/
+.globe {
+  position: relative;
+  width: var(--globe-size, 420px);
+  height: var(--globe-size, 420px);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 35%,
+    rgba(100, 150, 255, 0.15) 0%,
+    rgba(50, 100, 200, 0.08) 30%,
+    rgba(20, 50, 120, 0.05) 60%,
+    rgba(10, 30, 80, 0.02) 100%
+  );
+  box-shadow: 
+    inset -25px -25px 50px rgba(0, 0, 0, 0.3),
+    inset 15px 15px 40px rgba(255, 255, 255, 0.08),
+    0 0 60px rgba(100, 150, 255, 0.12),
+    0 0 100px rgba(50, 100, 200, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Rotating animation for the globe */
+@keyframes rotate-globe {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.globe.rotate-right {
+  animation: rotate-globe 40s linear infinite;
+  animation-direction: reverse;
+}
+
+/* Meridian lines overlay */
+.globe::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 45px,
+      rgba(255, 255, 255, 0.03) 45px,
+      rgba(255, 255, 255, 0.03) 47px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 45px,
+      rgba(255, 255, 255, 0.03) 45px,
+      rgba(255, 255, 255, 0.03) 47px
+    );
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Subtle glow effect */
+.globe::after {
+  content: '';
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+/* Hide CSS globe when canvas successfully loads and renders */
+canvas.globe-canvas.canvas-loaded ~ .globe {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
