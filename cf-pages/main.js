@@ -9,6 +9,8 @@ if (!canvas) {
 
   function resize() {
     // Set canvas size to match its CSS dimensions
+    // Note: getBoundingClientRect triggers layout, but resize events
+    // are already throttled by the browser, so debouncing is not critical
     const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width;
     canvas.height = rect.height;

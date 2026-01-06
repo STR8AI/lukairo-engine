@@ -36,6 +36,7 @@
 
 /* Globe wrapper - push globe just a little lower so title sits on it */
 .globe-wrapper {
+  position: relative; /* Positioning context for absolute canvas */
   perspective: 1200px;
   display: flex;
   align-items: center;
