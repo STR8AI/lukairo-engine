@@ -7,4 +7,4 @@ wrangler login
 
 # publish cf-pages immediately
 cd ~/Projects/lukairo-engine
-wrangler pages publish cf-pages --project-name=lukairo-engine
+wrangler pages publish cf-pages --project-name=lukairo-engine --branch site/react-mvp
