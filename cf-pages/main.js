@@ -35,8 +35,8 @@ if (!canvas) {
     // Rotating latitude lines
     for (let i = -3; i <= 3; i++) {
       ctx.beginPath();
-      // Use Math.abs to ensure radiusY is always positive
-      const radiusY = Math.abs(radius * Math.cos(angle + i * 0.4));
+      // Ensure radiusY is always positive (0 or greater)
+      const radiusY = Math.max(0, radius * Math.cos(angle + i * 0.4));
       ctx.ellipse(x, y, radius, radiusY, 0, 0, Math.PI * 2);
       ctx.stroke();
     }
@@ -49,6 +49,8 @@ if (!canvas) {
   try {
     drawGlobe();
     canvas.classList.add('canvas-loaded');
+    // Also mark the parent wrapper to help with CSS targeting
+    canvas.closest('.globe-wrapper')?.classList.add('canvas-active');
   } catch (e) {
     console.error('Failed to initialize canvas globe:', e);
   }

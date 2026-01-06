@@ -159,7 +159,7 @@
 }
 
 /* Hide CSS globe when canvas successfully loads and renders */
-canvas.globe-canvas.canvas-loaded ~ .globe {
+.globe-wrapper.canvas-active .globe {
   opacity: 0;
   transition: opacity 0.5s ease-out;
 }
