@@ -110,6 +110,7 @@
   }
 }
 
+/* Rotating animation for the globe - reverse direction for clockwise rotation */
 .globe.rotate-right {
   animation: rotate-globe 40s linear infinite reverse;
 }

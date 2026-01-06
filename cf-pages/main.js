@@ -50,8 +50,13 @@ if (!canvas) {
   // Mark canvas as loaded on first successful render
   try {
     drawGlobe();
-    // Mark the parent wrapper to help with CSS targeting
-    canvas.closest('.globe-wrapper')?.classList.add('canvas-active');
+    // Mark the parent wrapper to control CSS fallback visibility
+    const wrapper = canvas.closest('.globe-wrapper');
+    if (wrapper) {
+      wrapper.classList.add('canvas-active');
+    } else {
+      console.warn('Canvas is not within a .globe-wrapper element');
+    }
   } catch (e) {
     console.error('Failed to initialize canvas globe:', e);
   }
