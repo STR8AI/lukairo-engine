@@ -1,34 +1,41 @@
-html,
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background: #05070b;
-  color: #9ffcff;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
+:root{
+  --globe-frames: 36;        /* set to number of frames in your sprite */
+  --globe-speed: 6s;         /* full rotation duration */
+  --globe-size: 420px;      /* visible size of globe on page */
 }
 
-.hero {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+/* simple page layout */
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#fff;color:#222}
+.hero{display:flex;align-items:center;justify-content:center;min-height:70vh;padding:40px}
+
+/* container provides perspective if you want subtle 3D shading */
+.globe-wrapper{perspective:1200px;}
+
+/* the sprite-driven globe */
+.globe{
+  width:var(--globe-size);
+  height:var(--globe-size);
+  border-radius:50%;
+  overflow:hidden;
+  background-image: url("assets/images/globe-sprite.png");
+  background-repeat: no-repeat;
+  /* Make the background width = (#frames * element width) so each frame fits the element */
+  background-size: calc(var(--globe-frames) * 100%) auto;
+
+  /* play frames using steps */
+  animation: spin-globe var(--globe-speed) steps(var(--globe-frames)) infinite linear;
+
+  /* cosmetic */
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18), inset 0 10px 30px rgba(255,255,255,0.06);
+  transform-style:preserve-3d;
 }
 
-h1 {
-  font-size: 4rem;
-  letter-spacing: 0.3em;
-  margin: 0;
+/* rotate right: animation plays from left→right frames. If your sprite frames rotate the other way, use reverse */
+@keyframes spin-globe{
+  from { background-position: 0 0; }
+  to   { background-position: 100% 0; }
 }
 
-p {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
+/* If you need the globe to rotate to the RIGHT (clockwise from viewer), and the sprite goes left->right still gives left spin,
+   flip the direction by reversing the frames or by changing animation direction: */
+.globe.rotate-right { animation-direction: reverse; }
