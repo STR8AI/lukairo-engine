@@ -9,3 +9,9 @@
   </body>
 </html>
 
+
+#	new file:   workers/wrangler pages deploy cf-pages --project
+# Changes not staged for commit:
+#	modified:   workers/wrangler.toml
+
+
