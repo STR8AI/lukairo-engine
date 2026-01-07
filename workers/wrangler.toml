@@ -10,3 +10,5 @@ compatibility_date = "2024-12-01"
 [vars]
 VALUE_FROM_CLOUDFLARE = "lukairo-edge"
 >>>>>>> Stashed changes
+
+y

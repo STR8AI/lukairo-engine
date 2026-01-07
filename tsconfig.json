@@ -6,7 +6,16 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "strict": true
   },
-  "include": ["app", "src"]
+  "include": ["app", "src"],
+  "env": {
+    "production": {
+      "zone_id": "5d666172fd0919ec532f6ebcd85cbd3d",
+      "routes": [
+        { "pattern": "lukairoengine.ca/*", "zone_id": "5d666172fd0919ec532f6ebcd85cbd3d" }
+      ]
+    }
+  }
 }

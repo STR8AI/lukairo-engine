@@ -1,288 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LUKAIRO — Neural Command Engine</title>
-  <meta name="description" content="LUKAIRO connects everything — AI-powered integration platform" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    html, body {
-      height: 100%;
-      background: #000;
-      overflow-x: hidden;
-      font-family: 'Inter', system-ui, sans-serif;
-      color: #fff;
-    }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUKAIRO – Neural Command Engine</title>
+  <link rel="stylesheet" href="/cf-pages/styles.css">
+</head>
+<body>
+  <!-- WebGL container & loading overlay -->
+  <div id="lukairo-hero"></div>
+  <div class="loading">INITIALIZING...</div>
 
-    /* Navigation */
-    nav {
-      position: fixed;
-      top: 0;
-      left:  0;
-      right: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(12px);
-      padding: 1.2rem 2rem;
-      z-index:  100;
-      border-bottom: 1px solid rgba(0, 255, 204, 0.1);
-    }
-    
-    nav . container {
-      max-width:  1400px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    nav .logo {
-      font-size: 1.5rem;
-      font-weight:  900;
-      letter-spacing: 0.1em;
-      background: linear-gradient(135deg, #00ffee, #7de5ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color:  transparent;
-    }
-    
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 2.5rem;
-    }
-    
-    nav ul li a {
-      color: #9fd1ff;
-      text-decoration:  none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-    
-    nav ul li a: hover {
-      color: #00ffee;
-    }
+  <!-- Hero content -->
+  <div class="hero-overlay">
+    <h1>LUKAIRO</h1>
+    <p class="tagline">Neural Command Engine</p>
+    <p class="subtitle">
+      The intelligent core that connects your entire digital ecosystem. Real‑time orchestration, AI‑powered insights, and seamless integration across every platform.
+    </p>
+    <div class="cta-buttons">
+      <a href="#" class="btn primary">Get Started</a>
+      <a href="#" class="btn secondary">Watch Demo</a>
+    </div>
+  </div>
 
-    /* Hero Section */
-    #lukairo-hero {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-    }
+  <!-- Metrics -->
+  <div class="metrics">
+    <div class="metric">
+      <div class="number">500+</div>
+      <div class="label">Platforms Connected</div>
+    </div>
+    <div class="metric">
+      <div class="number">99.9%</div>
+      <div class="label">Uptime Guarantee</div>
+    </div>
+    <div class="metric">
+      <div class="number">&lt;1ms</div>
+      <div class="label">Latency</div>
+    </div>
+  </div>
 
-    . hero-overlay {
-      position:  fixed;
-      left: 50%;
-      top: 18vh;
-      transform: translateX(-50%);
-      text-align: center;
-      z-index: 5;
-      pointer-events: none;
-      animation: fadeIn 2s ease forwards;
-      max-width: 90%;
-    }
-    
-    . hero-overlay h1 {
-      margin:  0 0 0.8rem;
-      font-size: clamp(32px, 8vw, 88px);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      background: linear-gradient(135deg, #fff 0%, #7fffea 40%, #00e5d1 100%);
-      -webkit-background-clip:  text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 40px rgba(0, 255, 204, 0.4));
-      animation: glow 3s ease-in-out infinite;
-    }
-    
-    @keyframes glow {
-      0%, 100% { filter: drop-shadow(0 0 40px rgba(0, 255, 204, 0.4)); }
-      50% { filter: drop-shadow(0 0 60px rgba(0, 255, 204, 0.7)); }
-    }
-    
-    . hero-overlay . tagline {
-      margin:  0 0 1.5rem;
-      color: #b8fff3;
-      font-size: clamp(14px, 2.2vw, 24px);
-      font-weight:  600;
-      letter-spacing: 0.08em;
-      opacity: 0.95;
-    }
-    
-    .hero-overlay .subtitle {
-      color: #7de5ff;
-      font-size: clamp(11px, 1.4vw, 16px);
-      font-weight: 400;
-      letter-spacing: 0.05em;
-      opacity: 0.8;
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
+  <!-- Footer -->
+  <footer>
+    <div>© 2025 LUKAIRO. Delivering Control. Returning Time.</div>
+    <div>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Security</a>
+    </div>
+  </footer>
 
-    /* CTA Buttons */
-    .cta-buttons {
-      margin-top: 2.5rem;
-      display: flex;
-      gap: 1.5rem;
-      justify-content: center;
-      pointer-events: all;
-    }
-    
-    .cta-btn {
-      padding: 0.9rem 2rem;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      letter-spacing: 0.05em;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      border: none;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .cta-btn-primary {
-      background: linear-gradient(135deg, #00ffee, #00b8d4);
-      color: #000;
-      box-shadow: 0 10px 40px rgba(0, 255, 204, 0.4);
-    }
-    
-    . cta-btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 50px rgba(0, 255, 204, 0.6);
-    }
-    
-    . cta-btn-secondary {
-      background: transparent;
-      color: #00ffee;
-      border: 2px solid #00ffee;
-    }
-    
-    . cta-btn-secondary:hover {
-      background: rgba(0, 255, 238, 0.1);
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(0, 255, 204, 0.3);
-    }
+  <!-- Three.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
 
-    /* Stats Section */
-    . stats {
-      position: fixed;
-      bottom: 8rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 4rem;
-      z-index:  5;
-      pointer-events: none;
-    }
-    
-    .stat-item {
-      text-align: center;
-      animation: fadeIn 2. 5s ease forwards;
-    }
-    
-    .stat-number {
-      font-size: clamp(28px, 4vw, 48px);
-      font-weight:  900;
-      color: #00ffee;
-      display: block;
-      text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
-    }
-    
-    .stat-label {
-      font-size: clamp(10px, 1.2vw, 14px);
-      color: #9fd1ff;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-top: 0.4rem;
-    }
+  <!-- Custom globe and star‑field script -->
+  <script>
+  window.addEventListener('load', () => {
+    // Hide the loading indicator once loaded
+    document.querySelector('.loading').style.display = 'none';
 
-    /* Footer */
-    footer {
-      position: fixed;
-      left: 50%;
-      bottom: 2rem;
-      transform: translateX(-50%);
-      color: #6cf5e6;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      opacity: 0.7;
-      z-index: 5;
-      text-align: center;
-    }
-    
-    footer . tagline {
-      font-size: 11px;
-      color: #7de5ff;
-      margin-top: 0.3rem;
-    }
+    // Setup scene, camera, renderer
+    const container = document.getElementById('lukairo-hero');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 3000);
+    camera.position.set(0, 1, 24);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
 
-    /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translate(-50%, -20px); }
-      to   { opacity: 1; transform:  translate(-50%, 0); }
-    }
+    // Lights
+    scene.add(new THREE.AmbientLight(0x66fff0, 0.6));
+    const key = new THREE.PointLight(0x00e5d1, 2.2, 250); key.position.set(12, 8, 16); scene.add(key);
+    const rim = new THREE.PointLight(0x0088ff, 1.4, 250); rim.position.set(-14, -6, -12); scene.add(rim);
+    const fill = new THREE.PointLight(0xff00cc, 0.8, 200); fill.position.set(0, -10, 8); scene.add(fill);
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      nav ul {
-        gap: 1.5rem;
-        font-size: 0.85rem;
-      }
-      
-      .stats {
-        gap: 2rem;
-        bottom: 6rem;
-      }
-      
-      .cta-buttons {
-        flex-direction: column;
-        gap:  1rem;
-      }
+    // Starfield
+    const STAR_COUNT = 2500;
+    const starGeo = new THREE.BufferGeometry();
+    const starPos = new Float32Array(STAR_COUNT * 3);
+    const starCols = new Float32Array(STAR_COUNT * 3);
+    for (let i = 0; i < STAR_COUNT; i++) {
+      starPos[i * 3]     = (Math.random() - 0.5) * 1400;
+      starPos[i * 3 + 1] = (Math.random() - 0.5) * 1400;
+      starPos[i * 3 + 2] = (Math.random() - 0.5) * 1400;
+      const isBlue = Math.random() > 0.7;
+      starCols[i * 3]     = isBlue ? 0.6 + Math.random() * 0.4 : 0.9 + Math.random() * 0.1;
+      starCols[i * 3 + 1] = isBlue ? 1 : 0.9 + Math.random() * 0.1;
+      starCols[i * 3 + 2] = isBlue ? 0.9 + Math.random() * 0.1 : 1;
     }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    starGeo.setAttribute('color', new THREE.BufferAttribute(starCols, 3));
+    const starMat = new THREE.PointsMaterial({
+      size: 1.2, sizeAttenuation: true, transparent: true, opacity: 0.75, vertexColors: true,
+      blending: THREE.AdditiveBlending
+    });
+    const stars = new THREE.Points(starGeo, starMat);
+    scene.add(stars);
 
-    /* Loading Screen */
-    #loading {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      transition: opacity 0.8s ease;
+    // Nebula background
+    const nebCanvas = document.createElement('canvas');
+    nebCanvas.width = nebCanvas.height = 2048;
+    const ngx = nebCanvas.getContext('2d');
+    const grad = ngx.createRadialGradient(1024,1024,100,1024,1024,1024);
+    grad.addColorStop(0,'rgba(0,255,204,0.28)');
+    grad.addColorStop(0.3,'rgba(0,180,255,0.18)');
+    grad.addColorStop(0.6,'rgba(255,0,200,0.08)');
+    grad.addColorStop(1,'rgba(0,0,0,0)');
+    ngx.fillStyle = grad;
+    ngx.fillRect(0, 0, 2048, 2048);
+    const nebTex = new THREE.CanvasTexture(nebCanvas);
+    const nebula = new THREE.Mesh(
+      new THREE.PlaneGeometry(1600, 1600),
+      new THREE.MeshBasicMaterial({
+        map: nebTex, transparent: true, depthWrite: false,
+        blending: THREE.AdditiveBlending
+      })
+    );
+    nebula.position.z = -500;
+    scene.add(nebula);
+
+    // Globe with emissive material
+    const loader = new THREE.TextureLoader();
+    const globeMat = new THREE.MeshStandardMaterial({
+      color: 0x0a3a34,
+      metalness: 0.65, roughness: 0.3,
+      emissive: 0x004a44, emissiveIntensity: 1.2
+    });
+    const globe = new THREE.Mesh(new THREE.SphereGeometry(4.8,128,128), globeMat);
+    scene.add(globe);
+    loader.load(
+      'https://storage.googleapis.com/msgsndr/B47X3dkLb4AkvxzX2Tck/media/68fdb1e49c7b3a610f587b93.png',
+      tex => { globeMat.map = tex; globeMat.needsUpdate = true; },
+      undefined,
+      () => console.warn('Globe texture failed to load')
+    );
+
+    // Halo rings
+    const halo1 = new THREE.Mesh(new THREE.SphereGeometry(5.3,64,64),
+      new THREE.MeshBasicMaterial({ color: 0x00ffee, wireframe: true, transparent: true, opacity: 0.12 })
+    );
+    scene.add(halo1);
+    const halo2 = new THREE.Mesh(new THREE.SphereGeometry(5.8,64,64),
+      new THREE.MeshBasicMaterial({ color: 0x7de5ff, wireframe: true, transparent: true, opacity: 0.08 })
+    );
+    scene.add(halo2);
+
+    // Icons around the globe
+    const icons = [
+      'https://cdn-icons-png.flaticon.com/512/732/732221.png',
+      'https://cdn-icons-png.flaticon.com/512/5968/5968534.png',
+      'https://cdn-icons-png.flaticon.com/512/5968/5968899.png',
+      'https://cdn-icons-png.flaticon.com/512/888/888879.png',
+      'https://cdn-icons-png.flaticon.com/512/5968/5968342.png',
+      'https://cdn-icons-png.flaticon.com/512/5968/5968759.png',
+      'https://cdn-icons-png.flaticon.com/512/733/733553.png',
+      'https://cdn-icons-png.flaticon.com/512/2111/2111615.png',
+      'https://cdn-icons-png.flaticon.com/512/5968/5968906.png',
+      'https://cdn-icons-png.flaticon.com/512/733/733585.png',
+      'https://cdn-icons-png.flaticon.com/512/145/145807.png',
+      'https://cdn-icons-png.flaticon.com/512/888/888853.png',
+    ];
+    const iconGeo = new THREE.PlaneGeometry(1.5, 1.5);
+    const orbiters = [];
+    const beams = [];
+    const R = 13;
+    icons.forEach((url, i) => {
+      const tex = loader.load(url);
+      const mat = new THREE.MeshBasicMaterial({
+        map: tex, transparent: true, side: THREE.DoubleSide, depthWrite: false
+      });
+      const sprite = new THREE.Mesh(iconGeo, mat);
+      sprite.userData = {
+        angle: (i / icons.length) * Math.PI * 2,
+        speed: 0.0015 + Math.random() * 0.001,
+        elev: Math.random() * 1 - 0.5,
+        beatPhase: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.8 + Math.random() * 0.4,
+      };
+      scene.add(sprite);
+      orbiters.push(sprite);
+      // Beam line
+      const beamGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(), new THREE.Vector3()
+      ]);
+      const beam = new THREE.Line(
+        beamGeo,
+        new THREE.LineBasicMaterial({ color: 0x00ffee, transparent: true, opacity: 0.4, linewidth: 2 })
+      );
+      scene.add(beam);
+      beams.push(beam);
+    });
+
+    // Particles around the globe
+    const pCount = 120;
+    const pGeo = new THREE.BufferGeometry();
+    const pPositions = new Float32Array(pCount * 3);
+    const pVel = [];
+    for (let i = 0; i < pCount; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const radius = 6 + Math.random() * 4;
+      pPositions[i * 3]     = Math.cos(ang) * radius;
+      pPositions[i * 3 + 1] = (Math.random() - 0.5) * 3;
+      pPositions[i * 3 + 2] = Math.sin(ang) * radius;
+      pVel.push({ angle: ang, speed: 0.004 + Math.random() * 0.003, radius });
     }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+    const pMat = new THREE.PointsMaterial({
+      color: 0x00ffee, size: 0.15, transparent: true,
+      opacity: 0.7, blending: THREE.AdditiveBlending,
+    });
+    const particles = new THREE.Points(pGeo, pMat);
+    scene.add(particles);
+
+    // Animation loop
+    let t0 = performance.now();
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = (performance.now() - t0) * 0.001;
+      const beat = 0.5 + 0.5 * Math.sin(t * 1.8);
+
+      // Rotate stars and nebula
+      stars.rotation.y += 0.0003;
+      stars.rotation.x += 0.0001;
+      nebula.rotation.z += 0.0001;
+
+      // Rotate globe and halos
+      globe.rotation.y += 0.002;
+      globe.rotation.x += 0.0004;
+      halo1.rotation.y -= 0.0008;
+      halo1.rotation.x += 0.0003;
+      halo2.rotation.y += 0.0006;
+      halo2.rotation.x -= 0.0002;
+
+      // Camera bobbing
+      camera.position.x = Math.sin(t * 0.1) * 1.2;
+      camera.position.y = 1 + Math.sin(t * 0.15) * 0.8;
+      camera.lookAt(0, 0, 0);
+
+      // Move orbiters and update beams
+      orbiters.forEach((o, i) => {
+        o.userData.angle += o.userData.speed;
+        const rr = R + Math.sin(t * 0.5 + i) * 0.5;
+        o.position.set(
+          Math.cos(o.userData.angle) * rr,
+          Math.sin(o.userData.angle * 2.2) * 1.2 + o.userData.elev * 2.5,
+          Math.sin(o.userData.angle) * rr
+        );
+        const scale = 1 + 0.15 * Math.sin(t * o.userData.pulseSpeed + o.userData.beatPhase);
+        o.scale.setScalar(scale);
+        o.lookAt(camera.position);
+        const beam = beams[i];
+        const arr = beam.geometry.attributes.position.array;
+        arr[0] = o.position.x;
+        arr[1] = o.position.y;
+        arr[2] = o.position.z;
+        const dir = o.position.clone().normalize().multiplyScalar(4.8);
+        arr[3] = dir.x;
+        arr[4] = dir.y;
+        arr[5] = dir.z;
+        beam.geometry.attributes.position.needsUpdate = true;
+        beam.material.opacity = 0.2 + 0.25 * beat;
+      });
+
+      // Move particles
+      const pArr = particles.geometry.attributes.position.array;
+      pVel.forEach((v, idx) => {
+        v.angle += v.speed;
+        pArr[idx * 3]     = Math.cos(v.angle) * v.radius;
+        pArr[idx * 3 + 1] = Math.sin(v.angle * 3) * 0.8;
+        pArr[idx * 3 + 2] = Math.sin(v.angle) * v.radius;
+      });
+      particles.geometry.attributes.position.needsUpdate = true;
+
+      // Render
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Parallax on mouse move
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth  - 0.5) * 0.5;
+      const y = (e.clientY / window.innerHeight - 0.5) * 0.5;
+      camera.position.x += (x - camera.position.x) * 0.05;
+      camera.position.y += (y - camera.position.y) * 0.05;
+    });
+  });
+  </script>
+</body>
+</html>
     
-    #loading.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    
-    . loader {
-      width: 60px;
-      height: 60px;
-      border: 3px solid rgba(0, 255, 204, 0.1);
-      border-top-color: #00ffee;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-  </style>
 </head>
 <body>
   <!-- Loading Screen -->
