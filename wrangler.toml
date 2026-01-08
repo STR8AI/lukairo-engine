@@ -1,4 +1,4 @@
-name = "lukairo-engine"
+name = "engine"
 account_id = "5d666172fd0919ec532f6ebcd85cbd3d"
 workers_dev = true
 main = "src/index.ts"
