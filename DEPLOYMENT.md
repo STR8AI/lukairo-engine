@@ -69,7 +69,7 @@ lukairo-engine/
 
 ## Deployment Size
 
-- Worker bundle: ~83 KiB
+- Worker bundle: small footprint (exact size varies by build and dependencies)
 - Total dependencies: 55 packages
 - Very fast cold starts
 
