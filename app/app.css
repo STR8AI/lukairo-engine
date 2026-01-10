@@ -1,34 +1,29 @@
+:root {
+  --lukairo-bg: #020409;
+  --lukairo-ink: #EAF3F7;
+  --lukairo-accent: #48ffc8;
+  --lukairo-accent-soft: #1f9f82;
+  --lukairo-glow: #3CFFAA;
+  --lukairo-font: system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: #05070b;
-  color: #9ffcff;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
+  background: var(--lukairo-bg);
+  color: var(--lukairo-ink);
+  font-family: var(--lukairo-font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.hero {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-h1 {
-  font-size: 4rem;
-  letter-spacing: 0.3em;
-  margin: 0;
-}
-
-p {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  opacity: 0.8;
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

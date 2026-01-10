@@ -4,10 +4,10 @@ import type { Route } from './+types/home';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'LUKAIRO | 3D Data Globe' },
+    { title: 'LUKAIRO • Neural Core' },
     {
       name: 'description',
-      content: 'Interactive 3D data globe with luminous pathways and Cloudflare-powered content.',
+      content: 'LUKAIRO Neural Core visualization with three layered spheres and ambient starfield.',
     },
   ];
 }
@@ -17,184 +17,220 @@ export function loader({ context }: Route.LoaderArgs) {
   return { message };
 }
 
-function DataGlobe() {
+function NeuralCore() {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    const width = container.clientWidth || window.innerWidth;
-    const height = 500;
+    const GEARS_URL = '/assets/lukairo_gears.png';
+    const CIRCUITS_URL = '/assets/lukairo_circuits.png';
+    const GLOBE_URL = '/assets/lukairo_globe.png';
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(window.devicePixelRatio || 1);
-    renderer.setSize(width, height);
-    container.appendChild(renderer.domElement);
+    let scene: THREE.Scene;
+    let camera: THREE.PerspectiveCamera;
+    let renderer: THREE.WebGLRenderer;
+    let gearsCore: THREE.Mesh;
+    let circuitShell: THREE.Mesh;
+    let globeShell: THREE.Mesh;
+    let wireMesh: THREE.Mesh;
+    let starField: THREE.Points;
+    const clock = new THREE.Clock();
+    let isAnimating = true;
 
-    const nebulaGeometry = new THREE.PlaneGeometry(14, 8);
-    const nebulaMaterial = new THREE.MeshBasicMaterial({
-      color: 0x0a1f33,
-      transparent: true,
-      opacity: 0.55,
-    });
-    const nebula = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
-    nebula.position.set(0, 0, -4);
-    scene.add(nebula);
+    function init() {
+      scene = new THREE.Scene();
+      const rect = container.getBoundingClientRect();
+      const w = Math.max(1, Math.floor(rect.width || window.innerWidth));
+      const h = Math.max(1, Math.floor(rect.height || window.innerHeight));
 
-    const globeGeometry = new THREE.SphereGeometry(2, 64, 64);
-    const globeMaterial = new THREE.MeshStandardMaterial({
-      color: 0x0a0f12,
-      metalness: 0.85,
-      roughness: 0.2,
-      emissive: 0x00ffcc,
-      emissiveIntensity: 0.32,
-    });
-    const globe = new THREE.Mesh(globeGeometry, globeMaterial);
-    scene.add(globe);
+      camera = new THREE.PerspectiveCamera(55, w / h, 0.1, 100);
+      camera.position.set(0, 0.5, 2.7);
 
-    const haloGeometry = new THREE.SphereGeometry(2.08, 48, 48);
-    const haloMaterial = new THREE.MeshBasicMaterial({
-      color: 0x00ffee,
-      wireframe: true,
-      opacity: 0.35,
-      transparent: true,
-    });
-    const halo = new THREE.Mesh(haloGeometry, haloMaterial);
-    scene.add(halo);
+      const motionReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, motionReduced ? 1 : 2);
 
-    const starGeometry = new THREE.BufferGeometry();
-    const starCount = 900;
-    const starPositions = new Float32Array(starCount * 3);
-    for (let i = 0; i < starCount * 3; i += 3) {
-      starPositions[i] = (Math.random() - 0.5) * 40;
-      starPositions[i + 1] = (Math.random() - 0.5) * 40;
-      starPositions[i + 2] = -6 - Math.random() * 8;
-    }
-    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-    const starMaterial = new THREE.PointsMaterial({
-      color: 0x66ffee,
-      size: 0.04,
-    });
-    const stars = new THREE.Points(starGeometry, starMaterial);
-    scene.add(stars);
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance',
+      });
+      renderer.setPixelRatio(pixelRatio);
+      renderer.setSize(w, h, false);
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.2;
+      container.appendChild(renderer.domElement);
 
-    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ffff });
-    const lines: THREE.Line[] = [];
-    for (let i = 0; i < 80; i++) {
-      const curve = new THREE.QuadraticBezierCurve3(
-        new THREE.Vector3(Math.random() * 4 - 2, Math.random() * 4 - 2, Math.random() * 4 - 2),
-        new THREE.Vector3(0, 0, Math.random() * 2),
-        new THREE.Vector3(Math.random() * 4 - 2, Math.random() * 4 - 2, Math.random() * 4 - 2)
+      scene.add(new THREE.AmbientLight(0x66ffcc, 0.35));
+      const keyLight = new THREE.PointLight(0x4cffc4, 1.4, 10);
+      keyLight.position.set(2.2, 2.3, 3.2);
+      scene.add(keyLight);
+      const rimLight = new THREE.PointLight(0x00ffaa, 0.8, 8);
+      rimLight.position.set(-2.6, -1.4, -2.7);
+      scene.add(rimLight);
+
+      const texLoader = new THREE.TextureLoader();
+
+      // Inner Core: Gears
+      const coreGeo = new THREE.SphereGeometry(0.45, 96, 96);
+      const coreMat = new THREE.MeshStandardMaterial({
+        color: 0x222222,
+        roughness: 0.35,
+        metalness: 0.85,
+        emissive: new THREE.Color(0x22ffbb),
+        emissiveIntensity: 0.7,
+      });
+      gearsCore = new THREE.Mesh(coreGeo, coreMat);
+      scene.add(gearsCore);
+
+      texLoader.load(
+        GEARS_URL,
+        (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          tex.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy?.() || 1, 8);
+          gearsCore.material.map = tex;
+          gearsCore.material.emissiveIntensity = 0.9;
+          gearsCore.material.needsUpdate = true;
+        },
+        undefined,
+        (err) => console.warn('GEARS texture load failed (non-fatal)', err)
       );
-      const points = curve.getPoints(60);
-      const geo = new THREE.BufferGeometry().setFromPoints(points);
-      const line = new THREE.Line(geo, lineMaterial);
-      lines.push(line);
-      scene.add(line);
+
+      // Mid Layer: Circuits
+      const circGeo = new THREE.SphereGeometry(0.65, 96, 96);
+      const circMat = new THREE.MeshStandardMaterial({
+        color: 0x031015,
+        roughness: 0.55,
+        metalness: 0.3,
+        emissive: new THREE.Color(0x1bffc0),
+        emissiveIntensity: 0.45,
+        transparent: true,
+        opacity: 0.9,
+      });
+      circuitShell = new THREE.Mesh(circGeo, circMat);
+      scene.add(circuitShell);
+
+      texLoader.load(
+        CIRCUITS_URL,
+        (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+          tex.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy?.() || 1, 8);
+          circuitShell.material.map = tex;
+          circuitShell.material.needsUpdate = true;
+        },
+        undefined,
+        (err) => console.warn('CIRCUITS texture load failed (non-fatal)', err)
+      );
+
+      // Outer Layer: Data Globe
+      const globeGeo = new THREE.SphereGeometry(0.85, 96, 96);
+      const globeMat = new THREE.MeshPhongMaterial({
+        color: 0x020b11,
+        emissive: 0x0cf0b0,
+        emissiveIntensity: 0.55,
+        shininess: 16,
+        transparent: true,
+        opacity: 0.55,
+      });
+      globeShell = new THREE.Mesh(globeGeo, globeMat);
+      scene.add(globeShell);
+
+      texLoader.load(
+        GLOBE_URL,
+        (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          tex.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy?.() || 1, 8);
+          globeShell.material.map = tex;
+          globeShell.material.needsUpdate = true;
+        },
+        undefined,
+        (err) => console.warn('GLOBE texture load failed (non-fatal)', err)
+      );
+
+      // Wireframe overlay on globe
+      const wireMat = new THREE.MeshBasicMaterial({
+        color: 0x36ffca,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.12,
+      });
+      wireMesh = new THREE.Mesh(globeGeo, wireMat);
+      scene.add(wireMesh);
+
+      // Starfield backdrop
+      starField = createStarfield(1200, 6.5);
+      scene.add(starField);
     }
 
-    const orbitGroup = new THREE.Group();
-    scene.add(orbitGroup);
-
-    const orbitBands = [2.8, 3.3, 3.8];
-    const orbiters: THREE.Mesh[] = [];
-    const orbitGeometries: THREE.SphereGeometry[] = [];
-    const orbitMaterials: THREE.Material[] = [];
-    const ringGeometries: THREE.RingGeometry[] = [];
-    const ringMaterials: THREE.Material[] = [];
-    orbitBands.forEach((radius, idx) => {
-      const ringGeometry = new THREE.RingGeometry(radius - 0.005, radius + 0.005, 90);
-      const ringMaterial = new THREE.MeshBasicMaterial({
-        color: 0x00ffee,
-        opacity: 0.12,
-        transparent: true,
-        side: THREE.DoubleSide,
-      });
-      const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-      ring.rotation.x = Math.PI / 2;
-      ring.rotation.y = idx * 0.4;
-      orbitGroup.add(ring);
-      ringGeometries.push(ringGeometry);
-      ringMaterials.push(ringMaterial);
-
-      const orbGeometry = new THREE.SphereGeometry(0.09, 16, 16);
-      const orbMaterial = new THREE.MeshStandardMaterial({
-        color: 0x99ffee,
-        emissive: 0x00ffee,
-        emissiveIntensity: 0.8,
-        metalness: 0.3,
-      });
-      orbitGeometries.push(orbGeometry);
-      orbitMaterials.push(orbMaterial);
-
-      for (let i = 0; i < 5; i++) {
-        const orb = new THREE.Mesh(orbGeometry, orbMaterial);
-        const angle = (i / 5) * Math.PI * 2 + idx * 0.3;
-        orb.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
-        orbitGroup.add(orb);
-        orbiters.push(orb);
+    function createStarfield(count: number, radius: number) {
+      const geom = new THREE.BufferGeometry();
+      const positions = new Float32Array(count * 3);
+      for (let i = 0; i < count; i++) {
+        const r = radius * (0.6 + Math.random() * 0.4);
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+        const x = r * Math.sin(phi) * Math.cos(theta);
+        const y = r * Math.sin(phi) * Math.sin(theta);
+        const z = r * Math.cos(phi);
+        positions[i * 3] = x;
+        positions[i * 3 + 1] = y;
+        positions[i * 3 + 2] = z;
       }
-    });
-
-    const ambientLight = new THREE.AmbientLight(0x00ffff, 0.7);
-    scene.add(ambientLight);
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
-    dirLight.position.set(5, 5, 5);
-    scene.add(dirLight);
-
-    camera.position.z = 5;
+      geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      const mat = new THREE.PointsMaterial({
+        color: 0x66ffcc,
+        size: 0.01,
+        transparent: true,
+        opacity: 0.6,
+      });
+      return new THREE.Points(geom, mat);
+    }
 
     let animationFrame: number;
-    let t = 0;
-    const animate = () => {
+    function animate() {
+      if (!isAnimating) return;
       animationFrame = requestAnimationFrame(animate);
-      globe.rotation.y += 0.002;
-      halo.rotation.y -= 0.0015;
-      orbitGroup.rotation.y += 0.0012;
-      nebula.rotation.z += 0.0006;
-      stars.rotation.z -= 0.0004;
-      t += 0.0015;
-      orbiters.forEach((orb, idx) => {
-        const radius = orbitBands[Math.floor(idx / 5)];
-        const offset = (idx % 5) / 5;
-        const angle = t * 0.8 + offset * Math.PI * 2;
-        orb.position.x = Math.cos(angle) * radius;
-        orb.position.z = Math.sin(angle) * radius;
-      });
+      const dt = clock.getDelta();
+      gearsCore.rotation.y += 0.6 * dt;
+      circuitShell.rotation.y -= 0.5 * dt;
+      globeShell.rotation.y += 0.3 * dt;
+      wireMesh.rotation.y += 0.3 * dt;
       renderer.render(scene, camera);
-    };
-    animate();
+    }
 
-    const handleResize = () => {
-      const newWidth = container.clientWidth || window.innerWidth;
-      renderer.setSize(newWidth, height);
-      camera.aspect = newWidth / height;
+    function onResize() {
+      const rect = container.getBoundingClientRect();
+      const w = Math.max(1, Math.floor(rect.width || window.innerWidth));
+      const h = Math.max(1, Math.floor(rect.height || window.innerHeight));
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
       camera.updateProjectionMatrix();
-    };
+    }
 
-    window.addEventListener('resize', handleResize);
+    function setupVisibilityHandling() {
+      const handleVisibilityChange = () => {
+        isAnimating = !document.hidden;
+        if (isAnimating) {
+          clock.getDelta();
+          animate();
+        }
+      };
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    }
+
+    init();
+    animate();
+    const cleanupVisibility = setupVisibilityHandling();
+    window.addEventListener('resize', onResize, { passive: true });
 
     return () => {
       cancelAnimationFrame(animationFrame);
-      window.removeEventListener('resize', handleResize);
-      lines.forEach((line) => line.geometry.dispose());
-      lineMaterial.dispose();
-      starGeometry.dispose();
-      starMaterial.dispose();
-      nebulaGeometry.dispose();
-      nebulaMaterial.dispose();
-      haloGeometry.dispose();
-      haloMaterial.dispose();
-      globeGeometry.dispose();
-      globeMaterial.dispose();
-      ringGeometries.forEach((geo) => geo.dispose());
-      ringMaterials.forEach((mat) => mat.dispose());
-      orbitGeometries.forEach((geo) => geo.dispose());
-      orbitMaterials.forEach((mat) => mat.dispose());
-      orbitGroup.clear();
+      window.removeEventListener('resize', onResize);
+      cleanupVisibility();
       if (renderer.domElement.parentElement === container) {
         container.removeChild(renderer.domElement);
       }
@@ -205,34 +241,88 @@ function DataGlobe() {
   return (
     <div
       ref={containerRef}
-      className="w-full overflow-hidden rounded-xl shadow-[0_0_30px_rgba(0,255,204,0.3)]"
-      style={{
-        height: 500,
-        background: 'radial-gradient(circle at center, #000814, #00111f, #000)',
-      }}
+      role="img"
+      aria-label="Three rotating layered spheres representing gears, circuits, and a data globe with starfield backdrop"
+      className="w-full h-full"
     />
   );
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-50">
-      <section className="container mx-auto px-4 py-16 space-y-10">
-        <div className="space-y-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-cyan-300">Lukairo</p>
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">3D Data Globe</h1>
-          <p className="max-w-3xl text-slate-300">
-            A luminous, real-time canvas for data pathways, powered by Three.js and Cloudflare.
-            Rotate, explore, and imagine your network coming alive.
+    <main
+      className="relative overflow-hidden"
+      style={{
+        minHeight: '110vh',
+        background: 'radial-gradient(circle at 50% 0%, #07121e 0%, #020409 60%, #000000 100%)',
+      }}
+    >
+      {/* Neural Core Visualization */}
+      <section
+        className="relative w-screen"
+        style={{
+          height: '110vh',
+          marginLeft: 'calc(50% - 50vw)',
+          marginRight: 'calc(50% - 50vw)',
+        }}
+        role="region"
+        aria-label="LUKAIRO Neural Core"
+      >
+        {/* HUD Overlay */}
+        <div className="absolute top-[6%] left-0 right-0 text-center z-10 pointer-events-none">
+          <h1
+            className="m-0 uppercase"
+            style={{
+              fontSize: 'clamp(2.4rem, 5vw, 4rem)',
+              letterSpacing: '0.30em',
+              color: '#ddfaff',
+              textShadow: '0 0 14px rgba(91,255,200,.8), 0 0 40px rgba(61,255,185,.6)',
+            }}
+          >
+            LUK<span style={{ color: '#48ffc8' }}>AIRO</span>
+          </h1>
+          <p
+            className="mt-[0.65rem] uppercase"
+            style={{
+              fontSize: '0.82rem',
+              letterSpacing: '0.36em',
+              color: '#80ffc7',
+              opacity: 0.85,
+            }}
+          >
+            THE NEURAL CORE · CONNECTING EVERYTHING
           </p>
         </div>
 
-        <DataGlobe />
+        {/* Core Glow Effect */}
+        <div
+          className="absolute pointer-events-none z-0"
+          style={{
+            width: '34vmin',
+            height: '34vmin',
+            top: '58%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            background:
+              'radial-gradient(circle at 50% 50%, rgba(76,255,196,0.9) 0%, rgba(76,255,196,0.0) 55%)',
+            filter: 'blur(18px)',
+            opacity: 0.6,
+            animation: 'breathe 3.4s ease-in-out infinite',
+          }}
+        />
 
+        {/* 3D Canvas Container */}
+        <div className="absolute inset-0">
+          <NeuralCore />
+        </div>
+      </section>
+
+      {/* Content Below */}
+      <section className="container mx-auto px-4 py-16 space-y-10 relative z-10">
         <div className="grid gap-6 rounded-2xl border border-cyan-900/40 bg-gradient-to-br from-slate-900 to-slate-950 p-6 shadow-[0_10px_50px_rgba(0,255,204,0.1)] lg:grid-cols-[1.4fr_1fr]">
           <div className="space-y-3">
             <p className="text-xs uppercase tracking-[0.25em] text-cyan-300">What we do</p>
-            <h2 className="text-2xl font-semibold">
+            <h2 className="text-2xl font-semibold text-slate-50">
               Data infrastructure built for speed and trust
             </h2>
             <p className="text-slate-300">
@@ -249,7 +339,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               ].map((item) => (
                 <div
                   key={item}
-                  className="flex items-center gap-3 rounded-xl border border-slate-800/80 bg-slate-900/60 px-3 py-2 text-sm"
+                  className="flex items-center gap-3 rounded-xl border border-slate-800/80 bg-slate-900/60 px-3 py-2 text-sm text-slate-50"
                 >
                   <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(0,255,204,0.7)]" />
                   <span>{item}</span>
@@ -271,7 +361,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         </div>
       </section>
 
-      <section className="container mx-auto px-4 pb-16 space-y-10">
+      <section className="container mx-auto px-4 pb-16 space-y-10 relative z-10">
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="rounded-2xl border border-cyan-900/40 bg-slate-900/60 p-6">
             <p className="text-xs uppercase tracking-[0.25em] text-cyan-300">Industries</p>
@@ -309,6 +399,14 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           </div>
         </div>
       </section>
+
+      <style>{`
+        @keyframes breathe {
+          0% { transform: translate(-50%, -50%) scale(0.93); opacity: 0.4; }
+          50% { transform: translate(-50%, -50%) scale(1.07); opacity: 0.8; }
+          100% { transform: translate(-50%, -50%) scale(0.93); opacity: 0.4; }
+        }
+      `}</style>
     </main>
   );
 }
