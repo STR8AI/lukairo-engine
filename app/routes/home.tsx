@@ -205,10 +205,10 @@ function DataGlobe() {
   return (
     <div
       ref={containerRef}
-      className="w-full overflow-hidden rounded-xl shadow-[0_0_30px_rgba(0,255,204,0.3)]"
+      className="w-full overflow-hidden rounded-2xl shadow-[0_0_50px_rgba(0,255,204,0.35),0_20px_70px_rgba(0,255,204,0.2)] border border-cyan-800/40 transition-all hover:shadow-[0_0_70px_rgba(0,255,204,0.5),0_30px_90px_rgba(0,255,204,0.3)] hover:border-cyan-700/60"
       style={{
         height: 500,
-        background: 'radial-gradient(circle at center, #000814, #00111f, #000)',
+        background: 'radial-gradient(circle at 35% 30%, #001424, #000814, #00111f, #000)',
       }}
     />
   );
@@ -216,12 +216,17 @@ function DataGlobe() {
 
 export default function Home({ loaderData }: Route.ComponentProps) {
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-50">
-      <section className="container mx-auto px-4 py-16 space-y-10">
-        <div className="space-y-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-cyan-300">Lukairo</p>
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">3D Data Globe</h1>
-          <p className="max-w-3xl text-slate-300">
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-50">
+      {/* Hero Section */}
+      <section className="container mx-auto px-4 py-20 space-y-12">
+        <div className="space-y-6 text-center">
+          <p className="text-xs uppercase tracking-[0.3em] text-cyan-400 font-medium animate-pulse">
+            Lukairo Engine
+          </p>
+          <h1 className="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl bg-gradient-to-r from-cyan-300 via-cyan-200 to-teal-300 bg-clip-text text-transparent">
+            3D Data Globe
+          </h1>
+          <p className="max-w-3xl mx-auto text-lg text-slate-300 leading-relaxed">
             A luminous, real-time canvas for data pathways, powered by Three.js and Cloudflare.
             Rotate, explore, and imagine your network coming alive.
           </p>
@@ -229,18 +234,21 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
         <DataGlobe />
 
-        <div className="grid gap-6 rounded-2xl border border-cyan-900/40 bg-gradient-to-br from-slate-900 to-slate-950 p-6 shadow-[0_10px_50px_rgba(0,255,204,0.1)] lg:grid-cols-[1.4fr_1fr]">
-          <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.25em] text-cyan-300">What we do</p>
-            <h2 className="text-2xl font-semibold">
+        {/* Main Content Card */}
+        <div className="grid gap-8 rounded-3xl border border-cyan-900/30 bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-slate-950/90 p-8 shadow-[0_20px_70px_rgba(0,255,204,0.15)] backdrop-blur-sm lg:grid-cols-[1.4fr_1fr] transition-all hover:shadow-[0_25px_90px_rgba(0,255,204,0.25)] hover:border-cyan-800/50">
+          <div className="space-y-6">
+            <p className="text-xs uppercase tracking-[0.28em] text-cyan-400 font-semibold">
+              What we do
+            </p>
+            <h2 className="text-3xl font-bold text-white leading-tight">
               Data infrastructure built for speed and trust
             </h2>
-            <p className="text-slate-300">
+            <p className="text-slate-300 text-base leading-relaxed">
               We fuse real-time pipelines, resilient governance, and AI inference into one
               programmable fabric. Ship faster, audit confidently, and see your network as one
               luminous surface.
             </p>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-2 pt-2">
               {[
                 'Streaming ingestion & CDC',
                 'Observability with lineage',
@@ -249,21 +257,24 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               ].map((item) => (
                 <div
                   key={item}
-                  className="flex items-center gap-3 rounded-xl border border-slate-800/80 bg-slate-900/60 px-3 py-2 text-sm"
+                  className="group flex items-center gap-3 rounded-xl border border-slate-800/60 bg-gradient-to-br from-slate-900/80 to-slate-900/40 px-4 py-3 text-sm transition-all hover:border-cyan-700/60 hover:bg-gradient-to-br hover:from-slate-800/90 hover:to-slate-900/60 hover:shadow-lg hover:-translate-y-0.5"
                 >
-                  <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(0,255,204,0.7)]" />
-                  <span>{item}</span>
+                  <span className="h-2.5 w-2.5 rounded-full bg-cyan-400 shadow-[0_0_16px_rgba(0,255,204,0.8)] group-hover:shadow-[0_0_24px_rgba(0,255,204,1)] transition-shadow" />
+                  <span className="text-slate-200">{item}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="space-y-4 rounded-xl border border-slate-800/80 bg-slate-900/50 p-5">
-            <p className="text-xs uppercase tracking-[0.25em] text-cyan-300">Signal</p>
-            <p className="text-sm text-slate-300">
-              Cloudflare value: <span className="text-cyan-300">{loaderData.message}</span>
+          <div className="space-y-5 rounded-2xl border border-slate-800/60 bg-gradient-to-br from-slate-900/70 to-slate-900/30 p-6 backdrop-blur-sm">
+            <p className="text-xs uppercase tracking-[0.28em] text-cyan-400 font-semibold">
+              Signal
             </p>
-            <p className="text-sm text-slate-400">
+            <p className="text-base text-slate-300">
+              Cloudflare value:{' '}
+              <span className="font-semibold text-cyan-300">{loaderData.message}</span>
+            </p>
+            <p className="text-sm text-slate-400 leading-relaxed">
               Live telemetry fuels topology-aware routing, trust scoring, and adaptive guardrails
               across your data surface.
             </p>
@@ -271,38 +282,58 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         </div>
       </section>
 
-      <section className="container mx-auto px-4 pb-16 space-y-10">
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="rounded-2xl border border-cyan-900/40 bg-slate-900/60 p-6">
-            <p className="text-xs uppercase tracking-[0.25em] text-cyan-300">Industries</p>
-            <ul className="mt-4 space-y-3 text-slate-200">
-              <li>AI-native SaaS</li>
-              <li>Financial services</li>
-              <li>Logistics & mobility</li>
-              <li>Healthcare data platforms</li>
+      {/* Features Section */}
+      <section className="container mx-auto px-4 pb-20 space-y-10">
+        <div className="grid gap-8 lg:grid-cols-3">
+          <div className="group rounded-3xl border border-cyan-900/30 bg-gradient-to-br from-slate-900/80 to-slate-900/40 p-8 transition-all hover:border-cyan-800/50 hover:shadow-[0_20px_60px_rgba(0,255,204,0.2)] hover:-translate-y-1">
+            <p className="text-xs uppercase tracking-[0.28em] text-cyan-400 font-semibold">
+              Industries
+            </p>
+            <ul className="mt-6 space-y-4 text-slate-200">
+              {['AI-native SaaS', 'Financial services', 'Logistics & mobility', 'Healthcare data platforms'].map((item) => (
+                <li key={item} className="flex items-center gap-3 text-base">
+                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-400/60" />
+                  {item}
+                </li>
+              ))}
             </ul>
           </div>
-          <div className="rounded-2xl border border-cyan-900/40 bg-slate-900/60 p-6">
-            <p className="text-xs uppercase tracking-[0.25em] text-cyan-300">Why it wins</p>
-            <ul className="mt-4 space-y-3 text-slate-200">
-              <li>Programmable governance baked into flows</li>
-              <li>Low-latency edges with Cloudflare reach</li>
-              <li>Unified lineage for audit and safety</li>
-              <li>AI feature delivery without toil</li>
+
+          <div className="group rounded-3xl border border-cyan-900/30 bg-gradient-to-br from-slate-900/80 to-slate-900/40 p-8 transition-all hover:border-cyan-800/50 hover:shadow-[0_20px_60px_rgba(0,255,204,0.2)] hover:-translate-y-1">
+            <p className="text-xs uppercase tracking-[0.28em] text-cyan-400 font-semibold">
+              Why it wins
+            </p>
+            <ul className="mt-6 space-y-4 text-slate-200">
+              {[
+                'Programmable governance baked into flows',
+                'Low-latency edges with Cloudflare reach',
+                'Unified lineage for audit and safety',
+                'AI feature delivery without toil',
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-3 text-base">
+                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-400/60" />
+                  {item}
+                </li>
+              ))}
             </ul>
           </div>
-          <div className="rounded-2xl border border-cyan-900/40 bg-gradient-to-br from-cyan-900/40 to-teal-800/30 p-6 shadow-[0_10px_50px_rgba(0,255,204,0.15)]">
-            <p className="text-xs uppercase tracking-[0.25em] text-cyan-100">Call to action</p>
-            <h3 className="mt-3 text-xl font-semibold text-white">See your data surface</h3>
-            <p className="mt-2 text-sm text-cyan-50/80">
+
+          <div className="group rounded-3xl border border-cyan-700/40 bg-gradient-to-br from-cyan-900/50 via-teal-900/40 to-slate-900/50 p-8 shadow-[0_20px_60px_rgba(0,255,204,0.2)] transition-all hover:border-cyan-600/60 hover:shadow-[0_25px_80px_rgba(0,255,204,0.3)] hover:-translate-y-1">
+            <p className="text-xs uppercase tracking-[0.28em] text-cyan-200 font-bold">
+              Call to action
+            </p>
+            <h3 className="mt-4 text-2xl font-bold text-white leading-tight">
+              See your data surface
+            </h3>
+            <p className="mt-3 text-base text-cyan-50/90 leading-relaxed">
               Schedule a walkthrough of the LUKAIRO data globe mapped to your domains, sources, and
               AI features.
             </p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <button className="rounded-full bg-cyan-400 px-4 py-2 text-slate-950 font-semibold shadow-[0_10px_30px_rgba(0,255,204,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_15px_40px_rgba(0,255,204,0.45)]">
+            <div className="mt-6 flex flex-col gap-3">
+              <button className="rounded-full bg-gradient-to-r from-cyan-400 to-cyan-300 px-6 py-3 text-slate-950 font-bold shadow-[0_10px_40px_rgba(0,255,204,0.4)] transition-all hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,255,204,0.6)] hover:scale-[1.02]">
                 Book a demo
               </button>
-              <button className="rounded-full border border-cyan-400/60 px-4 py-2 text-cyan-100 transition hover:-translate-y-0.5 hover:border-cyan-300 hover:text-white">
+              <button className="rounded-full border-2 border-cyan-400/70 px-6 py-3 text-cyan-100 font-semibold backdrop-blur-sm transition-all hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-400/10 hover:text-white hover:shadow-[0_10px_30px_rgba(0,255,204,0.2)]">
                 Download overview
               </button>
             </div>
