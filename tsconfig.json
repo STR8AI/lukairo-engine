@@ -1,23 +1,19 @@
 {
-  "include": ["app", "workers", ".react-router/types/**/*"],
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": ["ES2022"],
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "types": ["@types/node"],
     "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
-    "jsx": "react-jsx",
+    "allowJs": true,
     "strict": true,
-    "isolatedModules": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "allowJs": true,
-    "noEmit": true,
-    "types": ["@cloudflare/workers-types/2023-07-01", "vite/client"],
-    "paths": {
-      "~/*": ["./app/*"]
-    }
-  }
+    "isolatedModules": true,
+    "noEmit": true
+  },
+  "include": ["src/**/*", "workers/**/*", "worker-configuration.d.ts"],
+  "exclude": ["node_modules", "dist", "build"]
 }

@@ -1,12 +1,11 @@
 name = "lukairo-engine"
-main = "./workers/app.ts"
+main = "src/index.ts"
 compatibility_date = "2025-01-01"
 compatibility_flags = ["nodejs_compat"]
 
-workers_dev = true
-
-# Assets
-assets = { directory = "./build/client/" }
+# Serve static assets from cf-pages directory
+[site]
+bucket = "./cf-pages"
 
 [vars]
 VALUE_FROM_CLOUDFLARE = "lukairo-edge"
