@@ -1,8 +1,15 @@
 name = "lukairo-engine"
-account_id = "YOUR_ACCOUNT_ID"
-workers_dev = true
-main = "build/server/index.js"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
 
+# Account ID should be set via environment variable CLOUDFLARE_ACCOUNT_ID
+# or in CI/CD secrets. Uncomment and set for local development:
+# account_id = "YOUR_ACCOUNT_ID_HERE"
 
+# Serve static assets from cf-pages directory
 [site]
-bucket = "./build/client"
+bucket = "./cf-pages"
+
+[vars]
+VALUE_FROM_CLOUDFLARE = "lukairo-edge"

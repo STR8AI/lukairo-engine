@@ -209,3 +209,8 @@ build/
 **/*iCloud\ Drive*
 **/*Desktop*
 **/*Downloads*
+
+# Ignore backup and duplicate files
+*.bak
+*\ 2.*
+*\ 2
