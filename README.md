@@ -82,7 +82,7 @@ npm run deploy
 
 1. **Install Wrangler CLI** (Cloudflare's deployment tool):
    ```bash
-   npm install -g @cloudflare/wrangler
+   npm install -g wrangler
    ```
 
 2. **Login to Cloudflare**:

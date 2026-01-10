@@ -12,7 +12,7 @@ echo ""
 if ! command -v wrangler &> /dev/null; then
     echo "⚠️  Wrangler is not installed."
     echo "📦 Installing Wrangler globally..."
-    npm install -g @cloudflare/wrangler
+    npm install -g wrangler
     echo "✅ Wrangler installed successfully!"
     echo ""
 fi

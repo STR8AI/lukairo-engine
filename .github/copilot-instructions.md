@@ -128,7 +128,7 @@ lukairo-engine/
 
 1. **Install Wrangler CLI** (if not already installed):
    ```bash
-   npm install -g @cloudflare/wrangler
+   npm install -g wrangler
    ```
 
 2. **Login to Cloudflare**:
