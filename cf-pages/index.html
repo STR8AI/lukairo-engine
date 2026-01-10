@@ -1,50 +1,373 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="LUKAIRO — Real-time insight, globally. We build tools that connect your systems and make your data useful." />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LUKAIRO Engine Globe</title>
 
-  <title>LUKAIRO — Home</title>
+<style>
+/* Page base */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #020409;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
 
-  <!-- Keep CSS small and render-blocking for a hero-first page; preload helps a bit -->
-  <link rel="preload" href="style.css" as="style" />
-  <link rel="stylesheet" href="style.css" />
+/* Full-width, full-height hero */
+#lukairo-engine-v2 {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 50% 0%, #10141e 0, #05070d 55%, #020308 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6vh 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Center wrapper */
+.engine-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* Sphere core */
+.engine-sphere {
+  position: relative;
+  width: min(480px, 80vw);
+  height: min(480px, 80vw);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 30%, rgba(0,255,210,0.26), transparent 55%),
+    radial-gradient(circle at 50% 55%, #05070c 0, #020409 70%);
+  box-shadow:
+    0 0 180px rgba(0,255,220,0.35),
+    inset 0 0 80px rgba(0,255,220,0.35),
+    inset 0 0 140px rgba(0,255,160,0.25);
+  overflow: visible;
+  isolation: isolate;
+  animation: sphereGlow 6s ease-in-out infinite alternate;
+}
+
+/* Outer halo pulses */
+.engine-sphere::before,
+.engine-sphere::after {
+  content: "";
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  border: 1px solid rgba(0,255,210,0.22);
+  box-shadow:
+    0 0 40px rgba(0,255,210,0.4),
+    0 0 110px rgba(0,255,210,0.2);
+  opacity: 0.35;
+  animation: haloPulse 7s ease-in-out infinite alternate;
+}
+.engine-sphere::after {
+  inset: -30%;
+  opacity: 0.16;
+  animation-duration: 11s;
+}
+
+@keyframes haloPulse {
+  0%   { transform: scale(1);   opacity: 0.12; }
+  50%  { transform: scale(1.04);opacity: 0.4;  }
+  100% { transform: scale(1.08);opacity: 0.14; }
+}
+
+@keyframes sphereGlow {
+  from {
+    box-shadow:
+      0 0 120px rgba(0,255,160,0.18),
+      inset 0 0 45px rgba(0,255,200,0.22),
+      inset 0 0 110px rgba(0,255,255,0.18);
+  }
+  to {
+    box-shadow:
+      0 0 200px rgba(0,255,230,0.42),
+      inset 0 0 85px rgba(0,255,255,0.34),
+      inset 0 0 160px rgba(0,255,200,0.32);
+  }
+}
+
+/* Center brand */
+.engine-center {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 3;
+}
+
+.engine-center h1 {
+  margin: 0;
+  font-family: "Orbitron", system-ui, sans-serif;
+  font-size: clamp(28px, 4vw, 38px);
+  letter-spacing: 0.22em;
+  color: #e9feff;
+  text-shadow:
+    0 0 15px rgba(0,255,255,0.75),
+    0 0 30px rgba(0,255,200,0.45);
+}
+
+.engine-center h1 span {
+  color: #00ffe0;
+  text-shadow:
+    0 0 18px rgba(0,255,200,1),
+    0 0 30px rgba(0,255,160,0.9);
+}
+
+.engine-center p {
+  margin: 6px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  color: #b1f8ff;
+}
+
+/* Data stream cutting through sphere */
+.data-stream,
+.data-stream-secondary {
+  position: absolute;
+  left: -20%;
+  width: 140%;
+  height: 3px;
+  top: 52%;
+  background:
+    linear-gradient(to right,
+      rgba(0,255,200,0) 0%,
+      rgba(0,255,200,0) 10%,
+      rgba(0,255,200,0.8) 40%,
+      rgba(0,255,200,0.8) 60%,
+      rgba(0,255,200,0) 90%,
+      rgba(0,255,200,0) 100%);
+  filter: blur(0.3px);
+  z-index: 2;
+  opacity: 0.85;
+  mask-image: radial-gradient(circle at 50% 50%, black 0, black 52%, transparent 53%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 0, black 52%, transparent 53%);
+}
+.data-stream {
+  animation: dataFlow 2.2s linear infinite;
+}
+.data-stream-secondary {
+  top: 48%;
+  opacity: 0.5;
+  animation: dataFlow 3.4s linear infinite;
+}
+
+@keyframes dataFlow {
+  0%   { transform: translateX(-40%); opacity: 0.3; }
+  40%  { opacity: 1; }
+  100% { transform: translateX(40%); opacity: 0.1; }
+}
+
+/* Orbits base */
+.orbit {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.orbit-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(0,255,210,0.08);
+}
+
+/* Orbit speeds */
+.orbit-inner  { animation: spin 18s linear infinite; }
+.orbit-middle { animation: spin 30s linear infinite; }
+.orbit-outer  { animation: spin 46s linear infinite; }
+
+@keyframes spin {
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}
+
+/* Icon link wrapper – rotates with orbit, pointer enabled */
+.icon-link {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 1px;
+  transform-origin: 0 0;
+  pointer-events: auto;
+}
+
+/* Actual icon image */
+.icon-link img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  filter:
+    drop-shadow(0 0 6px rgba(0,255,255,0.4))
+    drop-shadow(0 0 16px rgba(0,255,200,0.35));
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+/* Radius per orbit */
+.orbit-inner  .icon-link { --radius: 54%; }
+.orbit-middle .icon-link { --radius: 70%; }
+.orbit-outer  .icon-link { --radius: 86%; }
+
+/* Position icons around circle using angle custom prop */
+.icon-link {
+  transform:
+    rotate(var(--angle))
+    translateY(calc(-1 * var(--radius)))
+    rotate(calc(-1 * var(--angle)));
+}
+
+.icon-link:hover img {
+  transform: translate(-50%, -50%) scale(1.35);
+  filter:
+    drop-shadow(0 0 10px rgba(0,255,255,0.8))
+    drop-shadow(0 0 25px rgba(0,255,200,0.6));
+}
+
+/* Make links clickable but no underline */
+.icon-link {
+  text-decoration: none;
+}
+
+/* Responsive tweak */
+@media (max-width: 600px) {
+  .engine-sphere {
+    width: 320px;
+    height: 320px;
+  }
+  .icon-link img {
+    width: 26px;
+    height: 26px;
+  }
+}
+</style>
 </head>
+
 <body>
-  <!-- Accessibility: quick skip link for keyboard users -->
-  <a class="skip-link" href="#content">Skip to content</a>
 
-  <main id="content" class="hero" role="main" aria-label="LUKAIRO home">
-    <header class="hero-header" role="banner">
-      <h1 class="site-title">LUKAIRO ENGINE</h1>
-      <p class="lede">Delivering control. Returning time. Proudly Canadian.</p>
-    </header>
+<section id="lukairo-engine-v2">
+  <div class="engine-container">
+    <div class="engine-sphere">
 
-    <div class="globe-wrapper" aria-hidden="true">
-      <!--
-        Canvas for JS-driven globe animation.
-        The main.js script will render an animated globe on this canvas.
-      -->
-      <canvas id="globe" class="globe-canvas" aria-hidden="true"></canvas>
+      <!-- data beams -->
+      <div class="data-stream"></div>
+      <div class="data-stream-secondary"></div>
 
-      <!--
-        CSS-only fallback globe for when JS is disabled or loading.
-        Keep the "rotate-right" class if you want clockwise rotation (animation-direction: reverse).
-      -->
-      <div class="globe rotate-right" aria-hidden="true"></div>
+      <!-- brand -->
+      <div class="engine-center">
+        <h1>LUK<span>AIRO</span></h1>
+        <p>WE CONNECT EVERYTHING</p>
+      </div>
 
-      <!--
-        Non-JS / fallback: an accessible single-image globe.
-        This will appear only if JS/CSS animation is not available.
-      -->
-      <noscript>
-        <img class="globe-flat" src="assets/images/globe-flat.jpg" alt="Stylized representation of the globe" />
-      </noscript>
+      <!-- inner orbit: comms -->
+      <div class="orbit orbit-inner">
+        <div class="orbit-ring"></div>
+
+        <a class="icon-link" style="--angle: 0deg;"
+           href="https://mail.google.com" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/5968/5968534.png" alt="Gmail">
+        </a>
+
+        <a class="icon-link" style="--angle: 90deg;"
+           href="https://outlook.office.com/mail" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/732/732223.png" alt="Outlook">
+        </a>
+
+        <a class="icon-link" style="--angle: 180deg;"
+           href="https://web.whatsapp.com" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+        </a>
+
+        <a class="icon-link" style="--angle: 270deg;"
+           href="https://slack.com/signin" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/2111/2111615.png" alt="Slack">
+        </a>
+      </div>
+
+      <!-- middle orbit: CRM / SaaS -->
+      <div class="orbit orbit-middle">
+        <div class="orbit-ring"></div>
+
+        <a class="icon-link" style="--angle: 30deg;"
+           href="https://login.salesforce.com" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/888/888879.png" alt="Salesforce">
+        </a>
+
+        <a class="icon-link" style="--angle: 120deg;"
+           href="https://app.hubspot.com/login" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/732/732195.png" alt="HubSpot">
+        </a>
+
+        <a class="icon-link" style="--angle: 210deg;"
+           href="https://www.zoho.com/" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/888/888867.png" alt="Zoho">
+        </a>
+
+        <a class="icon-link" style="--angle: 300deg;"
+           href="https://login.microsoftonline.com" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/732/732221.png" alt="Microsoft 365">
+        </a>
+      </div>
+
+      <!-- outer orbit: trades + tools -->
+      <div class="orbit orbit-outer">
+        <div class="orbit-ring"></div>
+
+        <a class="icon-link" style="--angle: 20deg;"
+           href="https://servicetitan.com" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="ServiceTitan">
+        </a>
+
+        <a class="icon-link" style="--angle: 80deg;"
+           href="https://my.housecallpro.com/users/sign_in" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/1048/1048946.png" alt="Housecall Pro">
+        </a>
+
+        <a class="icon-link" style="--angle: 140deg;"
+           href="https://secure.getjobber.com/login" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/5968/5968866.png" alt="Jobber">
+        </a>
+
+        <a class="icon-link" style="--angle: 200deg;"
+           href="https://login.workiz.com" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/889/889119.png" alt="Workiz">
+        </a>
+
+        <a class="icon-link" style="--angle: 260deg;"
+           href="https://zoom.us/signin" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/888/888853.png" alt="Zoom">
+        </a>
+
+        <a class="icon-link" style="--angle: 320deg;"
+           href="https://github.com/login" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png" alt="GitHub">
+        </a>
+
+        <a class="icon-link" style="--angle: 340deg;"
+           href="https://www.notion.so/login" target="_blank" rel="noopener">
+          <img src="https://cdn-icons-png.flaticon.com/512/5968/5968906.png" alt="Notion">
+        </a>
+      </div>
+
     </div>
-  </main>
+  </div>
+</section>
 
-  <!-- Defer any JS that controls the canvas or sprite animation -->
-  <script defer src="main.js"></script>
 </body>
 </html>
