@@ -5,7 +5,7 @@ compatibility_flags = ["nodejs_compat"]
 
 # Serve static assets from cf-pages directory
 [site]
-bucket = "./cf-pages"
+bucket = "../cf-pages"
 
 [vars]
 VALUE_FROM_CLOUDFLARE = "lukairo-edge"
