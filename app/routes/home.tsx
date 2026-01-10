@@ -89,7 +89,7 @@ function NeuralCore() {
         GEARS_URL,
         (tex) => {
           tex.colorSpace = THREE.SRGBColorSpace;
-          tex.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy?.() || 1, 8);
+          tex.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy() || 1, 8);
           gearsCore.material.map = tex;
           gearsCore.material.emissiveIntensity = 0.9;
           gearsCore.material.needsUpdate = true;
@@ -117,7 +117,7 @@ function NeuralCore() {
         (tex) => {
           tex.colorSpace = THREE.SRGBColorSpace;
           tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-          tex.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy?.() || 1, 8);
+          tex.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy() || 1, 8);
           circuitShell.material.map = tex;
           circuitShell.material.needsUpdate = true;
         },
@@ -142,7 +142,7 @@ function NeuralCore() {
         GLOBE_URL,
         (tex) => {
           tex.colorSpace = THREE.SRGBColorSpace;
-          tex.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy?.() || 1, 8);
+          tex.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy() || 1, 8);
           globeShell.material.map = tex;
           globeShell.material.needsUpdate = true;
         },
@@ -231,6 +231,32 @@ function NeuralCore() {
       cancelAnimationFrame(animationFrame);
       window.removeEventListener('resize', onResize);
       cleanupVisibility();
+      
+      // Cleanup Three.js resources to prevent memory leaks
+      if (gearsCore) {
+        gearsCore.geometry.dispose();
+        if (gearsCore.material.map) gearsCore.material.map.dispose();
+        gearsCore.material.dispose();
+      }
+      if (circuitShell) {
+        circuitShell.geometry.dispose();
+        if (circuitShell.material.map) circuitShell.material.map.dispose();
+        circuitShell.material.dispose();
+      }
+      if (globeShell) {
+        globeShell.geometry.dispose();
+        if (globeShell.material.map) globeShell.material.map.dispose();
+        globeShell.material.dispose();
+      }
+      if (wireMesh) {
+        wireMesh.geometry.dispose();
+        wireMesh.material.dispose();
+      }
+      if (starField) {
+        starField.geometry.dispose();
+        starField.material.dispose();
+      }
+      
       if (renderer.domElement.parentElement === container) {
         container.removeChild(renderer.domElement);
       }
@@ -253,7 +279,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     <main
       className="relative overflow-hidden"
       style={{
-        minHeight: '110vh',
+        minHeight: '100vh',
         background: 'radial-gradient(circle at 50% 0%, #07121e 0%, #020409 60%, #000000 100%)',
       }}
     >
@@ -261,7 +287,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       <section
         className="relative w-screen"
         style={{
-          height: '110vh',
+          height: '100vh',
           marginLeft: 'calc(50% - 50vw)',
           marginRight: 'calc(50% - 50vw)',
         }}
