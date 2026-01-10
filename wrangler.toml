@@ -1,8 +1,12 @@
 name = "lukairo-engine"
-account_id = "YOUR_ACCOUNT_ID"
+main = "./workers/app.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
 workers_dev = true
-main = "build/server/index.js"
 
+# Assets
+assets = { directory = "./build/client/" }
 
-[site]
-bucket = "./build/client"
+[vars]
+VALUE_FROM_CLOUDFLARE = "lukairo-edge"

@@ -1,0 +1,40 @@
+{
+  "name": "lukairo-engine",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "react-router dev",
+    "build": "react-router build",
+    "deploy": "npm run build && wrangler deploy",
+    "start": "wrangler dev",
+    "typecheck": "react-router typegen && tsc --build --noEmit",
+    "cf-typegen": "wrangler types",
+    "preview": "npm run build && npm run start",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@react-router/cloudflare": "^7.7.0",
+    "isbot": "^5.1.28",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.7.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250718.0",
+    "@react-router/dev": "^7.7.0",
+    "@react-router/fs-routes": "^7.7.0",
+    "@tailwindcss/vite": "^4.1.11",
+    "@types/node": "^24.0.14",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "prettier": "^3.6.2",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "tailwindcss": "^4.1.11",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.5",
+    "vite-tsconfig-paths": "^5.1.4",
+    "wrangler": "^4.25.0"
+  }
+}
