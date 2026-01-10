@@ -122,18 +122,37 @@ lukairo-engine/
 - For routing issues, check the file structure in `app/routes/`
 - For build errors, ensure all dependencies are installed with `npm install`
 
----
+## Deployment
 
-import { Hono } from 'hono';
+### Deploying to Cloudflare Workers
 
-const app = new Hono();
+1. **Install Wrangler CLI** (if not already installed):
+   ```bash
+   npm install -g wrangler
+   ```
 
-app.get('/', (c) =>
-c.html(`     <h1 style="font-family: sans-serif; color: #0af;">
-      Welcome to LUKAIRO ENGINE
-    </h1>
-    <p>Your worker is live.</p>
-  `)
-);
+2. **Login to Cloudflare**:
+   ```bash
+   wrangler login
+   ```
 
-export default app;
+3. **Configure your account**:
+   - Update `wrangler.toml` with your Cloudflare account ID
+   - Set up any required environment variables
+
+4. **Deploy**:
+   ```bash
+   npm run deploy
+   # or
+   wrangler pages publish cf-pages --project-name=lukairo-engine
+   ```
+
+5. **Verify deployment**:
+   - Check the Cloudflare dashboard for your worker/pages project
+   - Test the deployed URL to ensure everything is working
+
+### Environment Variables
+
+- Set environment variables in the Cloudflare dashboard under Workers & Pages settings
+- For local development, use `.dev.vars` file (add to `.gitignore`)
+- Access variables via `env` parameter in Workers or `context.cloudflare.env` in React Router loaders
