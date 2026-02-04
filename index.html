@@ -190,7 +190,7 @@
     (function() {
       'use strict';
 
-      // Wait for loader to complete
+      // Wait for loader to complete (add small buffer for smooth transition)
       setTimeout(() => {
         // Initialize Neural Core
         if (window.NeuralCore && window.THREE) {
@@ -218,7 +218,7 @@
             root.classList.add('active');
           }
         }
-      }, 7500); // Match loader duration (7.5 seconds)
+      }, 7600); // Loader duration (7.5s) + 100ms buffer for smooth transition
 
       // Optional: Load React application after Neural Core
       // Uncomment the line below if you want to load the React app as well

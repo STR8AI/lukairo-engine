@@ -239,12 +239,14 @@ Edit `src/styles/lukairo-loader.css`:
 }
 ```
 
-Also update the timeout in `index.html`:
+**Note:** The `--lk-duration` CSS variable controls multiple animations including the progress bar fill, status text cycling, and the final fadeout. Changing this single variable will adjust all timing consistently.
+
+Also update the timeout in `index.html` to match (add 100ms buffer for smooth transition):
 ```javascript
 setTimeout(() => {
   // Initialize Neural Core
   ...
-}, 7500); // Update this value (in milliseconds)
+}, 7600); // Loader duration + 100ms buffer (in milliseconds)
 ```
 
 ### Color Scheme

@@ -52,6 +52,14 @@
       this.animationId = null;
       this.isPageVisible = true;
       this.isInitialized = false;
+      
+      // Store bound event handlers for cleanup
+      this.boundHandlers = {
+        contextLost: null,
+        contextRestored: null,
+        resize: null,
+        visibilityChange: null
+      };
     }
 
     /**
@@ -139,9 +147,13 @@
       this.renderer.setClearColor(this.config.scene.clearColor, 1);
       container.appendChild(this.renderer.domElement);
 
+      // Bind and store event handlers for WebGL context
+      this.boundHandlers.contextLost = this.handleContextLost.bind(this);
+      this.boundHandlers.contextRestored = this.handleContextRestored.bind(this);
+      
       // Handle WebGL Context Loss
-      this.renderer.domElement.addEventListener('webglcontextlost', this.handleContextLost.bind(this), false);
-      this.renderer.domElement.addEventListener('webglcontextrestored', this.handleContextRestored.bind(this), false);
+      this.renderer.domElement.addEventListener('webglcontextlost', this.boundHandlers.contextLost, false);
+      this.renderer.domElement.addEventListener('webglcontextrestored', this.boundHandlers.contextRestored, false);
 
       // Lighting
       this.setupLighting();
@@ -350,18 +362,42 @@
      * Setup Event Listeners
      */
     setupEventListeners() {
-      window.addEventListener('resize', () => this.onWindowResize(), false);
-      document.addEventListener('visibilitychange', () => this.handleVisibilityChange(), false);
+      // Bind and store event handlers for cleanup
+      this.boundHandlers.resize = () => this.onWindowResize();
+      this.boundHandlers.visibilityChange = () => this.handleVisibilityChange();
+      
+      window.addEventListener('resize', this.boundHandlers.resize, false);
+      document.addEventListener('visibilitychange', this.boundHandlers.visibilityChange, false);
     }
 
     /**
      * Cleanup and Dispose
      */
     dispose() {
+      // Cancel animation frame
       if (this.animationId) {
         cancelAnimationFrame(this.animationId);
       }
       
+      // Remove event listeners
+      if (this.boundHandlers.resize) {
+        window.removeEventListener('resize', this.boundHandlers.resize, false);
+      }
+      if (this.boundHandlers.visibilityChange) {
+        document.removeEventListener('visibilitychange', this.boundHandlers.visibilityChange, false);
+      }
+      
+      // Remove WebGL context event listeners
+      if (this.renderer && this.renderer.domElement) {
+        if (this.boundHandlers.contextLost) {
+          this.renderer.domElement.removeEventListener('webglcontextlost', this.boundHandlers.contextLost, false);
+        }
+        if (this.boundHandlers.contextRestored) {
+          this.renderer.domElement.removeEventListener('webglcontextrestored', this.boundHandlers.contextRestored, false);
+        }
+      }
+      
+      // Dispose renderer
       if (this.renderer) {
         this.renderer.dispose();
       }
