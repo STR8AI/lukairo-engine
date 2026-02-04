@@ -1,15 +1,229 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LUKAIRO</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LUKAIRO Engine - Neural Core Visualization and AI Platform">
+  <title>LUKAIRO Engine</title>
+  <link rel="stylesheet" href="/src/styles/lukairo-loader.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: #090c11;
+      color: #E8EAED;
+    }
+
+    #root {
+      display: none;
+    }
+
+    #root.active {
+      display: block;
+    }
+
+    #lukairo-engine {
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    #lukairo-engine.active {
+      display: block;
+    }
+
+    /* Neural Core Container Styles */
+    #neural-core-container {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .neural-core-fallback {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      padding: 2rem;
+      background: rgba(17, 22, 28, 0.9);
+      border-radius: 8px;
+      max-width: 400px;
+      z-index: 100;
+    }
+
+    .neural-core-fallback.active {
+      display: block;
+    }
+
+    .neural-core-fallback h2 {
+      color: #6CEAD9;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .neural-core-fallback p {
+      color: #9AA0A6;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+
+    .neural-core-info {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      color: #9AA0A6;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      pointer-events: none;
+      opacity: 0.6;
+      z-index: 50;
+    }
+
+    .neural-core-loading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #090c11;
+      z-index: 10;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .neural-core-loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(108, 234, 217, 0.3);
+      border-top-color: #6CEAD9;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 640px) {
+      .neural-core-info {
+        font-size: 0.75rem;
+        bottom: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
-    <!-- Replace /src/entry.client.jsx with your client entry path -->
-    <script type="module" src="/src/entry.client.jsx"></script>
-  </body>
-  </html>
+  <!-- Loader (shows first, auto-hides after 7.5s) -->
+  <div class="lk-loader" id="lukairo-loader">
+    <div class="lk-core-container">
+      <div class="lk-core-layer lk-globe"></div>
+      <div class="lk-core-layer lk-circuits"></div>
+      <div class="lk-core-layer lk-gears"></div>
+      <div class="lk-central-node"></div>
+    </div>
+    
+    <div class="lk-progress-section">
+      <div class="lk-brand">LUKAIRO</div>
+      <div class="lk-tagline">Neural Core Engine</div>
+      
+      <div class="lk-progress-bar-container">
+        <div class="lk-progress-bar"></div>
+      </div>
+      
+      <div class="lk-status"></div>
+    </div>
+  </div>
+  
+  <!-- Neural Core Visualization (loads after loader) -->
+  <section id="lukairo-engine">
+    <div id="neural-core-container" role="main" aria-label="LUKAIRO Neural Core Visualization">
+      <!-- Loading Overlay -->
+      <div class="neural-core-loading" id="loading-overlay">
+        <div class="loading-spinner"></div>
+      </div>
+
+      <!-- WebGL Fallback Message -->
+      <div class="neural-core-fallback" id="fallback-message">
+        <h2>WebGL Not Available</h2>
+        <p>Your browser doesn't support WebGL or it's disabled.</p>
+        <p>Please enable WebGL to view the Neural Core visualization.</p>
+      </div>
+
+      <!-- Info Display -->
+      <div class="neural-core-info">
+        LUKAIRO Neural Core • 3D Visualization
+      </div>
+    </div>
+  </section>
+
+  <!-- React Root (for the main application) -->
+  <div id="root"></div>
+
+  <!-- Three.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+  
+  <!-- Neural Core Initialization -->
+  <script src="/src/scripts/neural-core.js"></script>
+  
+  <!-- Initialization Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      // Wait for loader to complete
+      setTimeout(() => {
+        // Initialize Neural Core
+        if (window.NeuralCore && window.THREE) {
+          const neuralCore = new window.NeuralCore({
+            containerId: 'neural-core-container',
+            texturePath: '/assets/textures/'
+          });
+          
+          // Show Neural Core section
+          const engineSection = document.getElementById('lukairo-engine');
+          if (engineSection) {
+            engineSection.classList.add('active');
+          }
+          
+          // Initialize the visualization
+          neuralCore.init();
+          
+          // Store reference for cleanup if needed
+          window.lukairoCoreInstance = neuralCore;
+        } else {
+          console.warn('Three.js or NeuralCore not loaded');
+          // Fallback to showing the React app
+          const root = document.getElementById('root');
+          if (root) {
+            root.classList.add('active');
+          }
+        }
+      }, 7500); // Match loader duration (7.5 seconds)
+
+      // Optional: Load React application after Neural Core
+      // Uncomment the line below if you want to load the React app as well
+      // <script type="module" src="/src/entry.client.tsx"></script>
+    })();
+  </script>
 </body>
 </html>
