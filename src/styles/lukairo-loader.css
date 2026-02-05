@@ -1,0 +1,296 @@
+/* ============================================
+   LUKAIRO HighLevel Loader - Pure CSS Variant
+   ============================================ */
+
+:root {
+  --lk-bg: #090c11;
+  --lk-panel: #11161c;
+  --lk-accent: #6CEAD9;
+  --lk-accent-alt: #8AB4F8;
+  --lk-text-primary: #E8EAED;
+  --lk-text-secondary: #9AA0A6;
+  --lk-glow: rgba(108, 234, 217, 0.4);
+  --lk-duration: 7.5s;
+}
+
+/* Loader Container */
+.lk-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse at center, var(--lk-panel) 0%, var(--lk-bg) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeOut 0.5s ease-in-out var(--lk-duration) forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Core Container */
+.lk-core-container {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin-bottom: 48px;
+}
+
+/* Spinning Core Layers */
+.lk-core-layer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid;
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Gears Layer (Inner) */
+.lk-gears {
+  width: 120px;
+  height: 120px;
+  border-color: var(--lk-accent);
+  box-shadow: 0 0 20px var(--lk-glow), inset 0 0 20px var(--lk-glow);
+  animation-duration: 3s;
+}
+
+.lk-gears::before,
+.lk-gears::after {
+  content: '';
+  position: absolute;
+  background: var(--lk-accent);
+  box-shadow: 0 0 10px var(--lk-glow);
+}
+
+.lk-gears::before {
+  width: 40%;
+  height: 3px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.lk-gears::after {
+  width: 3px;
+  height: 40%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Circuits Layer (Middle) */
+.lk-circuits {
+  width: 200px;
+  height: 200px;
+  border-color: var(--lk-accent-alt);
+  border-style: dashed;
+  box-shadow: 0 0 15px rgba(138, 180, 248, 0.3);
+  animation-duration: 5s;
+  animation-direction: reverse;
+}
+
+/* Data Globe Layer (Outer) */
+.lk-globe {
+  width: 280px;
+  height: 280px;
+  border-color: var(--lk-accent);
+  opacity: 0.3;
+  animation-duration: 8s;
+}
+
+/* Central Node */
+.lk-central-node {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  background: var(--lk-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 30px var(--lk-glow), 0 0 60px var(--lk-glow);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Progress Section */
+.lk-progress-section {
+  width: 400px;
+  max-width: 90vw;
+  text-align: center;
+}
+
+.lk-brand {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--lk-text-primary);
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+.lk-tagline {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 0.875rem;
+  color: var(--lk-text-secondary);
+  margin-bottom: 32px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Progress Bar */
+.lk-progress-bar-container {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.lk-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--lk-accent), var(--lk-accent-alt));
+  border-radius: 2px;
+  box-shadow: 0 0 10px var(--lk-glow);
+  animation: progressFill var(--lk-duration) cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes progressFill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Loading Status */
+.lk-status {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 0.875rem;
+  color: var(--lk-text-secondary);
+  min-height: 1.5em;
+  animation: statusCycle var(--lk-duration) steps(5, end) forwards;
+}
+
+@keyframes statusCycle {
+  0% {
+    content: 'Initializing Neural Core...';
+  }
+  20% {
+    content: 'Loading Cognitive Modules...';
+  }
+  40% {
+    content: 'Calibrating AI Systems...';
+  }
+  60% {
+    content: 'Establishing Connections...';
+  }
+  80% {
+    content: 'Activating LUKAIRO Engine...';
+  }
+  100% {
+    content: 'Ready.';
+  }
+}
+
+.lk-status::before {
+  content: 'Initializing Neural Core...';
+  animation: statusText var(--lk-duration) steps(5, end) forwards;
+}
+
+@keyframes statusText {
+  0% {
+    content: 'Initializing Neural Core...';
+  }
+  20% {
+    content: 'Loading Cognitive Modules...';
+  }
+  40% {
+    content: 'Calibrating AI Systems...';
+  }
+  60% {
+    content: 'Establishing Connections...';
+  }
+  80% {
+    content: 'Activating LUKAIRO Engine...';
+  }
+  100% {
+    content: 'Ready.';
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .lk-core-container {
+    width: 200px;
+    height: 200px;
+  }
+
+  .lk-gears {
+    width: 80px;
+    height: 80px;
+  }
+
+  .lk-circuits {
+    width: 140px;
+    height: 140px;
+  }
+
+  .lk-globe {
+    width: 200px;
+    height: 200px;
+  }
+
+  .lk-brand {
+    font-size: 1.5rem;
+  }
+
+  .lk-progress-section {
+    width: 320px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .lk-core-layer,
+  .lk-central-node,
+  .lk-loader {
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .lk-loader {
+    display: none;
+  }
+}

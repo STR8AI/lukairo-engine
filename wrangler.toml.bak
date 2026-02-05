@@ -1,9 +1,0 @@
-cat > wrangler.toml <<'EOF'
-name = "lukairo-engine"
-account_id = "YOUR_ACCOUNT_ID"
-workers_dev = true
-main = "build/server/index.js"
-
-[site]
-bucket = "./build/client"
-EOF
