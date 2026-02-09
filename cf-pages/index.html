@@ -6,6 +6,7 @@
 <title>LUKAIRO Engine Globe</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
 /* Page base */
 html, body {
   margin: 0;
@@ -256,6 +257,136 @@ html, body {
     height: 26px;
   }
 }
+
+/* Workspaces section */
+.workspace-section {
+  position: relative;
+  padding: 72px 20px 96px;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(0, 255, 214, 0.12), transparent 45%),
+    radial-gradient(circle at 80% 0%, rgba(0, 140, 255, 0.14), transparent 50%),
+    linear-gradient(180deg, #020409 0%, #050913 55%, #060d19 100%);
+  overflow: hidden;
+}
+
+.workspace-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.02),
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px,
+      transparent 6px
+    );
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.workspace-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+}
+
+.workspace-kicker {
+  margin: 0 0 10px;
+  font-size: 12px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #7ff7e7;
+}
+
+.workspace-title {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 40px);
+  letter-spacing: 0.04em;
+  color: #e8ffff;
+}
+
+.workspace-sub {
+  margin: 12px auto 28px;
+  max-width: 640px;
+  color: rgba(231, 255, 255, 0.72);
+  line-height: 1.6;
+}
+
+.workspace-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.workspace-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 26px;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 255, 214, 0.2);
+  background:
+    linear-gradient(150deg, rgba(0, 255, 214, 0.1), rgba(2, 10, 22, 0.9)),
+    radial-gradient(circle at top, rgba(0, 140, 255, 0.16), transparent 60%);
+  text-decoration: none;
+  color: inherit;
+  box-shadow:
+    0 18px 40px rgba(0, 255, 214, 0.12),
+    inset 0 0 40px rgba(0, 255, 214, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.workspace-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 255, 214, 0.45);
+  box-shadow:
+    0 22px 55px rgba(0, 255, 214, 0.2),
+    inset 0 0 50px rgba(0, 255, 214, 0.12);
+}
+
+.workspace-badge {
+  align-self: flex-start;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #001014;
+  background: linear-gradient(120deg, #7ff7e7, #9bf0ff);
+  font-weight: 700;
+}
+
+.workspace-card h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #efffff;
+}
+
+.workspace-card p {
+  margin: 0;
+  color: rgba(231, 255, 255, 0.7);
+  line-height: 1.55;
+  font-size: 14px;
+}
+
+.workspace-cta {
+  margin-top: auto;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7ff7e7;
+}
+
+@media (max-width: 720px) {
+  .workspace-section {
+    padding: 56px 18px 72px;
+  }
+}
 </style>
 </head>
 
@@ -365,6 +496,32 @@ html, body {
         </a>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<section class="workspace-section" aria-labelledby="workspace-title">
+  <div class="workspace-wrap">
+    <p class="workspace-kicker">Workspaces</p>
+    <h2 class="workspace-title" id="workspace-title">Choose your workspace</h2>
+    <p class="workspace-sub">
+      Purpose-built setups for service teams that want clarity, speed, and cleaner pipelines.
+    </p>
+
+    <div class="workspace-grid">
+      <a
+        class="workspace-card"
+        href="https://maritimehvac.info.ca"
+        target="_blank"
+        rel="noopener"
+      >
+        <span class="workspace-badge">New</span>
+        <h3>Maritime Option 2</h3>
+        <p>
+          Coastal HVAC workflows with dispatch visibility, lead hygiene, and booking-ready follow-up.
+        </p>
+        <span class="workspace-cta">Open workspace</span>
+      </a>
     </div>
   </div>
 </section>
