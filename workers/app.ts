@@ -1,21 +1,30 @@
 import { Hono } from 'hono';
 
-const app = new Hono();
+type Bindings = {
+  DB: D1Database;
+  VALUE_FROM_CLOUDFLARE: string;
+};
 
-app.get('/', (c) => {
-  return c.html(`
+const app = new Hono<{ Bindings: Bindings }>();
+
+app.get('/', (c) =>
+  c.html(`
     <h1 style="font-family: sans-serif; color: #0af;">
       Welcome to LUKAIRO ENGINE
     </h1>
     <p>Your worker is live.</p>
-  `);
-});
+  `)
+);
 
-app.get('/api/test', async (c) => {
-  return c.json({ 
-    message: 'LUKAIRO Engine API Active',
-    timestamp: new Date().toISOString()
-  });
+app.get('/api/orders', async (c) => {
+  try {
+    const result = await c.env.DB.prepare(
+      'SELECT * FROM [Order] ORDER BY id LIMIT 100'
+    ).run();
+    return c.json(result);
+  } catch (error) {
+    return c.json({ error: 'Database query failed', details: String(error) }, 500);
+  }
 });
 
 export default app;

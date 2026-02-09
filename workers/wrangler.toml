@@ -5,3 +5,8 @@ workers_dev = true
 
 [vars]
 VALUE_FROM_CLOUDFLARE = "lukairo-edge"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "lukairo-db"
+database_id = "YOUR_DATABASE_ID"
