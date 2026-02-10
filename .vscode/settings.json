@@ -14,8 +14,5 @@
 	"*test.py"
 ],
 "python.testing.pytestEnabled": false,
-"python.testing.unittestEnabled": true,
-"githubPullRequests.ignoredPullRequestBranches": [
-  "main"
-]
+"python.testing.unittestEnabled": true
 }
