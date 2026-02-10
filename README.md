@@ -2,6 +2,20 @@
 
 A modern full-stack application designed for Cloudflare Workers, built with React 19, React Router 7, and Hono framework.
 
+## 🚀 Quick Deploy - Go Live Now!
+
+Ready to deploy? Follow these simple steps:
+
+```bash
+# 1. Verify everything is ready
+./verify-deployment.sh
+
+# 2. Deploy to Cloudflare
+./deploy.sh
+```
+
+See **[GO-LIVE.md](GO-LIVE.md)** for the quick start guide or **[DEPLOYMENT.md](DEPLOYMENT.md)** for detailed instructions.
+
 ## 🚀 Tech Stack
 
 - **Frontend**: React 19 with React Router 7

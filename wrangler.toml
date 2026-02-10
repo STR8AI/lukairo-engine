@@ -1,8 +1,8 @@
 name = "lukairo-engine"
-account_id = "YOUR_ACCOUNT_ID"
+# IMPORTANT: Replace with your Cloudflare Account ID from https://dash.cloudflare.com
+# account_id = "YOUR_ACCOUNT_ID"
 workers_dev = true
-main = "build/server/index.js"
+compatibility_date = "2025-01-01"
 
-
-[site]
-bucket = "./build/client"
+# This configuration is for Cloudflare Pages deployment
+# The static files are served from the cf-pages directory
