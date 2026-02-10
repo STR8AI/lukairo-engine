@@ -1,12 +1,34 @@
-name = "lukairo-engine"
-main = "workers/app.ts"
+name = "lukairo-dashboard"
+main = "app.ts"
 compatibility_date = "2025-01-01"
 workers_dev = true
 
 [vars]
 VALUE_FROM_CLOUDFLARE = "lukairo-edge"
 
-[[d1_databases]]
-binding = "DB"
-database_name = "lukairo-db"
-database_id = "YOUR_DATABASE_ID"
+# Uncomment and configure when D1 database is ready
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "lukairo-db"
+# database_id = "YOUR_DATABASE_ID"
+
+# Optional: KV namespace for caching
+# [[kv_namespaces]]
+# binding = "CACHE"
+# id = "YOUR_KV_NAMESPACE_ID"
+
+# Optional: Durable Objects for stateful workflows
+# [[durable_objects.bindings]]
+# name = "WORKFLOW_STATE"
+# class_name = "WorkflowState"
+
+[build]
+command = ""
+
+[env.production]
+name = "lukairo-dashboard"
+workers_dev = false
+# routes = [
+#   { pattern = "dashboard.lukairo.com", custom_domain = true }
+# ]
+
