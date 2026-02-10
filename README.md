@@ -14,7 +14,12 @@ Ready to deploy? Follow these simple steps:
 ./deploy.sh
 ```
 
-See **[GO-LIVE.md](GO-LIVE.md)** for the quick start guide or **[DEPLOYMENT.md](DEPLOYMENT.md)** for detailed instructions.
+**📚 Deployment Guides:**
+- **[GO-LIVE.md](GO-LIVE.md)** - Quick start guide (2 minutes)
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Comprehensive deployment guide
+- **[DEPLOYMENT-CHECKLIST.md](DEPLOYMENT-CHECKLIST.md)** - Step-by-step checklist
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture & diagrams
+- **[QUICK-REFERENCE.md](QUICK-REFERENCE.md)** - Command reference card
 
 ## 🚀 Tech Stack
 
