@@ -4,9 +4,6 @@ name: Deploy Maritime HVAC Go Router
 on:
   push:
     branches: [main]
-    paths:
-      - 'maritime-hvac-home/**'
-      - '.github/workflows/deploy-maritime-hvac-go-router.yml'
   workflow_dispatch:
 
 jobs:
