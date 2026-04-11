@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUKAIRO - Revenue Systems</title>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    body {
+      background: #000;
+      color: #fff;
+    }
+
+    .globe-container {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: radial-gradient(circle at center, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 100%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 600px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-overlay p {
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+      color: #ccc;
+      line-height: 1.6;
+    }
+
+    .hero-overlay span {
+      display: block;
+      font-size: clamp(0.875rem, 2vw, 1.125rem);
+      color: #999;
+      margin-top: 1rem;
+      font-weight: 300;
+    }
+
+    .cta-button {
+      margin-top: 2rem;
+      padding: 12px 32px;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      pointer-events: auto;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        margin-bottom: 0.75rem;
+      }
+
+      .hero-overlay p {
+        margin-bottom: 1rem;
+      }
+
+      .cta-button {
+        margin-top: 1.5rem;
+        padding: 10px 24px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="globe-container">
+    <canvas id="globeCanvas"></canvas>
+  </div>
+
+  <section class="hero-overlay">
+    <div class="hero-content">
+      <h1>We build and run revenue systems.</h1>
+      <p>We connect execution, systems, and growth into a single operating layer.</p>
+      <span>From direct sales floors to elite SaaS and enterprise GTM.</span>
+      <button class="cta-button">Get Started</button>
+    </div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r167/three.min.js"></script>
+  
+  <script>
+    // Three.js Globe Setup
+    class GlobeVisualizer {
+      constructor() {
+        this.canvas = document.getElementById('globeCanvas');
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        
+        this.init();
+        this.createGlobe();
+        this.setupLights();
+        this.animate();
+        this.setupEventListeners();
+      }
+
+      init() {
+        // Scene setup
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera(
+          75,
+          this.width / this.height,
+          0.1,
+          1000
+        );
+        this.camera.position.z = 2.5;
+
+        // Renderer setup
+        this.renderer = new THREE.WebGLRenderer({
+          canvas: this.canvas,
+          antialias: true,
+          alpha: true,
+        });
+        this.renderer.setSize(this.width, this.height);
+        this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.renderer.setClearColor(0x000000, 0.1);
+      }
+
+      createGlobe() {
+        // Create sphere geometry
+        const geometry = new THREE.IcosahedronGeometry(1, 64);
+        
+        // Create custom shader material for gradient effect
+        const material = new THREE.ShaderMaterial({
+          uniforms: {
+            time: { value: 0 },
+          },
+          vertexShader: `
+            varying vec3 vertexNormal;
+            varying vec3 vertexPosition;
+            
+            void main() {
+              vertexNormal = normalize(normalMatrix * normal);
+              vertexPosition = normalize(position);
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `,
+          fragmentShader: `
+            varying vec3 vertexNormal;
+            varying vec3 vertexPosition;
+            uniform float time;
+            
+            void main() {
+              // Create gradient based on position
+              vec3 color1 = vec3(0.2, 0.4, 1.0); // Blue
+              vec3 color2 = vec3(1.0, 0.2, 0.8); // Magenta
+              vec3 color3 = vec3(0.2, 1.0, 0.8); // Cyan
+              
+              float mixFactor = (sin(vertexPosition.x * 3.0 + time) + 1.0) / 2.0;
+              vec3 finalColor = mix(color1, mix(color2, color3, mixFactor), vertexNormal.y);
+              
+              // Add edge lighting
+              float fresnel = dot(normalize(vertexNormal), vec3(0.0, 0.0, 1.0));
+              fresnel = pow(abs(fresnel), 2.0);
+              finalColor += vec3(0.5, 0.5, 0.8) * (1.0 - fresnel) * 0.5;
+              
+              gl_FragColor = vec4(finalColor, 0.8);
+            }
+          `,
+          wireframe: false,
+          transparent: true,
+        });
+
+        this.globe = new THREE.Mesh(geometry, material);
+        this.scene.add(this.globe);
+
+        // Create outer ring/halo
+        const haloGeometry = new THREE.IcosahedronGeometry(1.05, 32);
+        const haloMaterial = new THREE.ShaderMaterial({
+          uniforms: {
+            time: { value: 0 },
+          },
+          vertexShader: `
+            varying vec3 vertexNormal;
+            
+            void main() {
+              vertexNormal = normalize(normalMatrix * normal);
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `,
+          fragmentShader: `
+            varying vec3 vertexNormal;
+            
+            void main() {
+              float alpha = pow(abs(dot(vertexNormal, vec3(0.0, 0.0, 1.0))), 2.0);
+              gl_FragColor = vec4(0.3, 0.6, 1.0, alpha * 0.3);
+            }
+          `,
+          side: THREE.BackSide,
+          transparent: true,
+        });
+
+        this.halo = new THREE.Mesh(haloGeometry, haloMaterial);
+        this.scene.add(this.halo);
+      }
+
+      setupLights() {
+        // Ambient light
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        this.scene.add(ambientLight);
+
+        // Point light 1
+        const light1 = new THREE.PointLight(0x4080ff, 1);
+        light1.position.set(5, 3, 5);
+        this.scene.add(light1);
+
+        // Point light 2
+        const light2 = new THREE.PointLight(0xff20ff, 0.5);
+        light2.position.set(-5, -3, 5);
+        this.scene.add(light2);
+
+        // Point light 3
+        const light3 = new THREE.PointLight(0x20ffff, 0.3);
+        light3.position.set(0, 5, -5);
+        this.scene.add(light3);
+      }
+
+      animate = () => {
+        requestAnimationFrame(this.animate);
+
+        // Rotate globe
+        this.globe.rotation.x += 0.0002;
+        this.globe.rotation.y += 0.0003;
+        this.halo.rotation.x += 0.0001;
+        this.halo.rotation.y += 0.0002;
+
+        // Update time uniform for shaders
+        if (this.globe.material.uniforms) {
+          this.globe.material.uniforms.time.value += 0.01;
+        }
+
+        this.renderer.render(this.scene, this.camera);
+      };
+
+      setupEventListeners() {
+        window.addEventListener('resize', () => this.onWindowResize());
+        
+        // Mouse movement for subtle interaction
+        document.addEventListener('mousemove', (e) => this.onMouseMove(e));
+      }
+
+      onWindowResize() {
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+
+        this.camera.aspect = this.width / this.height;
+        this.camera.updateProjectionMatrix();
+
+        this.renderer.setSize(this.width, this.height);
+      }
+
+      onMouseMove(event) {
+        const x = (event.clientX / this.width) * 2 - 1;
+        const y = -(event.clientY / this.height) * 2 + 1;
+
+        // Subtle rotation based on mouse position
+        this.globe.rotation.x += y * 0.0001;
+        this.globe.rotation.y += x * 0.0001;
+      }
+    }
+
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      new GlobeVisualizer();
+    });
+  </script>
+</body>
+</html>
