@@ -185,45 +185,27 @@
   <!-- Neural Core Initialization -->
   <script src="/src/scripts/neural-core.js"></script>
   
-  <!-- Initialization Script -->
-  <script>
-    (function() {
-      'use strict';
+<script>
+(function() {
+  if (window.NeuralCore && window.THREE) {
+    const neuralCore = new window.NeuralCore({
+      containerId: 'neural-core-container',
+      texturePath: './images/'
+    });
 
-      // Wait for loader to complete (add small buffer for smooth transition)
-      setTimeout(() => {
-        // Initialize Neural Core
-        if (window.NeuralCore && window.THREE) {
-          const neuralCore = new window.NeuralCore({
-            containerId: 'neural-core-container',
-            texturePath: '/assets/textures/'
-          });
-          
-          // Show Neural Core section
-          const engineSection = document.getElementById('lukairo-engine');
-          if (engineSection) {
-            engineSection.classList.add('active');
-          }
-          
-          // Initialize the visualization
-          neuralCore.init();
-          
-          // Store reference for cleanup if needed
-          window.lukairoCoreInstance = neuralCore;
-        } else {
-          console.warn('Three.js or NeuralCore not loaded');
-          // Fallback to showing the React app
-          const root = document.getElementById('root');
-          if (root) {
-            root.classList.add('active');
-          }
-        }
-    }, 1500);
+    const engineSection = document.getElementById('lukairo-engine');
+    if (engineSection) {
+      engineSection.classList.add('active');
+    }
 
-      // Optional: Load React application after Neural Core
-      // Uncomment the line below if you want to load the React app as well
-      // <script type="module" src="/src/entry.client.tsx"></script>
-    })();
-  </script>
-</body>
-</html>
+    neuralCore.init();
+
+    // hide loader immediately
+    const loader = document.getElementById('lukairo-loader');
+    if (loader) loader.style.display = 'none';
+
+  } else {
+    console.error("NeuralCore failed to load");
+  }
+})();
+</script>
